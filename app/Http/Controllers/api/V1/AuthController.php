@@ -64,9 +64,9 @@ class AuthController extends Controller
             return AppSP::apiResponse('validation Eror', $validateCode->errors(), 'errors', false, 422);
         }
         // find the code
-        $verfication = VerfiyCode::firstWhere('code', $request->code);
+        $verification = VerfiyCode::firstWhere('code', $request->code);
 
-        if ($verfication) {
+        if ($verification) {
             $tempUser = TempUser::query()->firstWhere('code', '=', $request->code);
             $userData['name'] = $tempUser['name'];
             $userData['email'] = $tempUser['email'];
@@ -78,8 +78,8 @@ class AuthController extends Controller
 
 
         // check if it does not expired: the time is one minute
-        if ($verfication->created_at > now()->addMinute()) {
-            $verfication->delete();
+        if ($verification->created_at > now()->addMinute()) {
+            $verification->delete();
             return response(['message' => trans('code has been expired')], 422);
         }
     }
@@ -121,6 +121,65 @@ class AuthController extends Controller
             'message' => 'Logged out',
 
         ], 200);
+    }
+
+    public function forgotPassword(Request $request)  {
+        $validateForgotPassword=Validator::make($request->only('email'),[
+            'email'=>'required|email|exists:users'
+        ]);
+        if ($validateForgotPassword->fails()) {
+            return AppSP::apiResponse('validation Eror', $validateForgotPassword->errors(), 'errors', false, 422);
+        }
+        VerfiyCode::where('email', $request->email)?->delete();
+        $data['code'] = mt_rand(100000, 999999);
+        $data['email']=$request->email;
+        // Create a new code
+        $codeData = VerfiyCode::create($data);
+
+        // Send email to user
+
+        $input=Mail::to($request->email)->send(new SendCode($codeData->code));
+        return response(['message' => trans('check your email')], 200);
+
+    }
+
+    public function verfiyForgotPassword(Request $request){
+        $validateCode=Validator::make($request->only('code'),[
+            'code'=>'required|exists:verfiy_codes'
+        ]);
+        if ($validateCode->fails()) {
+            return AppSP::apiResponse('validation Eror', $validateCode->errors(), 'errors', false, 422);
+        }
+        $verification = VerfiyCode::firstWhere('code', $request->code);
+        if ($verification) {
+            return AppSP::apiResponse('valid code', $request->code, 'code', true, 201);
+        }
+        return $this->failed('invalid code');
+    }
+
+    public function passwordReset(Request $request){
+        $data=$request->only(['code','password','email']);
+        $validateCode= Validator::make($data,[
+            'email'=>'required|email',
+            'code' => 'required|string|exists:verfiy_codes',
+            'password' => 'required|min:8',
+
+        ]);
+
+
+        if ($validateCode->fails()) {
+            return AppSP::apiResponse('validation Eror', $validateCode->errors(), 'errors', false, 422);
+        }
+        $verification = VerfiyCode::firstWhere('code', $request->code);
+        if ($verification) {
+            $user = User::query()->firstWhere('email', '=', $data['email']);
+            $user->update([
+                'password' => Hash::make($data['password'])
+            ]);
+            $verification->delete();
+            return AppSP::apiResponse('Password Reset Successfully', null, 'data', true, 201);
+
+         }
     }
     public function coachRegister(Request $request)
     {

@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\V1\AuthController;
 use App\Http\Controllers\api\V1\AdminController;
-
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +34,9 @@ Route::post('admin/login',[AdminController::class,'login']);
 Route::post('trainer/register',[AuthController::class,'trainerRegister']);
 Route::post('/verfiy',[AuthController::class,'verficationRegister']);
 Route::post('trainer/login',[AuthController::class,'trainerLogin']);
+Route::post('trainer/forgotPasswor',[AuthController::class,'forgotPassword']);
+Route::post('trainer/forgotPassword/verfiy',[AuthController::class,'verfiyForgotPassword']);
+Route::post('trainer/password/reset',[AuthController::class,'passwordReset']);
 
 Route::group(['prefix'=>'trainer',"middleware"=>["auth:user"]],function(){
     Route::get('logout',[AuthController::class,'trainerLogout']);
