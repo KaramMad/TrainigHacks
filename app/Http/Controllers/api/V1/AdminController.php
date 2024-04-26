@@ -19,25 +19,22 @@ class AdminController extends Controller
         try {
             $validateAdmin = Validator::make($request->all(), [
                 'phone_number' => 'required|digits:10',
-                'password' => 'required|min:8|',//regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/|confirmed
+                'password' => 'required|min:8|', //regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/|confirmed
             ]);
             if ($validateAdmin->fails()) {
                 return AppSP::apiResponse('validation Eror', $validateAdmin->errors(), 'errors', false, 422);
             }
 
-            if(auth()->guard('admin-web')->attempt($request->only(['phone_number','password']))){
-                config(['auth.guards.admin.provider'=>'auth.guards.admin']);
-                $coach=Admin::query()->select('admins.*')->find(auth()->guard('admin-web')->user()['id']);
-                return AppSP::apiResponse('Login Successfully',$coach->createToken("API TOKEN",['coach'])->accessToken, 'token',true);
-
-          }
-          else{
-              return response()->json([
-                  'status' => false,
-                  'message' => 'Phone Number & Password does not match with our record.',
-              ], 401);
-          }
-
+            if (auth()->guard('admin-web')->attempt($request->only(['phone_number', 'password']))) {
+                config(['auth.guards.admin.provider' => 'auth.guards.admin']);
+                $coach = Admin::query()->select('admins.*')->find(auth()->guard('admin-web')->user()['id']);
+                return AppSP::apiResponse('Login Successfully', $coach->createToken("API TOKEN", ['coach'])->accessToken, 'token', true);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Phone Number & Password does not match with our record.',
+                ], 401);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
@@ -46,6 +43,7 @@ class AdminController extends Controller
             ], 500);
         }
     }
-    public function createCoach()    {
+    public function createCoach()
+    {
     }
 }
