@@ -44,6 +44,6 @@ Route::post('trainer/password/reset',[AuthController::class,'passwordReset']);
 
 Route::group(['prefix'=>'trainer',"middleware"=>["auth:user"]],function(){
     Route::get('logout',[AuthController::class,'trainerLogout']);
-    Route::post('trainer/info',[UserController::class,'trainerInfo']);
+    Route::post('info',[UserController::class,'trainerInfo']);
 
 });

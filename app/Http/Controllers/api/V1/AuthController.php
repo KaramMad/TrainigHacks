@@ -24,7 +24,7 @@ class AuthController extends Controller
     {
         $validateTrainer = Validator::make($request->all(), [
             'name' => 'required|max:55|string',
-            'email' => 'required|email|unique:verfiy_codes',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/',
         ]);
         $data = $request->all();
@@ -157,12 +157,13 @@ class AuthController extends Controller
         return $this->failed('invalid code');
     }
 
+
     public function passwordReset(Request $request){
-        $data=$request->only(['code','password','email']);
-        $validateCode= Validator::make($data,[
+
+        $validateCode= Validator::make($request->all(),[
             'email'=>'required|email',
-            'code' => 'required|string|exists:verfiy_codes',
             'password' => 'required|min:8',
+            'code' => 'required|string|exists:verfiy_codes',
 
         ]);
 
@@ -170,6 +171,8 @@ class AuthController extends Controller
         if ($validateCode->fails()) {
             return AppSP::apiResponse('validation Eror', $validateCode->errors(), 'errors', false, 422);
         }
+        $data=$request->all();
+        //dd($data);
         $verification = VerfiyCode::firstWhere('code', $request->code);
         if ($verification) {
             $user = User::query()->firstWhere('email', '=', $data['email']);

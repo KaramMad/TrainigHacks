@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\api\V1;
 
 
 use App\Models\Admin;
@@ -19,7 +19,7 @@ class AdminController extends Controller
         try {
             $validateAdmin = Validator::make($request->all(), [
                 'phone_number' => 'required|digits:10',
-                'password' => 'required|min:8|', //regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/|confirmed
+                'password' => 'required|min:8|',
             ]);
             if ($validateAdmin->fails()) {
                 return AppSP::apiResponse('validation Eror', $validateAdmin->errors(), 'errors', false, 422);

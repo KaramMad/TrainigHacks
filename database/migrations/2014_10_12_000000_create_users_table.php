@@ -18,12 +18,13 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->integer('tall')->nullable();
             $table->integer('weight')->nullable();
-            $table->string('focus_area')->nullable();
+            $table->string('bio')->default('null');
+            $table->enum('focus_area',['all','arm','leg','chest','abs'])->default('all');
             $table->enum('gender',['male','female'])->nullable();
             $table->enum('target',['lose weight','build muscle','keep fit'])->nullable();
             $table->enum('diseases',['heart','knee','breath','none'])->nullable()->default('none');
             $table->time('preferred_time')->nullable();
-            $table->string('picture')->nullable();
+            $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

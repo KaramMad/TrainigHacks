@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
 
 
         // \App\Models\Admin::factory(10)->create();
-
+        $this->call([DaysOfTheWeek::class]);
         \App\Models\Admin::factory()->create([
             'name'=>'karam',
             'phone_number'=>'0943365119',

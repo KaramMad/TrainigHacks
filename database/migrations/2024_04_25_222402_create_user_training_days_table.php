@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->integer('training_days_id')->unsigned();
+            $table->unique(['user_id','training_days_id']);
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('training_days_id')->references('id')->on('training_days');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('training_days_id')->references('id')->on('training_days')->onDelete('cascade');
 
         });
     }
