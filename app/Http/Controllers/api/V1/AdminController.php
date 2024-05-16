@@ -4,46 +4,69 @@ namespace App\Http\Controllers\api\V1;
 
 
 use App\Models\Admin;
+use App\Models\Coach;
+use App\Http\Requests\AdminLoginRequest;
+use App\Http\Requests\AddNewCoachRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\VerfiyCode;
+use UltraMsg\WhatsAppApi;
 use App\Providers\AppServiceProvider as AppSP;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
 
 class AdminController extends Controller
 {
     //
 
-    public function login(Request $request)
+    public function login(AdminLoginRequest $request)
     {
-        try {
-            $validateAdmin = Validator::make($request->all(), [
-                'phone_number' => 'required|digits:10',
-                'password' => 'required|min:8|',
-            ]);
-            if ($validateAdmin->fails()) {
-                return AppSP::apiResponse('validation Eror', $validateAdmin->errors(), 'errors', false, 422);
-            }
 
-            if (auth()->guard('admin-web')->attempt($request->only(['phone_number', 'password']))) {
-                config(['auth.guards.admin.provider' => 'auth.guards.admin']);
-                $coach = Admin::query()->select('admins.*')->find(auth()->guard('admin-web')->user()['id']);
-                return AppSP::apiResponse('Login Successfully', $coach->createToken("API TOKEN", ['coach'])->accessToken, 'token', true);
+            $validateAdmin = $request->validated();
+            $admin= Admin::query()->firstWhere('phone_number', '=', $validateAdmin['phone_number']);
+            if (Hash::check($validateAdmin['password'],$admin['password'])) {
+
+                return AppSP::apiResponse('Login Successfully', $admin->createToken("API TOKEN", ['coach'])->accessToken, 'token', true);
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Phone Number & Password does not match with our record.',
+                    'message' => [
+                        'error' => 'Phone Number & Password does not match with our record.'
+                    ],
                 ], 401);
             }
-        } catch (\Throwable $th) {
+
+    }
+    public function createCoaches(AddNewCoachRequest $request)
+    {
+        $validated = $request->validated();
+
+        $code = rand(10000000, 99999999);
+        $name = $validated['name'];
+        $validated['password']=Hash::make($code);
+        $coach = Coach::create($validated);
+        require_once(base_path('vendor/autoload.php'));
+        $ultramsg_token = 'wx141er7m12dejbc';
+        $instance_id = 'instance85645';
+        $client = new WhatsAppApi($ultramsg_token, $instance_id);
+        $number = $number = "+963" . substr($validated['phone_number'], 1, 9);
+        $to = $number;
+        $body = "hey $name ,your account default password: $code
+         don't forget to change it after first login.";
+        $client->sendChatMessage($to, $body);
+
+        if ($coach) {
+            return response()->json([
+                'status' => true,
+                'message' => "coach Created successfully",
+            ], 200);
+        } else {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage(),
-                'data' => null
+                'message' => 'something get wrong',
+
             ], 500);
         }
-    }
-    public function createCoach()
-    {
     }
 }

@@ -17,7 +17,6 @@ class UserController extends Controller
     public function trainerInfo(UserInfoRequest $request)
     {
         $validated = $request->validated();
-
         $user = User::find(Auth::id());
         $status=$user->update($validated);
         if ($request->hasFile('image')) {
@@ -31,9 +30,11 @@ class UserController extends Controller
         $userTrainingDays = $user->trainingDays()->get();
 
         return response()->json([
-            'trainer' =>$user,
+            'trainer' =>[
+                $user,
+                "userTrainingDays" => $userTrainingDays,
+            ],
             'message' =>"Trainer info added successfully",
-            "userTrainingDays" => $userTrainingDays,
         ]);
     }
 }

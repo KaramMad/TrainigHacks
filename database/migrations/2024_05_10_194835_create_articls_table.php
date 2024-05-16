@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('temp_users', function (Blueprint $table) {
+        Schema::create('articls', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->default('null');
-            $table->string('email')->default('null');
-            $table->string('password')->default('null');
-            $table->string('code');
+            $table->string('Author_Name');
+            $table->string('Articl');
+            $table->string('image');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('temp_users');
+        Schema::dropIfExists('articls');
     }
 };

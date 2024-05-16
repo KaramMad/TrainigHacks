@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VerfiyCode extends Model
+class Articl extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'email',
-        'code',
-        'phone_number',
-
+    protected $fillable=[
+        'Author_Name',
+        'Image',
+        'Articl',
     ];
 }

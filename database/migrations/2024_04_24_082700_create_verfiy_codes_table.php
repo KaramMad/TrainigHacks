@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('verfiy_codes', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->index();
+            $table->string('phone_number')->index()->nullable();
+            $table->string('email')->index()->nullable();
             $table->string('code');
             $table->timestamps();
         });
