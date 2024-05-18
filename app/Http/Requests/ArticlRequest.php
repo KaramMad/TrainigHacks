@@ -26,8 +26,9 @@ class ArticlRequest extends FormRequest
     {
         return [
              'Author_Name' => 'required|string|max:15',
+             'title'=>'required|string|max:30',
              'Image'=>'required|Image|mimes:png,jpg',
-             'Articl'=>'required|string|max:200',
+             'Article'=>'required|string',
 
         ];
     }

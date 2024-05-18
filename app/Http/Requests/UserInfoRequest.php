@@ -25,14 +25,14 @@ class UserInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'gender' => 'required|string|in:male,female',
-            'target' => 'required|string|in:lose weight,build muscle,keep fit',
-            'weight' => 'required|numeric|min:45|max:220',
-            'tall' => 'required|numeric|min:140|max:220',
-            'preferred_time' => 'required|date_format:h:i',
-            'focus_area' => 'required|in:arm,leg,all,abs,chest|string',
-            'training_days' => 'required|array',
-            'diseases' => 'required|in:heart,none,knee,breath',
+            'gender' => 'required|sometimes|string|in:male,female',
+            'target' => 'required|sometimes|string|in:lose weight,build muscle,keep fit',
+            'weight' => 'required|sometimes|numeric|min:45|max:220',
+            'tall' => 'required|sometimes|numeric|min:140|max:220',
+            'preferred_time' => 'required|sometimes',
+            'focus_area' => 'required|sometimes|in:arm,leg,all,abs,chest|string',
+            'training_days' => 'required|sometimes|array',
+            'diseases' => 'required|sometimes|in:heart,none,knee,breath',
             'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
             'bio'=>'nullable|string|max:49',
         ];

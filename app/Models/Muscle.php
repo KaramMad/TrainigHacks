@@ -9,4 +9,7 @@ class Muscle extends Model
 {
     use HasFactory;
     protected $guarded=['sso'];
+    public function exercises(){
+        return $this->belongsToMany(Exercise::class);
+    }
 }

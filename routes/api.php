@@ -59,6 +59,7 @@ Route::post('trainer/password/resend',[AuthController::class,'resendCode']);
 Route::group(['prefix'=>'trainer',"middleware"=>["auth:user"]],function(){
     Route::get('logout',[AuthController::class,'trainerLogout']);
     Route::post('info',[UserController::class,'trainerInfo']);
+    Route::post('/password',[UserController::class,'changePassword']);
 
 });
 

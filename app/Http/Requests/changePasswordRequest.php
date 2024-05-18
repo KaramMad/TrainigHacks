@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
 
-class muscleRequest extends FormRequest
+class changePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,8 @@ class muscleRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'muscle_area' => 'required|string|in:CHEST,ABS,SHOULDER&BACK,ARM,LEG',
-             'image'=>'required|Image|mimes:png,jpg',
-
-
+            'old_password' => 'required|min:8',
+            'password' => 'required|min:8|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/',
         ];
     }
 

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('muscle_area');
             $table->string('image');
-            $table->enum('level',['beginner','intermediate','advanced']);
             $table->timestamps();
         });
     }

@@ -23,7 +23,7 @@ class AddNewCoachRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => 'required|string|',
+            'phone_number' => 'required|string|unique:coaches,phone_number',
             'name' => 'required|string|',
             'password'=>'required|string|in:password'
         ];

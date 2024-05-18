@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\api\V1;
 
-
+use App\Http\Requests\changePasswordRequest;
 use App\Models\User;
 use App\Models\TrainingDay;
 use App\Http\Requests\UserInfoRequest;
@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Providers\AppServiceProvider as AppSP;
+use GuzzleHttp\Psr7\Request;
 
 class UserController extends Controller
 {
@@ -37,4 +38,22 @@ class UserController extends Controller
             'message' =>"Trainer info added successfully",
         ]);
     }
+    public function changePassword(changePasswordRequest $request){
+        $data=$request->validated();
+        $user=User::find(Auth::id());
+        if(Hash::check($data['old_password'],$user['password'])){
+            $user->update([
+                'password'=>Hash::make($data['password']),
+            ]);
+        return response()->json([
+            'message'=>'password has been updated successfully'
+        ],200);
+        }
+        return response()->json([
+            'message'=>'password does not match with our records'
+        ],401);
+    }
+
+
+
 }

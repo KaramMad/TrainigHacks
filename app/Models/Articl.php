@@ -10,7 +10,8 @@ class Articl extends Model
     use HasFactory;
     protected $fillable=[
         'Author_Name',
+        'title',
         'Image',
-        'Articl',
+        'Article',
     ];
 }
