@@ -18,7 +18,7 @@ return new class extends Migration
 
 
             $table->foreign('muscle_id')->references('id')
-                 ->on('muscles')->onDelete('cascade');
+                ->on('muscles')->onDelete('cascade');
             $table->foreign('exercise_id')->references('id')
                 ->on('exercises')->onDelete('cascade');
             $table->timestamps();
