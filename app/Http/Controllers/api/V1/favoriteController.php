@@ -58,7 +58,7 @@ class FavoriteController extends Controller
         ->Where('meal_id', $MealID)->exists();
 
         if (!$IsMealExistsInFavoritesList) {
-            return response()->json(['Error' => 'The Medicine Is Not In Favorites List'], 404);
+            return response()->json(['Error' => 'The Meal Is Not In Favorites List'], 404);
         }
 
         $IsDeleted = Favorite::Where('user_id', $userID)->Where('meal_id', $MealID)->delete();

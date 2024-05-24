@@ -39,7 +39,7 @@ Route::group(['prefix'=>'coach',
     Route::get('logout',[CoachAuthController::class,'coachLogout']);
     Route::post('store', [MealController::class, 'store']);
     Route::post('show', [MealController::class, 'show']);
-    Route::get('destroy/{id}', [MealController::class, 'destroy']);
+    Route::delete('destroy/{id}', [MealController::class, 'destroy']);
     Route::get('index', [MealController::class, 'index']);
 });
 
@@ -57,7 +57,7 @@ Route::group(['prefix'=>'admin',
     Route::get('latestMeals', [AdminMealController::class, 'latestMeals']);
     Route::post('show', [AdminMealController::class, 'show']);
     Route::get('getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
-    Route::get('destroy\{id}', [AdminMealController::class, 'destroy']);
+    Route::delete('destroy\{id}', [AdminMealController::class, 'destroy']);
 });
 
 //Trainer Auth & Routes
@@ -76,7 +76,7 @@ Route::group(['prefix'=>'trainer',"middleware"=>["auth:user"]],function(){
     Route::post('/password',[UserController::class,'changePassword']);
     Route::get('AddMealToFavoritesList\{id}', [FavoriteController::class, 'AddMealToFavoritesList']);
     Route::get('GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
-    Route::get('deleteFromFavorite\{id}', [FavoriteController::class, 'deleteFromFavorite']);
+    Route::delete('deleteFromFavorite\{id}', [FavoriteController::class, 'deleteFromFavorite']);
 
 });
 

@@ -19,9 +19,12 @@ class MealController extends Controller // for coach
     //show all meals
     public function index()
     {
-        $meal = Meal::all();
+        $coachId = Auth::id();
+
+        $meals = Meal::where('coach_id', $coachId)->get();
+
         return response()->json([
-            'meal' => $meal
+            'meals' => $meals
         ]);
     }
 
@@ -60,13 +63,23 @@ class MealController extends Controller // for coach
      */
     public function destroy($mealId)
     {
-        // $mealId = Auth::id();
-        $IsMeal = Meal::Where('id', $mealId);
-        if (!$IsMeal) {
-            return response()->json(['Error' => 'The Meal Is Not In exist'], 404);
+        $coachId = Auth::id();
+        //$coach = Meal::Where('coach_id',$coachId)->get();
+
+        $meal = Meal::find($mealId);
+
+        if (!$meal) {
+            return response()->json(['Error' => 'The Meal does not exist'], 404);
         }
 
-        $IsDeleted = Meal::Where('id', $mealId)->delete();
+        if ($meal->coach_id != $coachId) {
+            return response()->json(['Error' => 'You do not have permission to delete this meal'], 403);
+        }
+
+        $meal->delete();
+
         return response()->json(['Message' => 'Deleted Successfully'], 200);
+
+
     }
 }
