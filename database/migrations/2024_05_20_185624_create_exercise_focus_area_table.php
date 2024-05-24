@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exercise_muscle', function (Blueprint $table) {
+        Schema::create('exercise_focus_area', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBiginteger('muscle_id');
             $table->unsignedBiginteger('exercise_id');
+            $table->unsignedBiginteger('focus_area_id');
 
 
-            $table->foreign('muscle_id')->references('id')
-                ->on('muscles')->onDelete('cascade');
             $table->foreign('exercise_id')->references('id')
                 ->on('exercises')->onDelete('cascade');
-            $table->timestamps();
+            $table->foreign('focus_area_id')->references('id')
+                ->on('focus_areas')->onDelete('cascade');
+
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exercise_muscle');
+        Schema::dropIfExists('exercise_focus_area');
     }
 };

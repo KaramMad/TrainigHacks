@@ -15,17 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('exercise_name');
             $table->string('description');
-            $table->string('calories');
+            $table->unsignedBigInteger('calories');
             $table->string('time')->nullable();
-            $table->string('reps')->nullable();
-            $table->string('sets')->nullable();
-            $table->string('image');
+            $table->unsignedBigInteger('reps')->nullable();
+            $table->string('image')->nullable();
             $table->string('video_link');
             $table->enum('target',['lose_weight','build_muscle','keep_fit']);
+            $table->enum('diseases',['heart','none','knee','breath']);
             $table->enum('level',['beginner','intermediate','advanced']);
             $table->enum('gender',['male','female']);
             $table->enum('choose',['equipment','no_eqiupment'])->nullable();
-            $table->timestamps();
+
+
         });
     }
 

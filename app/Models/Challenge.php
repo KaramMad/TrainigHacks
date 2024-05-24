@@ -5,13 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Articl extends Model
+class Challenge extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'Author_Name',
-        'title',
-        'Image',
-        'Article',
-    ];
+    protected $guarded=[''];
+    public $timestamps = false;
+
 }

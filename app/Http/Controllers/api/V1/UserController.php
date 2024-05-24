@@ -15,18 +15,18 @@ use GuzzleHttp\Psr7\Request;
 
 class UserController extends Controller
 {
-    public function trainerInfo(UserInfoRequest $request)
+    public function trainerInfo(UserInfoRequest $request,User $use)
     {
         $validated = $request->validated();
         $user = User::find(Auth::id());
-        $status=$user->update($validated);
         if ($request->hasFile('image')) {
 
-            $picturePath = $request->file('image')->store('images');
-            $user->picture = $picturePath;
+           $validated['image']=ImageController::update($validated['image'],$use['image'],"Profiles");
+
         }
 
         $user->save();
+        $user->update($validated);
         $user->trainingDays()->sync($request->training_days);
         $userTrainingDays = $user->trainingDays()->get();
 

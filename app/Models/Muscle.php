@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Muscle extends Model
 {
     use HasFactory;
-    protected $guarded=['sso'];
-    public function exercises(){
-        return $this->belongsToMany(Exercise::class);
+    protected $guarded = [''];
+    public $timestamps = false;
+    public function exercises()
+    {
+        return $this->belongsToMany(Exercise::class,'muscle_exercise')->withPivot('exercise_count','total_time','total_calories');
     }
+
+   
 }

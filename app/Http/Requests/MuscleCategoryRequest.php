@@ -5,7 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
-class ExerciseRequest extends FormRequest
+
+class MuscleCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,20 +21,16 @@ class ExerciseRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+
     public function rules(): array
     {
         return [
+             'category_name' => 'required|string|in:strength,cardio,yoga,warm_up,stretching|unique:categories,category_name',
+             'image'=>'required|mimes:png',
+             'main_image'=>'required|mimes:jpg',
+             'description'=>'required|string'
 
-            'exercise_name' => 'required|string|',
-            'gender' => 'required|string|in:male,female',
-            'target' => 'required|string|in:lose_weight,build_muscle,keep_fit',
-            'time' => 'required|date_format:h:i',
-            'focus_area' => 'required|array',
-            'focus_area'=>'',
-            'training_days' => 'required|array',
-            'diseases' => 'required|in:heart,none,knee,breath',
-            'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
-            'bio'=>'nullable|string|max:49',
+
         ];
     }
 

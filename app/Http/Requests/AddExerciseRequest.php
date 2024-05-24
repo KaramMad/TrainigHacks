@@ -6,12 +6,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
 
-class ArticlRequest extends FormRequest
+class AddExerciseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public  function authorize(): bool
     {
         return true;
     }
@@ -21,14 +21,26 @@ class ArticlRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
     public function rules(): array
     {
         return [
-            'Author_Name' => 'required|string|max:15',
-            'title' => 'required|string|max:30',
-            'Image' => 'required|Image|mimes:png,jpg',
-            'Article' => 'required|string',
+
+            'exercise_name' => 'required|string|',
+            'description' => 'required|string|',
+            'calories' => 'required|numeric|max:130',
+            'time' => 'required|',
+            'reps' => 'required|numeric|max:12|',
+            'gif' => 'nullable|image|mimes:gif|max:2048',
+            'video_link' => 'required|string',
+            'target' => 'required|string|in:lose_weight,build_muscle,keep_fit',
+            'level' => 'required|in:beginner,intermediate,advanced',
+            'gender' => 'required|string|in:male,female',
+            'choose' => 'required|in:equipment,no_eqiupment',
+            'focus_area' => 'required|array',
+            'muscle'=>'required|array',
+            'muscle.*.id'=>'exists:muscles,id',
+            'category' => 'required|array',
+            'diseases' => 'required|in:heart,none,knee,breath',
         ];
     }
 

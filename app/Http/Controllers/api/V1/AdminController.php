@@ -25,7 +25,7 @@ class AdminController extends Controller
             $admin= Admin::query()->firstWhere('phone_number', '=', $validateAdmin['phone_number']);
             if (Hash::check($validateAdmin['password'],$admin['password'])) {
 
-                return AppSP::apiResponse('Login Successfully', $admin->createToken("API TOKEN", ['coach'])->accessToken, 'token', true);
+                return AppSP::apiResponse('Login Successfully', $admin->createToken("API TOKEN", ['admin'])->accessToken, 'token', true);
             } else {
                 return response()->json([
                     'status' => false,

@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\api\V1;
+
 use App\Providers\AppServiceProvider as AppSP;
 use App\Http\Requests\ArticlRequest;
-use App\Models\Articl;
+use App\Models\Article as Articl;
 use Illuminate\Http\Request;
 
 class ArticlsController extends Controller
@@ -13,7 +14,7 @@ class ArticlsController extends Controller
      */
     public function index()
     {
-        $articl=Articl::inRandomOrder()->limit(3)->get();
+        $articl = Articl::inRandomOrder()->limit(4)->get();
         return $articl;
     }
 
@@ -30,16 +31,15 @@ class ArticlsController extends Controller
      */
     public function store(ArticlRequest $request)
     {
-        $data=$request->validated();
-        if($request->hasFile('Image')){
-            $data['Image'] = ImageController::store($data['Image'],"Articls");
+        $data = $request->validated();
+        if ($request->hasFile('Image')) {
+            $data['Image'] = ImageController::store($data['Image'], "Articls");
         }
-        $articl=Articl::create($data);
-        if(!$articl){
-            return AppSP::apiResponse("not found",null,'data',false,404);
+        $articl = Articl::create($data);
+        if (!$articl) {
+            return AppSP::apiResponse("not found", null, 'data', false, 404);
         }
-        return AppSP::apiResponse("Articl Added successfully",$articl,'articl',true,200);
-
+        return AppSP::apiResponse("Articl Added successfully", $articl, 'articl', true, 200);
     }
 
     /**
@@ -71,7 +71,7 @@ class ArticlsController extends Controller
      */
     public function destroy($id)
     {
-        Articl::where('id','=',$id)->delete();
+        Articl::where('id', '=', $id)->delete();
         return response()->json('success');
     }
 }

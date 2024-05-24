@@ -15,7 +15,7 @@ class ImageController extends Controller
     }
 
     public static function update($file,$old_file,$directory){
-        $path = public_path("Uploads/$directory/$old_file");
+        $path = public_path("Uploads/$old_file");
         if (File::exists($path)) {
             self::destroy($old_file);
         }

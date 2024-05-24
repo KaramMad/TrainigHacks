@@ -110,7 +110,7 @@ class AuthController extends Controller
             $request->all(),
             [
                 'email' => 'required|email|exists:users',
-                'password' => 'required|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/'
+                'password' => 'required|min:8|'
             ]
         );
         $data = $request->all();
@@ -137,8 +137,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Logged out',
-
+            'message' => 'Trainer Logged out',
         ], 200);
     }
 

@@ -5,8 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
-
-class ArticlRequest extends FormRequest
+class UpdateChallengeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,17 +20,15 @@ class ArticlRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
     public function rules(): array
     {
         return [
-            'Author_Name' => 'required|string|max:15',
-            'title' => 'required|string|max:30',
-            'Image' => 'required|Image|mimes:png,jpg',
-            'Article' => 'required|string',
+            'challenge_name'=>'required|string',
+            'type'=>'string|in:timer,counter',
+            'timer'=>'nullable',
+            'counter'=>'nullable|'
         ];
     }
-
     protected function failedValidation(Validator $validator)
     {
         return throw new ValidationException($validator, $this->response($validator));

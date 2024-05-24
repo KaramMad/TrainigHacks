@@ -103,8 +103,7 @@ class CoachAuthController extends Controller
         Auth::guard('coach')->user()->tokens()->delete();
         return response()->json([
             'status' => true,
-            'message' => 'Logged out',
-
+            'message' => 'Coach Logged out',
         ], 200);
     }
 }
