@@ -26,7 +26,7 @@ class ExerciseFactory extends Factory
             'calories' =>$this->faker->numberBetween(1,130),
             'time'=>$this->faker->numberBetween(10,60),
             'reps'=>$this->faker->numberBetween(10,12),
-            'image'=>null,
+            'image'=>'Exercises/bird-10648_256.gif',
             'video_link'=>'https://youtu.be/QE5zcHWGjCM?si=FZeMwXLACqBIvkjC',
             'target'=>$this->faker->randomElement(['lose_weight','build_muscle','keep_fit']),
             'level'=>$this->faker->randomElement(['beginner','intermediate','advanced']),

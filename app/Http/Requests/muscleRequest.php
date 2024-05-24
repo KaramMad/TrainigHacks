@@ -26,7 +26,8 @@ class muscleRequest extends FormRequest
     {
         return [
              'muscle_area' => 'required|string|in:CHEST,ABS,SHOULDER&BACK,ARM,LEG',
-             'image'=>'required|Image|mimes:png,jpg',
+             'men_image'=>'required|sometimes|image|mimes:png,jpg',
+             'women_image'=>'required|sometimes|image|mimes:png,jpg',
 
 
         ];

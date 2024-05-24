@@ -39,8 +39,11 @@ class CategoryController extends Controller
         if ($request->hasFile('image')) {
             $data['image'] = ImageController::store($data['image'], "MuscleCategory");
         }
-        if ($request->hasFile('main_image')) {
-            $data['main_image'] = ImageController::store($data['main_image'], "MuscleCategory");
+        if ($request->hasFile('men_image')) {
+            $data['men_image'] = ImageController::store($data['men_image'], "MuscleCategory");
+        }
+        if ($request->hasFile('women_image')) {
+            $data['women_image'] = ImageController::store($data['women_image'], "MuscleCategory");
         }
 
         $muscle = Category::create($data);

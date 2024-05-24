@@ -14,7 +14,7 @@ class MuscleController extends Controller
 
 
 
-   
+
     /**
      * Display a listing of the resource.
      */
@@ -74,8 +74,11 @@ class MuscleController extends Controller
     public function store(muscleRequest $request)
     {
         $data = $request->validated();
-        if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($data['image'], "Muscle");
+        if ($request->hasFile('men_image')) {
+            $data['men_image'] = ImageController::store($data['men_image'], "Muscle");
+        }
+        if ($request->hasFile('women_image')) {
+            $data['women_image'] = ImageController::store($data['women_image'], "Muscle");
         }
         $muscle = Muscle::create($data);
         return AppSP::apiResponse("Muscle Area Added Successfully", $muscle, 'Area', true, 200);

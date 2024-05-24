@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('muscles', function (Blueprint $table) {
             $table->id();
             $table->string('muscle_area');
-            $table->string('image')->nullable();
-
+            $table->string('men_image')->nullable();
+            $table->string('women_image')->nullable();
         });
     }
 

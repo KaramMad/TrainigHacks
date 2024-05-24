@@ -25,9 +25,10 @@ class MuscleCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'category_name' => 'required|string|in:strength,cardio,yoga,warm_up,stretching|unique:categories,category_name',
+             'category_name' => 'required|string|in:strength,cardio,yoga,warm_up,stretching',
              'image'=>'required|mimes:png',
-             'main_image'=>'required|mimes:jpg',
+             'men_image'=>'required|mimes:jpg',
+             'women_image'=>'required|mimes:jpg',
              'description'=>'required|string'
 
 
