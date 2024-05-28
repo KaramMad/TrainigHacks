@@ -14,18 +14,55 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'ABS',
         'SHOULDER&Back'
     ];
+    protected const muscleLevel = [
+        'Beginner',
+        'Intermediate',
+        'Advanced',
+        // 'ARM_Beginner',
+        // 'ARM_Intermediate',
+        // 'ARM_Advanced',
+        // 'LEG_Beginner',
+        // 'LEG_Intermediate',
+        // 'LEG_Advanced',
+        // 'ABS_Beginner',
+        // 'ABS_Intermediate',
+        // 'ABS_Advanced',
+        // 'SHOULDER&Back_Beginner',
+        // 'SHOULDER&Back_Intermediate',
+        // 'SHOULDER&Back_Advanced',
+    ];
     protected const muscleArea_image_men=[
         'Muscle/man_chest2.jpg',
+        'Muscle/man_chest2.jpg',
+        'Muscle/man_chest2.jpg',
+        'Muscle/man_arm3.jpg',
+        'Muscle/man_arm3.jpg',
         'Muscle/man_arm3.jpg',
         'Muscle/man_leg2.jpg',
+        'Muscle/man_leg2.jpg',
+        'Muscle/man_leg2.jpg',
         'Muscle/man_abs1.jpg',
+        'Muscle/man_abs1.jpg',
+        'Muscle/man_abs1.jpg',
+        'Muscle/man_back1.jpg',
+        'Muscle/man_back1.jpg',
         'Muscle/man_back1.jpg',
     ];
     protected const muscleArea_image_women=[
         'Muscle/woman_chest4.jpg',
+        'Muscle/woman_chest4.jpg',
+        'Muscle/woman_chest4.jpg',
+        'Muscle/woman_arm1.jpg',
+        'Muscle/woman_arm1.jpg',
         'Muscle/woman_arm1.jpg',
         'Muscle/woman_leg1.jpg',
+        'Muscle/woman_leg1.jpg',
+        'Muscle/woman_leg1.jpg',
         'Muscle/woman_abs1.jpg',
+        'Muscle/woman_abs1.jpg',
+        'Muscle/woman_abs1.jpg',
+        'Muscle/woman_back1.jpg',
+        'Muscle/woman_back1.jpg',
         'Muscle/woman_back1.jpg',
     ];
     protected const category_image=[
@@ -105,6 +142,10 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     public static function focusArea(): array
     {
         return self::focusArea;
+    }
+    public static function muscleLevel(): array
+    {
+        return self::muscleLevel;
     }
 
 

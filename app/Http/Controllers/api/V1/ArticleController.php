@@ -7,7 +7,7 @@ use App\Http\Requests\ArticlRequest;
 use App\Models\Article as Articl;
 use Illuminate\Http\Request;
 
-class ArticlsController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -71,7 +71,16 @@ class ArticlsController extends Controller
      */
     public function destroy($id)
     {
-        Articl::where('id', '=', $id)->delete();
-        return response()->json('success');
+
+        $articl = Articl::find($id);
+
+        if ($articl) {
+            $articl->delete();
+            return response()->json(['message' => 'success'], 200);
+        }
+        else{
+            return response()->json(['message' => 'Not Found'], 404);
+
+        }
     }
 }

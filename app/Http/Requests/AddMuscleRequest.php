@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
 
-class muscleRequest extends FormRequest
+class AddMuscleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,10 @@ class muscleRequest extends FormRequest
     {
         return [
              'muscle_area' => 'required|string|in:CHEST,ABS,SHOULDER&BACK,ARM,LEG',
-             'men_image'=>'required|sometimes|image|mimes:png,jpg',
-             'women_image'=>'required|sometimes|image|mimes:png,jpg',
-
-
+             'men_image'=>'required|sometimes|image|mimes:jpg',
+             'women_image'=>'required|sometimes|image|mimes:jpg',
+             'level'=>'required',
+             'description'=>'required|string',
         ];
     }
 

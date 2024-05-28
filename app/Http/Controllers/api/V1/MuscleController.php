@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\api\V1;
 
 use App\Providers\AppServiceProvider as AppSP;
-use App\Http\Requests\muscleRequest;
+use App\Http\Requests\AddMuscleRequest;
 use App\Models\Category;
 use App\Models\Exercise;
 use App\Models\Muscle;
+use App\Models\Muscle_Level;
 use Illuminate\Http\Request;
 
 class MuscleController extends Controller
@@ -20,43 +21,24 @@ class MuscleController extends Controller
      */
     public function index(Request $request)
     {
-        $muscles_beginner = Muscle::with(['exercises' => function ($query) {
-            $query->where('level', request('muscle_area'));
+        $muscles = Muscle::with(['exercises' => function ($query) {
+            $query->where('level', request('level'));
+        }])->with(['muscleLevels'=>function($query){
+            $query->where('level',request('level'));
         }])->get();
-        // $muscles_intermediate = Muscle::with(['exercises' => function ($query) {
-        //     $query->where('level', 'intermediate');
-        // }])->get();
-        // $muscles_advanced = Muscle::with(['exercises' => function ($query) {
-        //     $query->where('level', 'advanced');
-        // }])->get();
-
-        foreach ($muscles_beginner as $muscle) {
+        foreach ($muscles as $muscle) {
             $muscle->exercise_count = $muscle->exercises->count();
             $muscle->total_calories = $muscle->exercises->sum('calories');
             $muscle->total_time = $muscle->exercises->sum('time');
-            $muscle->level = request('muscle_area');
+            $muscle->level=$muscle->muscleLevels->first()->level;
+            $muscle->men_image=$muscle->muscleLevels->first()->men_image;
+            $muscle->women_image=$muscle->muscleLevels->first()->women_image;
         }
-        // foreach ($muscles_intermediate as $muscle) {
-        //     $muscle->exercise_count = $muscle->exercises->count();
-        //     $muscle->total_calories = $muscle->exercises->sum('calories');
-        //     $muscle->total_time = $muscle->exercises->sum('time');
-        //     $muscle->level = 'intermediate';
-        // }
-        // foreach ($muscles_advanced as $muscle) {
-        //     $muscle->exercise_count = $muscle->exercises->count();
-        //     $muscle->total_calories = $muscle->exercises->sum('calories');
-        //     $muscle->total_time = $muscle->exercises->sum('time');
-        //     $muscle->level = 'advanced';
-        // }
-         $muscles_beginner->makeHidden('exercises');
-      //   $muscles_advanced->makeHidden('exercises');
-        // $muscles_intermediate->makeHidden('exercises');
+        $muscles->makeHidden('muscleLevels');
+        $muscles->makeHidden('exercises');
         return response()->json([
-            'muscle_stats' => [
-                $muscles_beginner,
-           //     $muscles_intermediate,
-             //   $muscles_advanced,
-            ]
+            'muscle_stats' =>
+            $muscles,
         ]);
     }
 
@@ -71,17 +53,23 @@ class MuscleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(muscleRequest $request)
+    public function store(AddMuscleRequest $request)
     {
         $data = $request->validated();
+        $muscle = Muscle::create($data);
         if ($request->hasFile('men_image')) {
             $data['men_image'] = ImageController::store($data['men_image'], "Muscle");
         }
         if ($request->hasFile('women_image')) {
             $data['women_image'] = ImageController::store($data['women_image'], "Muscle");
         }
-        $muscle = Muscle::create($data);
-        return AppSP::apiResponse("Muscle Area Added Successfully", $muscle, 'Area', true, 200);
+        $muscle->muscleLevel()->create([
+            'level' => $data['level'],
+            'men_image' => $data['men_image'],
+            'women_image' => $data['women_image'],
+
+        ]);
+        return AppSP::apiResponse("Muscle Area Added Successfully", $muscle, 'Area', true, 200, $muscle->muscleLevel()->get());
     }
 
     /**
@@ -89,7 +77,6 @@ class MuscleController extends Controller
      */
     public function show(Muscle $muscle)
     {
-
     }
 
     /**

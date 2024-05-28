@@ -27,7 +27,7 @@ class ArticlRequest extends FormRequest
         return [
             'Author_Name' => 'required|string|max:15',
             'title' => 'required|string|max:30',
-            'Image' => 'required|Image|mimes:png,jpg',
+            'Image' => 'required|Image|mimes:jpg',
             'Article' => 'required|string',
         ];
     }

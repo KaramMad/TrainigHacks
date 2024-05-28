@@ -6,7 +6,7 @@ use App\Providers\GlobalVariablesServiceProvider as GlobalVariables;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
+use Faker\Factory as Faker;
 class MuscleAreaSeeder extends Seeder
 {
     /**
@@ -14,14 +14,13 @@ class MuscleAreaSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker=Faker::create();
         $muscle_name = GlobalVariables::muscleArea();
-        $women_image = GlobalVariables::muscleArea_image_women();
-        $men_image = GlobalVariables::muscleArea_image_men();
+
         for ($i = 0; $i < 5; $i++) {
             DB::table('muscles')->insert([
                 'muscle_area' => $muscle_name[$i],
-                'men_image'=>$men_image[$i],
-                'women_image'=>$women_image[$i],
+                'description'=>$faker->sentence(2),
             ]);
         }
     }

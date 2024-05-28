@@ -6,7 +6,7 @@ use App\Http\Controllers\api\V1\AuthController;
 use App\Http\Controllers\api\V1\AdminController;
 use App\Http\Controllers\api\V1\CoachAuthController;
 use App\Http\Controllers\api\V1\UserController;
-use App\Http\Controllers\api\V1\ArticlsController;
+use App\Http\Controllers\api\V1\ArticleController;
 use App\Http\Controllers\api\V1\CategoryController;
 use App\Http\Controllers\api\V1\ChallengeController;
 use App\Http\Controllers\api\V1\ExerciseController;
@@ -52,8 +52,8 @@ Route::post('admin/login',[AdminController::class,'login']);
 Route::group(['prefix'=>'admin',"middleware"=>["auth:admin",'scope:admin']],function(){
     Route::get('coach/allCoach',[CoachAuthController::class,'index']);
     Route::post('coach/addNewCoach',[AdminController::class,'createCoaches']);
-    Route::post('articl/addNewArticls',[ArticlsController::class,'store']);
-    Route::delete('articl/deleteArticl/{id}',[ArticlsController::class,'destroy']);
+    Route::post('articl/addNewArticls',[ArticleController::class,'store']);
+    Route::delete('articl/deleteArticl/{id}',[ArticleController::class,'destroy']);
     Route::post('muscle/addNewMuscle',[MuscleController::class,'store']);
     Route::post('category/addNewCategory',[CategoryController::class,'store']);
     Route::delete('category/deleteCategory/{id}',[CategoryController::class,'destroy']);
@@ -86,7 +86,8 @@ Route::group(['prefix'=>'trainer',"middleware"=>["auth:user",'scope:user']],func
     Route::post('challenge/updateChallenge/{challenge}',[ChallengeController::class,'update']);
     Route::get('challenge/getAll',[ChallengeController::class,'index']);
     Route::post('exercise/gender',[ExerciseController::class,'filtering']);
-    Route::get('exercise/all',[ExerciseController::class,'filtering']);
+    Route::get('exercise/getall',[ExerciseController::class,'index']);
+    Route::get('exercise/getall/{id}',[ExerciseController::class,'show']);
     Route::get('AddMealToFavoritesList\{id}', [FavoriteController::class, 'AddMealToFavoritesList']);
     Route::get('GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
     Route::delete('deleteFromFavorite\{id}', [FavoriteController::class, 'deleteFromFavorite']);
@@ -95,8 +96,8 @@ Route::group(['prefix'=>'trainer',"middleware"=>["auth:user",'scope:user']],func
 
 
 //Public Routes
-Route::get('allArticls',[ArticlsController::class,'index']);
-Route::get('allArea',[MuscleController::class,'index']);
-Route::get('allChallenge',[MuscleController::class,'index']);
+Route::get('articl/allArticls',[ArticleController::class,'index']);
+Route::get('muscle/allArea',[MuscleController::class,'index']);
+Route::get('challenge/allChallenge',[MuscleController::class,'index']);
 Route::get('category/show',[CategoryController::class,'index']);
 Route::post('category',[CategoryController::class,'show']);

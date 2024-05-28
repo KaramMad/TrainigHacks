@@ -24,7 +24,7 @@ class AddChallengeRequest extends FormRequest
     {
         return [
             'challenge_name'=>'required|string',
-            'image'=>'required|image|mimes:png,jpg',
+            'image'=>'required|image|mimes:png',
             'gif'=>'required|image|mimes:gif',
             'type'=>'string|in:timer,counter',
 

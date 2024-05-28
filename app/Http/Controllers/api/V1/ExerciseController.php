@@ -5,14 +5,24 @@ use Illuminate\Support\Facades\Auth;
 use App\Providers\AppServiceProvider as AppSP;
 use App\Http\Requests\AddExerciseRequest;
 use App\Models\Exercise;
+use App\Models\Muscle;
 use Illuminate\Http\Request;
 
 class ExerciseController extends Controller
 {
 
     public function filtering(Request $request){
-        $exercise=Exercise::where('gender',request('gender'))->get();
-        return $exercise;
+        $exercise=Muscle::with(['exercises'=>function($query){
+            $query->where('gender','=',request('gender'));
+            $query->where('level','=',request('level'));
+        }])->where('id','=',$request->muscle_id)->get();
+        foreach ($exercise as $muscle) {
+            $muscle->exercise_count = $muscle->exercises->count();
+            $muscle->total_calories = $muscle->exercises->sum('calories');
+            $muscle->total_time = $muscle->exercises->sum('time');
+        }
+
+        return AppSP::apiResponse("success",$exercise,'exercise',true,200);
     }
 
     /**
@@ -20,7 +30,8 @@ class ExerciseController extends Controller
      */
     public function index()
     {
-
+        $exercise=Exercise::orderBy('level')->orderBy('gender')->get();
+        return $exercise;
     }
 
     /**
@@ -42,10 +53,10 @@ class ExerciseController extends Controller
             $data['image']=ImageController::store($data['image'],'Exercises');
         }
         $exercise=Exercise::create($data);
-        $exercise->focusAreas()->attach($request->focus_area);
         $exercise->categories()->attach($request->category);
         $exercise->muscles()->attach($request->muscle);
-        $exercise=Exercise::with('focus_areas')->with('categories')->with('muscles')->get();
+        $exercise->focusAreas()->attach($request->focus_area);
+        $exercise=Exercise::with('focusAreas')->with('categories')->with('muscles')->get();
         return response()->json([
             'exercise'=>$exercise,
             'message' =>"Exercises added successfully",

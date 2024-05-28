@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Providers\AppServiceProvider as AppSP;
 use Illuminate\Http\Request;
 
+
 class CategoryController extends Controller
 {
     /**
@@ -14,11 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $muscle = Category::get();
-        if (!$muscle) {
-            return AppSP::apiResponse("not category found", null, 'data', false, 404);
-        }
-        return $muscle;
+        $category = Category::get();
+
+        return AppSP::apiResponse("Category", $category, 'data', true, 200);
     }
 
     /**
@@ -59,8 +58,20 @@ class CategoryController extends Controller
         $category = Category::with(['exercises' => function ($query) {
             $query->where('gender', request('gender'));
         }])->where('id', '=', request('category_id'))->get();
-        $category->makeHidden(['image','main_image','description']);
-        return $category;
+        foreach ($category as $cat) {
+            $cat->exercise_count = $cat->exercises->count();
+            $cat->total_calories = $cat->exercises->sum('calories');
+            $cat->total_time = $cat->exercises->sum('time');
+        }
+        if (request('gender') === 'female') {
+            $category->makeHidden(['image', 'men_image', 'description']);
+        }
+        else
+        {
+            $category->makeHidden(['image', 'women_image', 'description']);
+
+        }
+        return response()->json($category, 200);
     }
 
     /**

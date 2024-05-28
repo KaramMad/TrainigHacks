@@ -14,6 +14,8 @@ class Muscle extends Model
     {
         return $this->belongsToMany(Exercise::class,'muscle_exercise')->withPivot('exercise_count','total_time','total_calories');
     }
+    public function muscleLevels(){
+        return $this->hasMany(MuscleLevel::class);
+    }
 
-   
 }

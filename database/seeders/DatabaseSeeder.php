@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call([DaysOfTheWeek::class]);
         $this->call([MuscleAreaSeeder::class]);
         $this->call([MuscleCategorySeeder::class]);
+        $this->call([MuscleLevelSeeder::class]);
         $this->call(ExerciseSeeder::class);
         \App\Models\Admin::factory()->create([
             'name'=>'karam',

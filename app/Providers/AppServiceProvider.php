@@ -39,8 +39,8 @@ class AppServiceProvider extends ServiceProvider
          return response()->json([
              'status' => $status,
              'message' => $message,
-             $dataKey => $data,
-             'user'=>$user
+            $dataKey => $data,
+             'data'=>$user
 
          ], $error);
      }
