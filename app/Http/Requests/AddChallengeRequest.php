@@ -27,6 +27,7 @@ class AddChallengeRequest extends FormRequest
             'image'=>'required|image|mimes:png',
             'gif'=>'required|image|mimes:gif',
             'type'=>'string|in:timer,counter',
+            'secondry_image'=>'required|mimes:jpg,png'
 
         ];
     }

@@ -19,8 +19,6 @@ class DatabaseSeeder extends Seeder
     {
 
 
-        // $this->call([CoachMealSeeder::class]);
-        // $this->call([MealSeeder::class]);
         $this->call([ChallengeSeeder::class]);
         $this->call([ArticleSeeder::class]);
         $this->call([FocusAreaSeeder::class]);
@@ -29,6 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call([MuscleCategorySeeder::class]);
         $this->call([MuscleLevelSeeder::class]);
         $this->call(ExerciseSeeder::class);
+        // $this->call([CoachMealSeeder::class]);
+        // $this->call([MealSeeder::class]);
         \App\Models\Admin::factory()->create([
             'name'=>'karam',
             'phone_number'=>'0943365119',

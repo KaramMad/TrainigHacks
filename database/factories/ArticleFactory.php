@@ -23,7 +23,7 @@ class ArticleFactory extends Factory
             'Author_name' => $this->faker->word(),
             'Article' => $this->faker->paragraph(2),
             'title' => $this->faker->sentence(2),
-            'image' => null,
+            'image' => 'Articls/images.jpg',
             'created_at' => '11 june 2003',
 
         ];

@@ -22,9 +22,9 @@ class ChallengeFactory extends Factory
             'challenge_name'=>$this->faker->word(),
             'timer'=>'0:0:23',
             'type'=>'timer',
-            'image'=>null,
-            'gif'=>null,
-
+            'image'=>'Challenge/images.png',
+            'gif'=>'Challenge/jumping jacks.gif',
+            'secondry_image'=>'Challenge/images.png',
         ];
     }
 }

@@ -15,6 +15,7 @@ class ExerciseController extends Controller
         $exercise=Muscle::with(['exercises'=>function($query){
             $query->where('gender','=',request('gender'));
             $query->where('level','=',request('level'));
+            $query->with('focusAreas');
         }])->where('id','=',$request->muscle_id)->get();
         foreach ($exercise as $muscle) {
             $muscle->exercise_count = $muscle->exercises->count();
@@ -30,7 +31,7 @@ class ExerciseController extends Controller
      */
     public function index()
     {
-        $exercise=Exercise::orderBy('level')->orderBy('gender')->get();
+        $exercise=Exercise::with('focusAreas')->orderBy('level')->orderBy('gender')->get();
         return $exercise;
     }
 

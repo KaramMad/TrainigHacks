@@ -57,6 +57,7 @@ class CategoryController extends Controller
     {
         $category = Category::with(['exercises' => function ($query) {
             $query->where('gender', request('gender'));
+            $query->with('focusAreas');
         }])->where('id', '=', request('category_id'))->get();
         foreach ($category as $cat) {
             $cat->exercise_count = $cat->exercises->count();

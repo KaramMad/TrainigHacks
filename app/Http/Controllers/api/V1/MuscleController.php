@@ -37,8 +37,7 @@ class MuscleController extends Controller
         $muscles->makeHidden('muscleLevels');
         $muscles->makeHidden('exercises');
         return response()->json([
-            'muscle_stats' =>
-            $muscles,
+            'muscle_stats' =>$muscles,
         ]);
     }
 

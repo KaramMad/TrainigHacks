@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('counter')->nullable();
             $table->enum('type',['timer','counter']);
             $table->string('image')->nullable();
+            $table->string('secondry_image')->nullable();
             $table->string('gif')->nullable();
 
         });

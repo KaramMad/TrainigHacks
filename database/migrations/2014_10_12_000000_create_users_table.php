@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('tall')->nullable();
             $table->integer('weight')->nullable();
             $table->string('bio')->default('null');
-            $table->enum('focus_area',['all','arm','leg','chest','abs'])->default('all');
             $table->enum('gender',['male','female'])->nullable();
             $table->enum('target',['lose weight','build muscle','keep fit'])->nullable();
             $table->enum('diseases',['heart','knee','breath','none'])->nullable()->default('none');

@@ -39,6 +39,10 @@ class ChallengeController extends Controller
         if ($request->hasFile('gif')) {
             $data['gif'] = ImageController::store($data['gif'], "Challenge");
         }
+        if($request->hasFile('secondry_image')){
+            $data['secondry_image'] = ImageController::store($data['secondry_image'], "Challenge");
+
+        }
         $challenge=Challenge::create($data);
         return response()->json([
             'message' => 'added successfully',

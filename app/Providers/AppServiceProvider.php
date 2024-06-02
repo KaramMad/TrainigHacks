@@ -33,15 +33,20 @@ class AppServiceProvider extends ServiceProvider
      * @return jsonResponse
      */
 
-     public static function apiResponse(string $message = "success", $data = null, string $dataKey = 'data', bool $status = true
-     , int $error = 200,$user=null): JsonResponse
-     {
-         return response()->json([
-             'status' => $status,
-             'message' => $message,
+    public static function apiResponse(
+        string $message = "success",
+        $data = null,
+        string $dataKey = 'data',
+        bool $status = true,
+        int $error = 200,
+        $user = null
+    ): JsonResponse {
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
             $dataKey => $data,
-             'data'=>$user
+            'user' => $user
 
-         ], $error);
-     }
+        ], $error);
+    }
 }

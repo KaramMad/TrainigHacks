@@ -18,20 +18,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'Beginner',
         'Intermediate',
         'Advanced',
-        // 'ARM_Beginner',
-        // 'ARM_Intermediate',
-        // 'ARM_Advanced',
-        // 'LEG_Beginner',
-        // 'LEG_Intermediate',
-        // 'LEG_Advanced',
-        // 'ABS_Beginner',
-        // 'ABS_Intermediate',
-        // 'ABS_Advanced',
-        // 'SHOULDER&Back_Beginner',
-        // 'SHOULDER&Back_Intermediate',
-        // 'SHOULDER&Back_Advanced',
     ];
-    protected const muscleArea_image_men=[
+    protected const muscleArea_image_men = [
         'Muscle/man_chest2.jpg',
         'Muscle/man_chest2.jpg',
         'Muscle/man_chest2.jpg',
@@ -48,7 +36,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'Muscle/man_back1.jpg',
         'Muscle/man_back1.jpg',
     ];
-    protected const muscleArea_image_women=[
+    protected const muscleArea_image_women = [
         'Muscle/woman_chest4.jpg',
         'Muscle/woman_chest4.jpg',
         'Muscle/woman_chest4.jpg',
@@ -65,14 +53,14 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'Muscle/woman_back1.jpg',
         'Muscle/woman_back1.jpg',
     ];
-    protected const category_image=[
+    protected const category_image = [
         'MuscleCategory/warmup.png',
         'MuscleCategory/strength.png',
         'MuscleCategory/carb.png',
         'MuscleCategory/yoga.png',
         'MuscleCategory/strength.png',
     ];
-    protected const main_category_image_men=[
+    protected const main_category_image_men = [
         'MuscleCategory/warmUpMen.jpg',
         'MuscleCategory/strengthmen.jpg',
         'MuscleCategory/yogaMen.jpg',
@@ -80,7 +68,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'MuscleCategory/warmUpMen.jpg',
 
     ];
-    protected const main_category_image_women=[
+    protected const main_category_image_women = [
         'MuscleCategory/warmUpWomen.jpg',
         'MuscleCategory/strengthwomen.jpg',
         'MuscleCategory/yogaWomen.jpg',
@@ -94,7 +82,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'cardio',
         'yoga',
         'fast_workout'
-
     ];
 
     protected const focusArea = [
