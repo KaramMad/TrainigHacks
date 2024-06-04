@@ -34,4 +34,7 @@ class Exercise extends Model
     {
         return $this->belongsToMany(FocusArea::class, 'exercise_focus_area');
     }
+    public function exerciseTypes(){
+        return $this->belongsTo(ExerciseType::class);
+    }
 }

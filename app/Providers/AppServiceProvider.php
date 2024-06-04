@@ -34,8 +34,7 @@ class AppServiceProvider extends ServiceProvider
      */
 
     public static function apiResponse(
-        string $message = "success",
-        $data = null,
+        string $message = "success",$data = null,
         string $dataKey = 'data',
         bool $status = true,
         int $error = 200,
@@ -46,7 +45,6 @@ class AppServiceProvider extends ServiceProvider
             'message' => $message,
             $dataKey => $data,
             'user' => $user
-
         ], $error);
     }
 }

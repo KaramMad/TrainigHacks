@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class GlobalVariablesServiceProvider extends ServiceProvider
 {
 
+
     protected const muscleArea = [
         'CHEST',
         'ARM',
@@ -96,6 +97,33 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'calves',
         'back',
     ];
+    protected const FastWorkout = [
+        'On The Bed',
+        'ProLong Sleep',
+        'Sun Salute',
+    ];
+    protected const FastWorkout_Description = [
+        'Can Help Build Strength,Endurance,And balance In Different Parts Of Body',
+        'Some Easy and Effective Exercises To Promote Better Sleep',
+        'It Is A Yoga Exercise That Involves A Sequence Of Poses OutDoors',
+    ];
+    protected const FastWorkout_Images = [
+        'ExerciseType/bed.jpg',
+        'ExerciseType/sleep.jpg',
+        'ExerciseType/sun.jpg',
+    ];
+    public static function FastWorkout():array
+    {
+        return self::FastWorkout;
+    }
+    public static function FastWorkout_Description():array
+    {
+        return self::FastWorkout_Description;
+    }
+    public static function FastWorkout_Images():array
+    {
+        return self::FastWorkout_Images;
+    }
     public static function muscleArea(): array
     {
         return self::muscleArea;

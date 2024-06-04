@@ -21,6 +21,7 @@ class ExerciseFactory extends Factory
     public function definition(): array
     {
         return [
+            'exercise_type_id'=>$this->faker->randomElement(['1','2','3',null]),
             'exercise_name' => $this->faker->word,
             'description' => $this->faker->paragraph(2),
             'calories' =>$this->faker->numberBetween(1,130),
@@ -32,6 +33,7 @@ class ExerciseFactory extends Factory
             'level'=>$this->faker->randomElement(['beginner','intermediate','advanced']),
             'gender'=>$this->faker->randomElement(['male','female']),
             'choose'=>null,
+            'private'=>$this->faker->randomElement([0,1]),
             'diseases'=>$this->faker->randomElement(['heart','none','knee','breath']),
         ];
     }

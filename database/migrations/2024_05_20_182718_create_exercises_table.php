@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('exercises', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('exercise_type_id')->nullable()->constrained()->onDelete('set null')->default('null');
             $table->string('exercise_name');
             $table->string('description');
             $table->unsignedBigInteger('calories');
@@ -25,7 +26,7 @@ return new class extends Migration
             $table->enum('level',['beginner','intermediate','advanced']);
             $table->enum('gender',['male','female']);
             $table->enum('choose',['equipment','no_eqiupment'])->nullable();
-
+            $table->boolean('private')->default(0);
 
         });
     }

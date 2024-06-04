@@ -22,7 +22,8 @@ class DaysOfTheWeek extends Seeder
             ['day' => 'Friday'],
             ['day' => 'Saturday'],
         ];
-
-        DB::table('training_days')->insert($days);
+        for ($i = 0; $i < 4; $i++) {
+            DB::table('training_days')->insert($days);
+        }
     }
 }

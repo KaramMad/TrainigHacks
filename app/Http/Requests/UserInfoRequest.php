@@ -33,6 +33,7 @@ class UserInfoRequest extends FormRequest
             'focus_area' => 'required|sometimes|in:arm,leg,all,abs,chest|string',
             'training_days' => 'required|sometimes|array',
             'diseases' => 'required|sometimes|in:heart,none,knee,breath',
+            'activity' => 'required|sometimes|in:Ite,none,Lightly_Active,Very_Active',
             'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
             'bio'=>'nullable|string|max:49',
         ];

@@ -4,28 +4,29 @@ namespace App\Http\Controllers\api\V1;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\AppServiceProvider as AppSP;
 use App\Http\Requests\AddExerciseRequest;
+use App\Http\Requests\ExercisesTypeRequest;
 use App\Models\Exercise;
+use App\Models\ExerciseType;
 use App\Models\Muscle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class ExerciseController extends Controller
 {
-
     public function filtering(Request $request){
         $exercise=Muscle::with(['exercises'=>function($query){
             $query->where('gender','=',request('gender'));
             $query->where('level','=',request('level'));
             $query->with('focusAreas');
+            $query->where('private','0');
         }])->where('id','=',$request->muscle_id)->get();
         foreach ($exercise as $muscle) {
             $muscle->exercise_count = $muscle->exercises->count();
             $muscle->total_calories = $muscle->exercises->sum('calories');
             $muscle->total_time = $muscle->exercises->sum('time');
         }
-
         return AppSP::apiResponse("success",$exercise,'exercise',true,200);
     }
-
     /**
      * Display a listing of the resource.
      */
@@ -64,6 +65,20 @@ class ExerciseController extends Controller
         ]);
     }
 
+
+    public function createExerciseType(ExercisesTypeRequest $request){
+        $data=$request->validated();
+        $exercise=Exercise::find(Auth::id());
+        if($request->hasFile('gif')){
+            $data['image']=ImageController::store($data['image'],'Exercises');
+        }
+        $exercise=Exercise::create($data);
+        $exercise->categories()->attach($request->category);
+        $exercise->muscles()->attach($request->muscle);
+        $exercise->focusAreas()->attach($request->focus_area);
+        $exercise=Exercise::with('focusAreas')->with('categories')->with('muscles')->get();
+        return $this->success($exercise,'exercise added successfully to ExerciseType');
+    }
     /**
      * Display the specified resource.
      */

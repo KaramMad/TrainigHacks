@@ -18,9 +18,8 @@ class ExerciseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Exercise::factory()->count(15)->create();
+        \App\Models\Exercise::factory()->count(20)->create();
         foreach(Exercise::all() as $exercise){
-       //     $faker=Faker::create();
             $focusArea=FocusArea::inRandomOrder()->take(rand(1,5))->pluck('id');
             $category=Category::inRandomOrder()->take(rand(1,5))->pluck('id');
             $muscle=Muscle::inRandomOrder()->take(rand(1,5))->pluck('id');
