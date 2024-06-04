@@ -14,9 +14,7 @@ class ExerciseTypeController extends Controller
      */
     public function index()
     {
-        $exerciseType=ExerciseType::with(['exercises'=>function($query){
-            $query->with('focusAreas');
-        }])->get();
+        $exerciseType=ExerciseType::get();
         return $this->success($exerciseType);
     }
 

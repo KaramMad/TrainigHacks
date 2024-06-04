@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('bio')->default('null');
             $table->enum('gender',['male','female'])->nullable();
             $table->enum('target',['lose weight','build muscle','keep fit'])->nullable();
-            $table->enum('diseases',['heart','knee','breath','none'])->nullable()->default('none');
+            $table->enum('diseases',['heart','knee','breath','none','diabetes','blood_pressure'])->nullable()->default('none');
             $table->enum('activity',['Sedentary','Lightly_Active','Very_Active']);
             $table->time('preferred_time')->nullable();
             $table->string('image')->nullable();
