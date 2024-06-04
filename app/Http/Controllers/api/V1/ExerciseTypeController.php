@@ -48,7 +48,14 @@ class ExerciseTypeController extends Controller
     {
         $exerciseType=ExerciseType::with(['exercises'=>function($query){
             $query->with('focusAreas');
+            $query->where('gender','male');
         }])->where('id',$id)->get();
+
+        foreach ($exerciseType as $exercise) {
+            $exercise->exercise_count = $exercise->exercises->count();
+            $exercise->total_calories = $exercise->exercises->sum('calories');
+            $exercise->total_time = $exercise->exercises->sum('time');
+        }
         return $this->success($exerciseType);
     }
 

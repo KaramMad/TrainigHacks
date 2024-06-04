@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('challenges', function (Blueprint $table) {
             $table->id();
             $table->string('challenge_name');
-            $table->time('timer')->nullable();
+            $table->string('timer')->nullable();
             $table->unsignedBigInteger('counter')->nullable();
             $table->enum('type',['timer','counter']);
             $table->string('image')->nullable();

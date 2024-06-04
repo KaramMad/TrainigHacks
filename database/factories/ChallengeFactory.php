@@ -20,7 +20,7 @@ class ChallengeFactory extends Factory
     {
         return [
             'challenge_name'=>$this->faker->word(),
-            'timer'=>'0:0:23',
+            'timer'=>'30',
             'type'=>'timer',
             'image'=>'Challenge/images.png',
             'gif'=>'Challenge/jumping jacks.gif',
