@@ -10,6 +10,7 @@ class Meal extends Model
     use HasFactory;
 
     //protected $fillable = ['name', 'calories', 'protein', 'image', 'description', 'day_id', 'coach_id'];
+
     protected $guarded = ['id'];
     public function day()
     {
@@ -35,5 +36,13 @@ class Meal extends Model
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function ingredient()
+    {
+        return $this->belongsToMany(Ingredient::class,'meal_ingredient');
     }
 }

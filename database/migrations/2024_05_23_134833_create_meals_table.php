@@ -12,11 +12,14 @@ return new class extends Migration
             $table->increments('id');
             $table->string("name")->default('null');
             $table->enum('type', ['breakfast', 'lunch', 'dinner', 'snack',])->index();
-            $table->enum('target', ['build muscle', 'lose weight'])->nullable();
+            $table->enum('target', ['build muscle', 'lose weight','keep fit'])->nullable();
             $table->enum('diet', ['vegetarian', 'sugar free', 'none'])->nullable()->default('none');
             $table->string('calories');
             $table->string('protein');
+            $table->string('sugar');
+            $table->string('salt');
             $table->string('image')->nullable();
+            $table->string('preparation method')->nullable();
             $table->text('description');
             $table->text('warning')->nullable();
             $table->integer('day_id')->unsigned()->nullable();
