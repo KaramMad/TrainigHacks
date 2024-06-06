@@ -26,23 +26,26 @@ class DatabaseSeeder extends Seeder
         $this->call([DaysOfTheWeek::class]);
         $this->call([MuscleAreaSeeder::class]);
         $this->call([MuscleCategorySeeder::class]);
+        //$this->call([AdminMealSeeder::class ]);
+
         $this->call([MuscleLevelSeeder::class]);
         $this->call(ExerciseSeeder::class);
         \App\Models\Admin::factory()->create([
-            'name'=>'karam',
-            'phone_number'=>'0943365119',
-            'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
+            'name' => 'karam',
+            'phone_number' => '0943365119',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
         \App\Models\Coach::create([
-            'name'=>'karam',
-            'phone_number'=>'0943365119',
-            'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
+            'name' => 'karam',
+            'phone_number' => '0943365119',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
         \App\Models\User::create([
-            'name'=>'karam',
-            'email'=>'karamalmadne@gmail.com',
-            'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
+            'name' => 'karam',
+            'email' => 'karamalmadne@gmail.com',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
-
+        $this->call(MealSeeder::class);
+        $this->call(IngredientSeeder::class);
     }
 }

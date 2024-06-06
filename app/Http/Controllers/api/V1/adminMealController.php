@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\V1;
 use App\Models\User;
 use App\Models\Coach;
 use App\Models\Meal;
+use App\Models\Ingredient;
 use App\Models\TrainingDay;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,36 +28,65 @@ class AdminMealController extends Controller
      */
     public function store(AdminMealRequest $request)
     {
-        $validatedData= $request->validated();
-        $imagePath = null;
+        $validatedData = $request->validated();
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imagePath = $image->move('meal_images', $imageName, 'storage/app/image');
-            $meal['image'] = $imagePath;
+            $validatedData['image'] = ImageController::store($validatedData['image'], 'Meals');
         }
+
+        $diseases = ['heart', 'knee', 'breath', 'blood pressure', 'diabetes'];
+        $userDiseases = auth()->user()->diseases ?? [];
+        $warnings = [];
+        foreach ($diseases as $disease) {
+            if (in_array($disease, $userDiseases)) {
+                if ($validatedData['calories'] > 700) {
+                    $warnings[] = 'High in calories, not suitable for heart conditions';
+                }
+
+                if ($validatedData['sugar'] > 20) {
+                    $warnings[] = 'High in sugar, not suitable for diabetes';
+                }
+
+                if ($validatedData['salt'] > 2) {
+                    $warnings[] = 'High in salt, not suitable for high blood pressure';
+                }
+                break;
+            }
+        }
+
+        // $userTarget = auth()->user()->target;
+        // if ($userTarget !== $validatedData['target']) {
+        //     $warnings[] = 'Meal does not align with user target';
+        // }
+
+        $validatedData['warning'] = implode(' ', $warnings);
         $meal = Meal::create($validatedData);
+        $meal->ingredients()->sync($request->ingredients);
+        $ingredientMeal = $meal->ingredients()->get();
         return response()->json([
+            'meal' => [
+                $meal,
+                "ingredientMeal" => $ingredientMeal,
+            ],
             'message' => 'Meal created successfully',
-            'meal' => $meal], 201);
+        ], 201);
     }
 
     public function latestMeals()
     {
-        $latestMeals = Meal::orderBy('created_at', 'desc')->take(5)->get();
+        $latestMeals = Meal::orderBy('created_at', 'desc')->take(5)->whereNull('coach_id')->get();
         return response()->json($latestMeals);
     }
     public function show(Request $request)
     {
-
-        $meal = Meal::where('diet', $request->diet)->where('diet', '=', $request->diet)->get();
+        $meal = Meal::where('diet', $request->diet)->where('diet', '=', $request->diet)
+            ->whereNull('coach_id')->get();
         return response()->json([
             'meal' => $meal
         ]);
     }
     public function getMealsWithNoneDiet()
     {
-        $meals = Meal::where('diet', 'none')->get();
+        $meals = Meal::where('diet', 'none')->whereNull('coach_id')->get();
         return response()->json($meals);
     }
 

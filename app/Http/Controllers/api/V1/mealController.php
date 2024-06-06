@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\V1;
 use App\Models\User;
 use App\Models\Coach;
 use App\Models\Meal;
+use App\Models\Ingredient;
 use App\Models\TrainingDay;
 use App\Http\Requests\MealRequest;
 use Illuminate\Support\Facades\Auth;
@@ -28,19 +29,25 @@ class MealController extends Controller // for coach
         ]);
     }
 
-    public function store(MealRequest $request)//coach
+    public function store(MealRequest $request) //coach
     {
-        $meal = $request->validated();
+        $data = $request->validated();
         $coachId = Auth::id();
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imagePath = $image->move('meal_images', $imageName, 'storage/app/image');
-            $meal['image'] = $imagePath;
+            $data['image'] = ImageController::store($data['image'], 'Meals');
         }
-        $meal['coach_id'] = $coachId;
-        $status = Meal::updateOrCreate($meal);
+        $data['coach_id'] = $coachId;
+        $status = Meal::Create($data);
+        $status->ingredients()->sync($request->ingredients);
+        $ingredientMeal = $status->ingredients()->get();
+        return response()->json([
+            'meal' => [
+                $status,
+                "ingredientMeal" => $ingredientMeal,
+            ],
+            'message' => 'Meal created successfully',
+        ], 201);
         return response()->json('Meals added successfully');
     }
 
@@ -48,7 +55,8 @@ class MealController extends Controller // for coach
     */
     public function show(Request $request)
     {
-        $mealDay = Meal::where('day_id', $request->id)->where('target', '=', $request->target)->get();
+        $mealDay = Meal::where('day_id', $request->id)
+            ->where('target', '=', $request->target)->get();
         return response()->json([
             'meal' => $mealDay
         ]);
@@ -79,7 +87,5 @@ class MealController extends Controller // for coach
         $meal->delete();
 
         return response()->json(['Message' => 'Deleted Successfully'], 200);
-
-
     }
 }

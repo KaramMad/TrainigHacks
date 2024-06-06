@@ -13,34 +13,7 @@ class MealSeeder extends Seeder
      */
     public function run(): void
     {
-        $meals = [
-            [
-                'name' => 'Chicken Salad',
-                'meal_type_id' => 1,
-                'target' => 'lose weight',
-                'diet' => 'none',
-                'calories' => '250',
-                'protein' => '20g',
-                'image' => 'meal_images/chicken_salad.jpg',
-                'warning' => null,
-                'description' => 'A healthy chicken salad perfect for lunch.'
-            ],
-            [
-                'name' => 'Vegetarian Pasta',
-                'meal_type_id' => 2,
-                'target' => 'build muscle',
-                'diet' => 'vegetarian',
-                'calories' => '300',
-                'protein' => '15g',
-                'image' => 'meal_images/vegetarian_pasta.jpg',
-                'warning' => null,
-                'description' => 'Delicious vegetarian pasta rich in protein.'
-            ],
-            
-        ];
 
-        foreach ($meals as $meal) {
-            Meal::create($meal);
-        }
+        Meal::factory(Meal::class)->count(6)->create();
     }
 }

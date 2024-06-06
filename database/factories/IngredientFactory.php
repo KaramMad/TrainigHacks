@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Ingredient>
  */
-class AdminFactory extends Factory
+class IngredientFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,8 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
-            
-
+            'name' => $this->faker->word,
+            'image'=>'Ingredients/1717331895.jpg',
         ];
     }
 }
