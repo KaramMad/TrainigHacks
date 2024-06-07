@@ -62,13 +62,13 @@ class MuscleController extends Controller
         if ($request->hasFile('women_image')) {
             $data['women_image'] = ImageController::store($data['women_image'], "Muscle");
         }
-        $muscle->muscleLevel()->create([
+        $muscle->muscleLevels()->create([
             'level' => $data['level'],
             'men_image' => $data['men_image'],
             'women_image' => $data['women_image'],
 
         ]);
-        return AppSP::apiResponse("Muscle Area Added Successfully", $muscle, 'Area', true, 200, $muscle->muscleLevel()->get());
+        return AppSP::apiResponse("Muscle Area Added Successfully", $muscle, 'Area', true, 200, $muscle->muscleLevels()->get());
     }
 
     /**

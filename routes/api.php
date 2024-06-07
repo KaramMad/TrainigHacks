@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\V1\AuthController;
 use App\Http\Controllers\api\V1\AdminController;
 use App\Http\Controllers\api\V1\CoachAuthController;
-use App\Http\Controllers\api\V1\IngredientController;
 use App\Http\Controllers\api\V1\UserController;
 use App\Http\Controllers\api\V1\ArticleController;
 use App\Http\Controllers\api\V1\CategoryController;
@@ -17,7 +16,9 @@ use App\Models\Exercise;
 use App\Http\Controllers\api\V1\CoachController;
 use App\Http\Controllers\api\V1\MealController;
 use App\Http\Controllers\api\V1\AdminMealController;
+use App\Http\Controllers\api\V1\ExerciseTypeController;
 use App\Http\Controllers\api\V1\FavoriteController;
+use App\Models\ExerciseType;
 use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,13 +44,10 @@ Route::group([
     Route::get('/{id}', [CoachAuthController::class, 'show']);
     Route::post('createInfo', [CoachAuthController::class, 'store']);
     Route::post('updateCoachInfo', [CoachAuthController::class, 'update']);
-    Route::post('meal/store', [MealController::class, 'store']);
-
-    //Route::delete('meal/destroy/{id}', [MealController::class, 'destroy']);
-    Route::post('ingredient/store', [IngredientController::class, 'store']);
-    Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
-    Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
-    //Route::get('index', [MealController::class, 'index']);
+    Route::post('store', [MealController::class, 'store']);
+    Route::post('show', [MealController::class, 'show']);
+    Route::delete('destroy/{id}', [MealController::class, 'destroy']);
+    Route::get('index', [MealController::class, 'index']);
 });
 
 //Admin Auth & Routes
@@ -60,16 +58,52 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::post('articl/addNewArticls', [ArticleController::class, 'store']);
     Route::delete('articl/deleteArticl/{id}', [ArticleController::class, 'destroy']);
     Route::post('muscle/addNewMuscle', [MuscleController::class, 'store']);
+    Route::delete('muscle/deleteMuscle/{id}', [MuscleController::class, 'destroy']);
     Route::post('category/addNewCategory', [CategoryController::class, 'store']);
     Route::delete('category/deleteCategory/{id}', [CategoryController::class, 'destroy']);
-    Route::delete('muscle/deleteMuscle/{id}', [MuscleController::class, 'destroy']);
     Route::post('exercise/addNewExercises', [ExerciseController::class, 'store']);
-    Route::post('exercise/addNewExercises', [ExerciseController::class, 'store']);
+    Route::post('exercise/addNewExercisesType', [ExerciseController::class, 'createExerciseType']);
+    Route::post('exerciseType/addExerciseType', [ExerciseTypeController::class, 'store']);
+    Route::delete('exerciseType/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
-    Route::post('meal/store', [AdminMealController::class, 'store']);
-    Route::post('ingredient/store', [IngredientController::class, 'store']);
-    Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
-    Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
-    Route::delete('meal/destroy\{id}', [AdminMealController::class, 'destroy']);
+    Route::post('store', [AdminMealController::class, 'store']);
+    Route::get('latestMeals', [AdminMealController::class, 'latestMeals']);
+    Route::post('show', [AdminMealController::class, 'show']);
+    Route::get('getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
+    Route::delete('destroy\{id}', [AdminMealController::class, 'destroy']);
 });
+
+//Trainer Auth & Routes
+Route::post('trainer/register', [AuthController::class, 'trainerRegister']);
+Route::post('/verfiy', [AuthController::class, 'verficationRegister']);
+Route::post('trainer/login', [AuthController::class, 'trainerLogin']);
+Route::post('trainer/forgotPasswor', [AuthController::class, 'forgotPassword']);
+Route::post('trainer/forgotPassword/verfiy', [AuthController::class, 'verfiyForgotPassword']);
+Route::post('trainer/password/reset', [AuthController::class, 'passwordReset']);
+Route::post('trainer/password/resend', [AuthController::class, 'resendCode']);
+
+
+Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']], function () {
+    Route::get('/logout', [AuthController::class, 'trainerLogout']);
+    Route::post('/info', [UserController::class, 'trainerInfo']);
+    Route::post('/password', [UserController::class, 'changePassword']);
+    Route::post('challenge/updateChallenge/{challenge}', [ChallengeController::class, 'update']);
+    Route::get('challenge/getAll', [ChallengeController::class, 'index']);
+    Route::post('exercise/gender', [ExerciseController::class, 'filtering']);
+    Route::get('exercise/getall', [ExerciseController::class, 'index']);
+    Route::get('exercise/getall/{id}', [ExerciseController::class, 'show']);
+    Route::get('AddMealToFavoritesList\{id}', [FavoriteController::class, 'AddMealToFavoritesList']);
+    Route::get('GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
+    Route::delete('deleteFromFavorite\{id}', [FavoriteController::class, 'deleteFromFavorite']);
+    Route::get('exerciseType/getType', [ExerciseTypeController::class, 'index']);
+    Route::get('exerciseType/getType/{id}', [ExerciseTypeController::class, 'show']);
+});
+
+
+//Public Routes
+Route::get('articl/allArticls', [ArticleController::class, 'index']);
+Route::get('muscle/allArea', [MuscleController::class, 'index']);
+Route::get('challenge/allChallenge', [MuscleController::class, 'index']);
+Route::get('category/show', [CategoryController::class, 'index']);
+Route::post('category', [CategoryController::class, 'show']);
