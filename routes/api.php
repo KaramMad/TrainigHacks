@@ -11,6 +11,7 @@ use App\Http\Controllers\api\V1\CategoryController;
 use App\Http\Controllers\api\V1\ChallengeController;
 use App\Http\Controllers\api\V1\ExerciseController;
 use App\Http\Controllers\api\V1\MuscleController;
+use App\Http\Controllers\api\V1\IngredientController;
 use App\Models\Category;
 use App\Models\Exercise;
 use App\Http\Controllers\api\V1\CoachController;
@@ -48,6 +49,10 @@ Route::group([
     Route::post('show', [MealController::class, 'show']);
     Route::delete('destroy/{id}', [MealController::class, 'destroy']);
     Route::get('index', [MealController::class, 'index']);
+    Route::post('meal/store', [MealController::class, 'store']);
+    Route::post('ingredient/store', [IngredientController::class, 'store']);
+    Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
+    Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
 });
 
 //Admin Auth & Routes
@@ -67,11 +72,11 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::delete('exerciseType/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
-    Route::post('store', [AdminMealController::class, 'store']);
-    Route::get('latestMeals', [AdminMealController::class, 'latestMeals']);
-    Route::post('show', [AdminMealController::class, 'show']);
-    Route::get('getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
-    Route::delete('destroy\{id}', [AdminMealController::class, 'destroy']);
+    Route::post('meal/store', [AdminMealController::class, 'store']);
+    Route::post('ingredient/store', [IngredientController::class, 'store']);
+    Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
+    Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
+    Route::delete('meal/destroy\{id}', [AdminMealController::class, 'destroy']);
 });
 
 //Trainer Auth & Routes
@@ -98,6 +103,11 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::delete('deleteFromFavorite\{id}', [FavoriteController::class, 'deleteFromFavorite']);
     Route::get('exerciseType/getType', [ExerciseTypeController::class, 'index']);
     Route::get('exerciseType/getType/{id}', [ExerciseTypeController::class, 'show']);
+    Route::get('meal/latestMeals', [AdminMealController::class, 'latestMeals']);
+    Route::post('meal/show', [AdminMealController::class, 'show']);
+    Route::get('ingredient/index\{id}', [IngredientController::class, 'index']);
+    Route::get('meal/getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
+    Route::post('meal/show', [MealController::class, 'show']);//coach
 });
 
 
