@@ -9,7 +9,7 @@ class Meal extends Model
 {
     use HasFactory;
 
-    //protected $fillable = ['name', 'calories', 'protein', 'image', 'description', 'day_id', 'coach_id'];
+
 
     protected $guarded = ['id'];
     public function day()
@@ -24,25 +24,30 @@ class Meal extends Model
     {
         return $this->belongsTo(MealType::class);
     }
-    public function setMealTypeIdAttribute($value)
+    public function favoritedby()
     {
-        $this->attributes['meal_type_id'] = $value;
-
-        $mealType = MealType::find($value);
-        if ($mealType) {
-            $this->attributes['type'] = $mealType->name;
-        }
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
     }
-    public function favorites()
+
+    public function isfav(): bool
     {
-        return $this->hasMany(Favorite::class);
+        return auth()->user()->favorites->contains($this->id);
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search_text'] ?? false, function ($query, $search) {
+
+            $query
+                ->where('name', 'like', $search . "%");
+        });
     }
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function ingredient()
+    public function ingredients()
     {
-        return $this->belongsToMany(Ingredient::class,'meal_ingredient');
+        return $this->belongsToMany(Ingredient::class, 'meal_ingredient');
     }
 }

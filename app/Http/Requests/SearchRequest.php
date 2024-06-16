@@ -5,8 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
-
-class coachInfoRequest extends FormRequest
+class SearchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +23,9 @@ class coachInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|max:20',
-            'description' => 'required|string|max:230',
-            'price' => 'required|integer|not_in:0',
-            'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
-            'age' => 'integer|required',
-            'bio' => 'required|string|max:100',
-            'password' => 'required|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/|confirmed',
-
+            'search_text'=>'required|string',
+            'start'=>'required|min:0',
+            'limit'=>'required|min:1'
         ];
     }
     protected function failedValidation(Validator $validator)

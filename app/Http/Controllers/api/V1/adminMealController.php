@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminMealRequest;
+use App\Http\Requests\SearchRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Providers\AppServiceProvider as AppSP;
@@ -21,9 +22,31 @@ class AdminMealController extends Controller
      */
     public function index()
     {
-        //
+        $data=Meal::with('ingredients')->latest()->whereNull('coach_id')->get();
+        $data=$data->map(function ($meal){
+            $meal['isfavorite']=$meal->isfav();
+            return $meal;
+        });
+        return $this->success($data);
     }
 
+// just for now
+    public function popularMeal()
+    {
+        $data=Meal::with('ingredients')->whereNull('coach_id')->orderBy('name')->get();
+        $data=$data->map(function ($meal){
+            $meal['isfavorite']=$meal->isfav();
+            return $meal;
+        });
+        return $this->success($data);
+    }
+
+
+    public function search(SearchRequest $request){
+        $data=$request->validated();
+        $data=Meal::latest()->filter(request(['search_text']))->offset($request->start)->limit($request->limit)->get();
+        return $this->success($data);
+    }
     /* Store a newly created resource in storage.
      */
     public function store(AdminMealRequest $request)
@@ -52,12 +75,6 @@ class AdminMealController extends Controller
                 break;
             }
         }
-
-        // $userTarget = auth()->user()->target;
-        // if ($userTarget !== $validatedData['target']) {
-        //     $warnings[] = 'Meal does not align with user target';
-        // }
-
         $validatedData['warning'] = implode(' ', $warnings);
         $meal = Meal::create($validatedData);
         $meal->ingredients()->sync($request->ingredients);
@@ -73,20 +90,18 @@ class AdminMealController extends Controller
 
     public function latestMeals()
     {
-        $latestMeals = Meal::orderBy('created_at', 'desc')->take(5)->whereNull('coach_id')->get();
+        $latestMeals = Meal::with('ingredients')->orderBy('created_at', 'desc')->take(5)->whereNull('coach_id')->get();
         return response()->json($latestMeals);
     }
     public function show(Request $request)
     {
-        $meal = Meal::where('diet', $request->diet)->where('diet', '=', $request->diet)
+        $meal = Meal::with('ingredients')->where('type', $request->type)->where('type', '=', $request->diet)
             ->whereNull('coach_id')->get();
-        return response()->json([
-            'meal' => $meal
-        ]);
+       return $this->success($meal);
     }
     public function getMealsWithNoneDiet()
     {
-        $meals = Meal::where('diet', 'none')->whereNull('coach_id')->get();
+        $meals = Meal::with('ingredients')->where('type', 'none')->whereNull('coach_id')->get();
         return response()->json($meals);
     }
 

@@ -44,4 +44,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(TrainingDay::class, 'user_training_days','user_id','training_days_id');
     }
+
+    public function favorites(){
+        return $this->belongsToMany(Meal::class,'favorites')->withTimestamps();
+    }
 }

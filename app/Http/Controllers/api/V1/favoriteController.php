@@ -14,55 +14,42 @@ use App\Http\Requests\AdminMealRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\QueryException;
+
 use App\Providers\AppServiceProvider as AppSP;
 
 class FavoriteController extends Controller
 {
-    public function AddMealToFavoritesList($MealID)
+    public function AddMealToFavoritesList(Meal $meal)
     {
-        $userID = Auth::id();
-        $user = User::Where('id', $userID)->exists();
-        if (!$user) {
-            return response()->json(['Error' => 'user Is Not Found'], 404);
-        }
-        $IsMealExistsInFavoritesList = Favorite::Where('user_id', $userID)->Where('meal_id',$MealID)->exists();
-
-        if ($IsMealExistsInFavoritesList) {
-            return response()->json(['Message' => 'The Meal Is Already In Favorites List'], 404);
-        }
-
         try {
-            $ID = Favorite::create(['user_id' => $userID, 'meal_id' => $MealID])->id;
-        } catch (QueryException $exception) {
-            return response()->json(['Error' => $exception->errorInfo[2]], 400);
+            $user = User::find(Auth::id());
+            $user->favorites()->syncWithoutDetaching($meal);
+        } catch (QueryException) {
+            return $this->failed('There is no meal with this id');
         }
-
         return response()->json(['Message' => 'Added Successfully'], 400);
     }
 
     public function GetFavoritesList()
     {
-        $userID=Auth::id();
-        $FavoritesList = Favorite::where('user_id', $userID)->get();
-        foreach( $FavoritesList as $item)
-        {
-            $item['meal']=Meal::find($item->meal_id)->get();
-        }
-        return response()->json(['Data' => $FavoritesList], 400);
+        $favs = auth()->user()->favorites()->get();
+        return AppSP::apiResponse('retrieved favorite products', $favs, 'meals');
     }
 
-    public function deleteFromFavorite($MealID)
+    public function isFavorite(Meal $meal)
     {
-        $userID=Auth::id();
-        $IsMealExistsInFavoritesList = Favorite::Where('user_id', $userID)
-        ->Where('meal_id', $MealID)->exists();
-
-        if (!$IsMealExistsInFavoritesList) {
-            return response()->json(['Error' => 'The Meal Is Not In Favorites List'], 404);
-        }
-
-        $IsDeleted = Favorite::Where('user_id', $userID)->Where('meal_id', $MealID)->delete();
-        return response()->json(['Message' => 'Deleted Successfully'], 404);
+        $isfav = $meal->isfav();
+        return AppSP::apiResponse('checked succesfully', $isfav, 'isfavorite');
     }
+    public function deleteFromFavorite(Meal $meal)
+    {
+        $isfav=$meal->isfav();
+        if($isfav){
+            $user = User::find(Auth::id());
+            $user->favorites()->detach($meal);
+            return $this->success(null,'removed from favorites');
+        }
+        return $this->failed('not in favorite list');
 
+    }
 }

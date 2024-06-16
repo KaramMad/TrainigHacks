@@ -56,7 +56,7 @@ class MealController extends Controller // for coach
     public function show(Request $request)
     {
         $mealDay = Meal::where('day_id', $request->id)
-            ->where('target', '=', $request->target)->get();
+            ->where('target', '=', $request->target)->whereNotNull('coach_id')->get();
         return response()->json([
             'meal' => $mealDay
         ]);
@@ -72,10 +72,7 @@ class MealController extends Controller // for coach
     public function destroy($mealId)
     {
         $coachId = Auth::id();
-        //$coach = Meal::Where('coach_id',$coachId)->get();
-
         $meal = Meal::find($mealId);
-
         if (!$meal) {
             return response()->json(['Error' => 'The Meal does not exist'], 404);
         }

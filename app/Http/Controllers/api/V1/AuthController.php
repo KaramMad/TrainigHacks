@@ -123,7 +123,7 @@ class AuthController extends Controller
             config(['auth.guards.user.provider' => 'auth.guards.user']);
             $user = User::query()->select('users.*')->find(auth()->guard('web')->user()['id']);
 
-            return AppSP::apiResponse('Trainer Login Successfully', $user->createToken("HomeWorkout", ['user'])->accessToken, 'token', true, 200, $user);
+            return AppSP::apiResponse('Trainer Login Successfully', $user->createToken("HomeWorkout", ['user'])->accessToken, 'token');
         } else {
             return response()->json([
                 'status' => false,

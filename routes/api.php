@@ -74,8 +74,8 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
     Route::post('meal/store', [AdminMealController::class, 'store']);
     Route::post('ingredient/store', [IngredientController::class, 'store']);
-    Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
-    Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
+    Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
+    Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
     Route::delete('meal/destroy\{id}', [AdminMealController::class, 'destroy']);
 });
 
@@ -98,16 +98,21 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::post('exercise/gender', [ExerciseController::class, 'filtering']);
     Route::get('exercise/getall', [ExerciseController::class, 'index']);
     Route::get('exercise/getall/{id}', [ExerciseController::class, 'show']);
-    Route::get('AddMealToFavoritesList\{id}', [FavoriteController::class, 'AddMealToFavoritesList']);
-    Route::get('GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
-    Route::delete('deleteFromFavorite\{id}', [FavoriteController::class, 'deleteFromFavorite']);
+    Route::get('meal/GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
+    Route::get('meal/AddMealToFavoritesList/{meal}', [FavoriteController::class, 'AddMealToFavoritesList']);
+    Route::delete('meal/deleteFromFavorite/{meal}', [FavoriteController::class, 'deleteFromFavorite']);
+    Route::get('meal/{meal}/isfav', [FavoriteController::class, 'isFavorite']);
+    Route::get('meal/getAll', [AdminMealController::class, 'index']);
     Route::get('exerciseType/getType', [ExerciseTypeController::class, 'index']);
     Route::get('exerciseType/getType/{id}', [ExerciseTypeController::class, 'show']);
-    Route::get('meal/latestMeals', [AdminMealController::class, 'latestMeals']);
-    Route::post('meal/show', [AdminMealController::class, 'show']);
-    Route::get('ingredient/index\{id}', [IngredientController::class, 'index']);
-    Route::get('meal/getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
-    Route::post('meal/show', [MealController::class, 'show']);//coach
+    Route::get('admin/meal/latestMeals', [AdminMealController::class, 'latestMeals']);
+    Route::post('admin/meal/show', [AdminMealController::class, 'show']);
+    Route::get('admin/meal/popular', [AdminMealController::class, 'popularMeal']);
+    Route::post('admin/meal/search', [AdminMealController::class, 'search']);
+    Route::get('admin/meal/getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
+    Route::post('coach/meal/show', [MealController::class, 'show']); //coach
+    Route::get('ingredient/index/{id}', [IngredientController::class, 'index']);
+    Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
 });
 
 

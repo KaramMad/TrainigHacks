@@ -15,16 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBiginteger('exercise_id');
             $table->unsignedBiginteger('category_id');
-
-
             $table->foreign('exercise_id')->references('id')
                 ->on('exercises')->onDelete('cascade');
             $table->foreign('category_id')->references('id')
                 ->on('categories')->onDelete('cascade');
-
         });
     }
-
     /**
      * Reverse the migrations.
      */
