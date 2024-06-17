@@ -58,6 +58,7 @@ Route::group([
 //Admin Auth & Routes
 Route::post('admin/login', [AdminController::class, 'login']);
 Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']], function () {
+    Route::get('articl/allArticls', [ArticleController::class, 'getAll']);
     Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
     Route::post('coach/addNewCoach', [AdminController::class, 'createCoaches']);
     Route::post('articl/addNewArticls', [ArticleController::class, 'store']);

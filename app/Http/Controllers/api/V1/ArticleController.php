@@ -17,6 +17,10 @@ class ArticleController extends Controller
         $articl = Articl::inRandomOrder()->limit(4)->get();
         return $articl;
     }
+    public function  getAll() {
+        $articl = Articl::get();
+        return $articl;
+    }
 
     /**
      * Show the form for creating a new resource.

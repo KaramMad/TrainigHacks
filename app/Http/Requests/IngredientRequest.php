@@ -22,8 +22,8 @@ class IngredientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'nullable|string',
-            'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
+            'name'=>'required|string',
+            'image' => 'required|image|mimes:png,jpeg,webp|max:2048',
         ];
     }
 }
