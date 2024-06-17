@@ -29,7 +29,7 @@ class MealFactory extends Factory
             'categoryName' => $this->faker->randomElement(['breakfast','lunch','dinner','snack',null]),
             'sugar' => $this->faker->numberBetween(2, 100),
             'salt' => $this->faker->numberBetween(2, 100),
-            'warning' =>  $this->faker->randomElement(['High in salt, not suitable for high blood pressure', 'High in sugar, not suitable for diabetes','High in calories, not suitable for heart conditions']),
+            'warning' =>  $this->faker->randomElement(['High in salt, not suitable for high blood pressure', 'High in sugar, not suitable for diabetes','High in calories, not suitable for heart conditions',null]),
             'preparation method' => $this->faker->paragraph,
 
         ];
