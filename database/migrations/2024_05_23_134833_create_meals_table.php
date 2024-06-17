@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('meals', function (Blueprint $table) {
             $table->increments('id');
             $table->string("name")->default('null');
+            $table->enum('categoryName', ['breakfast', 'lunch','dinner','snack'])->nullable();
             $table->enum('target', ['build muscle', 'lose weight','keep fit'])->nullable();
             $table->enum('type', ['vegetarian', 'sugar free', 'none'])->nullable()->default('none');
             $table->string('calories');

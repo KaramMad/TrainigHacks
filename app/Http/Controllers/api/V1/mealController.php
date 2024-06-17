@@ -22,7 +22,7 @@ class MealController extends Controller // for coach
     {
         $coachId = Auth::id();
 
-        $meals = Meal::where('coach_id', $coachId)->get();
+        $meals = Meal::with('ingredients')->where('coach_id', $coachId)->get();
 
         return response()->json([
             'meals' => $meals
@@ -55,7 +55,7 @@ class MealController extends Controller // for coach
     */
     public function show(Request $request)
     {
-        $mealDay = Meal::where('day_id', $request->id)
+        $mealDay = Meal::with('ingredients')->where('day_id', $request->id)->where('categoryName',$request->categoryName)
             ->where('target', '=', $request->target)->whereNotNull('coach_id')->get();
         return response()->json([
             'meal' => $mealDay

@@ -110,7 +110,8 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('admin/meal/popular', [AdminMealController::class, 'popularMeal']);
     Route::post('admin/meal/search', [AdminMealController::class, 'search']);
     Route::get('admin/meal/getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
-    Route::post('coach/meal/show', [MealController::class, 'show']); //coach
+    Route::post('admin/meal/showByCategory', [AdminMealController::class, 'showByCategory']);
+    Route::post('coach/meal/show', [MealController::class, 'show']);
     Route::get('ingredient/index/{id}', [IngredientController::class, 'index']);
     Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
 });

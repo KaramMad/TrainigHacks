@@ -27,6 +27,7 @@ class MealFactory extends Factory
             'name' => $this->faker->paragraph,
             'meal_type_id' => $this->faker->numberBetween(1, 4),
             'type' => $this->faker->randomElement(['vegetarian','sugar free','none']),
+            'categoryName' => $this->faker->randomElement(['breakfast','lunch','dinner','snack',null]),
             'sugar' => $this->faker->numberBetween(2, 100),
             'salt' => $this->faker->numberBetween(2, 100),
             'warning' =>  $this->faker->randomElement(['High in salt, not suitable for high blood pressure', 'High in sugar, not suitable for diabetes','High in calories, not suitable for heart conditions']),

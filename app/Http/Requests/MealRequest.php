@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class MealRequest extends FormRequest
 {
-    
+
     public function authorize(): bool
     {
         return true;
@@ -16,7 +16,7 @@ class MealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|in:breakfast,lunch,dinner,snack',
+            'categoryName' => 'required|string|in:breakfast,lunch,dinner,snack',
             'target' => 'required|string|in:build muscle,lose weight',
             'calories' => 'required|numeric|max:1000',
             'protein' => 'required|numeric|max:50',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\V1;
 use App\Models\User;
 use App\Models\Coach;
 use App\Models\Meal;
+use App\Models\MealType;
 use App\Models\Ingredient;
 use App\Models\TrainingDay;
 use Illuminate\Support\Facades\Auth;
@@ -22,29 +23,30 @@ class AdminMealController extends Controller
      */
     public function index()
     {
-        $data=Meal::with('ingredients')->latest()->whereNull('coach_id')->get();
-        $data=$data->map(function ($meal){
-            $meal['isfavorite']=$meal->isfav();
+        $data = Meal::with('ingredients')->latest()->whereNull('coach_id')->get();
+        $data = $data->map(function ($meal) {
+            $meal['isfavorite'] = $meal->isfav();
             return $meal;
         });
         return $this->success($data);
     }
 
-// just for now
+    // just for now
     public function popularMeal()
     {
-        $data=Meal::with('ingredients')->whereNull('coach_id')->orderBy('name')->get();
-        $data=$data->map(function ($meal){
-            $meal['isfavorite']=$meal->isfav();
+        $data = Meal::with('ingredients')->whereNull('coach_id')->orderBy('name')->get();
+        $data = $data->map(function ($meal) {
+            $meal['isfavorite'] = $meal->isfav();
             return $meal;
         });
         return $this->success($data);
     }
 
 
-    public function search(SearchRequest $request){
-        $data=$request->validated();
-        $data=Meal::latest()->filter(request(['search_text']))->offset($request->start)->limit($request->limit)->get();
+    public function search(SearchRequest $request)
+    {
+        $data = $request->validated();
+        $data = Meal::latest()->filter(request(['search_text']))->offset($request->start)->limit($request->limit)->get();
         return $this->success($data);
     }
     /* Store a newly created resource in storage.
@@ -95,10 +97,16 @@ class AdminMealController extends Controller
     }
     public function show(Request $request)
     {
-        $meal = Meal::with('ingredients')->where('type', $request->type)->where('type', '=', $request->diet)
+        $meal = Meal::with('ingredients')->where('type', $request->type)->where('categoryName',$request->categoryName)
             ->whereNull('coach_id')->get();
-       return $this->success($meal);
+        return $this->success($meal);
     }
+    public function showByCategory(Request $request)
+    {
+        $meal = Meal::with('ingredients')->where('categoryName',$request->categoryName)->whereNull('coach_id')->get();
+        return $this->success($meal);
+    }
+
     public function getMealsWithNoneDiet()
     {
         $meals = Meal::with('ingredients')->where('type', 'none')->whereNull('coach_id')->get();

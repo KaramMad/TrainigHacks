@@ -16,7 +16,7 @@ class AdminMealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|max:16',
             'meal_type_id' => 'required|exists:meal_types,id',
             'target' => 'nullable|in:build muscle,lose weight',
             'type' => 'nullable|in:vegetarian,sugar free,none',
@@ -29,6 +29,7 @@ class AdminMealRequest extends FormRequest
             'description' => 'required|string',
             'preparation method' => 'nullable|string',
             'ingredients' => 'required|sometimes|array',
+            'categoryName' => 'required|sometimes',
 
 
         ];

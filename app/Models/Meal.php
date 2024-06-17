@@ -20,10 +20,6 @@ class Meal extends Model
     {
         return $this->belongsTo(Coach::class);
     }
-    public function mealType()
-    {
-        return $this->belongsTo(MealType::class);
-    }
     public function favoritedby()
     {
         return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
