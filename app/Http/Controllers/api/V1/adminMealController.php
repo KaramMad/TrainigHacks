@@ -71,7 +71,7 @@ class AdminMealController extends Controller
                     $warnings[] = 'High in sugar, not suitable for diabetes';
                 }
 
-                if ($validatedData['salt'] > 2) {
+                if ($validatedData['salt'] > 4) {
                     $warnings[] = 'High in salt, not suitable for high blood pressure';
                 }
                 break;
@@ -93,24 +93,40 @@ class AdminMealController extends Controller
     public function latestMeals()
     {
         $latestMeals = Meal::with('ingredients')->orderBy('created_at', 'desc')->take(5)->whereNull('coach_id')->get();
+        $latestMeals = $latestMeals->map(function ($data) {
+            $data['isfavorite'] = $data->isfav();
+            return $data;
+        });
         return response()->json($latestMeals);
     }
     public function show(Request $request)
     {
         $meal = Meal::with('ingredients')->where('type', $request->type)->where('categoryName',$request->categoryName)
             ->whereNull('coach_id')->get();
+            $meal = $meal->map(function ($data) {
+                $data['isfavorite'] = $data->isfav();
+                return $data;
+            });
         return $this->success($meal);
     }
     public function showByCategory(Request $request)
     {
         $meal = Meal::with('ingredients')->where('categoryName',$request->categoryName)->whereNull('coach_id')->get();
+        $meal = $meal->map(function ($data) {
+            $data['isfavorite'] = $data->isfav();
+            return $data;
+        });
         return $this->success($meal);
     }
 
     public function getMealsWithNoneDiet()
     {
-        $meals = Meal::with('ingredients')->where('type', 'none')->whereNull('coach_id')->get();
-        return response()->json($meals);
+        $meal = Meal::with('ingredients')->where('type', 'none')->whereNull('coach_id')->get();
+        $meal = $meal->map(function ($data) {
+            $data['isfavorite'] = $data->isfav();
+            return $data;
+        });
+        return response()->json($meal);
     }
 
     /**
