@@ -25,7 +25,6 @@ class MealFactory extends Factory
             'day_id' => $this->faker->randomElement(['1','2','3','4','5',null]),
             'coach_id' =>$this->faker->randomElement(['1',null,null]),
             'name' => $this->faker->paragraph,
-            'meal_type_id' => $this->faker->numberBetween(1, 4),
             'type' => $this->faker->randomElement(['vegetarian','sugar free','none']),
             'categoryName' => $this->faker->randomElement(['breakfast','lunch','dinner','snack',null]),
             'sugar' => $this->faker->numberBetween(2, 100),

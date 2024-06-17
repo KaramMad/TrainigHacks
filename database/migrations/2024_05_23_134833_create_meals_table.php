@@ -24,8 +24,6 @@ return new class extends Migration
             $table->text('warning')->nullable();
             $table->integer('day_id')->unsigned()->nullable();
             $table->integer('coach_id')->unsigned()->nullable();
-            $table->integer('meal_type_id')->unsigned()->nullable();
-            $table->foreign('meal_type_id')->references('id')->on('meal_types')->onDelete('cascade');
             $table->foreign('day_id')->references('id')->on('training_days')->onDelete('cascade');
             $table->foreign('coach_id')->references('id')->on('coaches')->onDelete('cascade');
             $table->timestamps();
