@@ -97,7 +97,11 @@ class AdminMealController extends Controller
             $data['isfavorite'] = $data->isfav();
             return $data;
         });
-        return response()->json($latestMeals);
+        $latestMealsMap = $latestMeals->mapWithKeys(function ($item) {
+            return [$item['id'] => $item];
+        });
+
+        return response()->json($latestMealsMap);
     }
     public function show(Request $request)
     {

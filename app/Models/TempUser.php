@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TempUser extends Model
 {
     use HasFactory;
-    protected $guarded=['id'];
+    protected $guarded = ['id'];
 
-    protected $hidden=['password'];
+    protected $hidden = ['password'];
 }

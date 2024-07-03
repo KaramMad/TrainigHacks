@@ -18,7 +18,7 @@ class IngredientFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'image'=>'Ingredients/1717331895.jpg',
+            'image'=>'Ingredients/1719780198.png',
         ];
     }
 }
