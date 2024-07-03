@@ -27,15 +27,26 @@ class FavoriteController extends Controller
         } catch (QueryException) {
             return $this->failed('There is no meal with this id');
         }
-        return response()->json(['Message' => 'Added Successfully'], 400);
+        return response()->json(['Message' => 'Added Successfully'], 200);
     }
 
     public function GetFavoritesList()
     {
-        $favs = auth()->user()->favorites()->get();
-        return AppSP::apiResponse('retrieved favorite products', $favs, 'meals');
-    }
 
+        $favs = auth()->user()->favorites()->get();
+        $favs  = $favs ->map(function ($data) {
+            $data['isfavorite'] = $data->isfav();
+            return $data;
+        });
+        $meal = $favs->map(function($meal) {
+            return [
+                'meal' => $meal,
+                'ingredients' => $meal->ingredients
+            ];
+        });
+
+        return AppSP::apiResponse('retrieved favorite products', $meal, 'meals');
+    }
     public function isFavorite(Meal $meal)
     {
         $isfav = $meal->isfav();

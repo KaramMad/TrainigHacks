@@ -48,4 +48,26 @@ class User extends Authenticatable
     public function favorites(){
         return $this->belongsToMany(Meal::class,'favorites')->withTimestamps();
     }
+    public function comment()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function posts()
+    {
+        return $this->morphMany(Post::class, 'postable');
+    }
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
+    public function postsWithBio()
+    {
+        return $this->posts()->with('user', 'postable');
+    }
 }

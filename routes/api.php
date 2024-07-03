@@ -17,6 +17,9 @@ use App\Models\Exercise;
 use App\Http\Controllers\api\V1\CoachController;
 use App\Http\Controllers\api\V1\MealController;
 use App\Http\Controllers\api\V1\AdminMealController;
+use App\Http\Controllers\api\V1\CommentController;
+use App\Http\Controllers\api\V1\likeController;
+use App\Http\Controllers\api\V1\PostController;
 use App\Http\Controllers\api\V1\ExerciseTypeController;
 use App\Http\Controllers\api\V1\FavoriteController;
 use App\Models\ExerciseType;
@@ -53,6 +56,17 @@ Route::group([
     Route::post('ingredient/store', [IngredientController::class, 'store']);
     Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
+    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
+    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
+    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
+    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
 });
 
 //Admin Auth & Routes
@@ -78,6 +92,17 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
     Route::delete('meal/destroy\{id}', [AdminMealController::class, 'destroy']);
+    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
+    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
+    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
+    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
 });
 
 //Trainer Auth & Routes
@@ -115,6 +140,20 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::post('coach/meal/show', [MealController::class, 'show']);
     Route::get('ingredient/index/{id}', [IngredientController::class, 'index']);
     Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
+    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
+    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
+    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
+    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
+    Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']); // neeeewwwww
+
+
 });
 
 
