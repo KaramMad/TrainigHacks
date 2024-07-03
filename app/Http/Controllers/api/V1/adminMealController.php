@@ -46,8 +46,8 @@ class AdminMealController extends Controller
     public function search(SearchRequest $request)
     {
         $data = $request->validated();
-        $data = Meal::latest()->filter(request(['search_text']))->offset($request->start)->limit($request->limit)->get();
-        return $this->success($data);
+        $data = Meal::latest()->filter(request(['search_text']))->get();
+        return response()->json($data);
     }
     /* Store a newly created resource in storage.
      */
