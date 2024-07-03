@@ -20,7 +20,7 @@ class MealFactory extends Factory
             'target' => $this->faker->randomElement(['build muscle', 'lose weight']),
             'calories' => $this->faker->numberBetween(100, 1000),
             'protein' => $this->faker->numberBetween(10, 50),
-            'image'=>'Meals/1717331895.jpg',
+            'image'=>'Meals/1719782087.png',
             'description' => $this->faker->paragraph,
             'day_id' => $this->faker->randomElement(['1','2','3','4','5',null]),
             'coach_id' =>$this->faker->randomElement(['1',null,null]),
@@ -30,7 +30,7 @@ class MealFactory extends Factory
             'sugar' => $this->faker->numberBetween(2, 100),
             'salt' => $this->faker->numberBetween(2, 100),
             'warning' =>  $this->faker->randomElement(['High in salt, not suitable for high blood pressure', 'High in sugar, not suitable for diabetes','High in calories, not suitable for heart conditions',null]),
-            'preparation method' => $this->faker->paragraph,
+            'preparation_method' => $this->faker->paragraph,
 
         ];
 

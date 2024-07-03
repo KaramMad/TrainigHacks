@@ -20,9 +20,9 @@ class MealRequest extends FormRequest
             'target' => 'required|string|in:build muscle,lose weight',
             'calories' => 'required|numeric|max:1000',
             'protein' => 'required|numeric|max:50',
-            'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
+            'image' => 'required|image|mimes:png,jpeg,webp|max:2048',
             'description' => 'required|string',
-            'preparation method' => 'nullable|string',
+            'preparation_method' => 'required|string',
             'day_id' => 'required|exists:training_days,id',
         ];
     }

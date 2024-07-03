@@ -17,7 +17,6 @@ class AdminMealRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:16',
-            'meal_type_id' => 'required|exists:meal_types,id',
             'target' => 'nullable|in:build muscle,lose weight',
             'type' => 'nullable|in:vegetarian,sugar free,none',
             'calories' => 'required|string',

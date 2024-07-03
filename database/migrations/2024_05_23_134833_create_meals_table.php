@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('sugar');
             $table->string('salt');
             $table->string('image')->nullable();
-            $table->string('preparation method')->nullable();
+            $table->string('preparation_method')->nullable();
             $table->text('description');
             $table->text('warning')->nullable();
             $table->integer('day_id')->unsigned()->nullable();
