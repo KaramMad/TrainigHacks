@@ -14,6 +14,7 @@ class MealFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    //protected $meal=Meal::class;
     public function definition(): array
     {
         return [
@@ -24,7 +25,7 @@ class MealFactory extends Factory
             'description' => $this->faker->paragraph,
             'day_id' => $this->faker->randomElement(['1','2','3','4','5',null]),
             'coach_id' =>$this->faker->randomElement(['1',null,null]),
-            'name' => $this->faker->paragraph,
+            'name' => $this->faker->word,
             'type' => $this->faker->randomElement(['vegetarian','sugar free','none']),
             'categoryName' => $this->faker->randomElement(['breakfast','lunch','dinner','snack',null]),
             'sugar' => $this->faker->numberBetween(2, 100),

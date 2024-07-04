@@ -34,18 +34,19 @@ class FavoriteController extends Controller
     {
 
         $favs = auth()->user()->favorites()->get();
-        $favs  = $favs ->map(function ($data) {
+        $favs  = $favs->map(function ($data) {
             $data['isfavorite'] = $data->isfav();
             return $data;
         });
-        $meal = $favs->map(function($meal) {
+        $meal = $favs->map(function ($meal) {
             return [
-                'meal' => $meal,
                 'ingredients' => $meal->ingredients
             ];
         });
-
-        return AppSP::apiResponse('retrieved favorite products', $meal, 'meals');
+        return response()->json([
+            'message' => 'success',
+            'meal' => $favs,
+        ]);
     }
     public function isFavorite(Meal $meal)
     {
@@ -54,13 +55,12 @@ class FavoriteController extends Controller
     }
     public function deleteFromFavorite(Meal $meal)
     {
-        $isfav=$meal->isfav();
-        if($isfav){
+        $isfav = $meal->isfav();
+        if ($isfav) {
             $user = User::find(Auth::id());
             $user->favorites()->detach($meal);
-            return $this->success(null,'removed from favorites');
+            return $this->success(null, 'removed from favorites');
         }
         return $this->failed('not in favorite list');
-
     }
 }

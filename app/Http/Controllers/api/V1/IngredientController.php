@@ -49,9 +49,12 @@ class IngredientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function getAllIngredients()
     {
-        //
+        $data = Ingredient::all();
+        return response()->json([
+            'ingredient' => $data
+        ]);
     }
 
     /**
