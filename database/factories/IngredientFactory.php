@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Ingredient;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,6 +15,7 @@ class IngredientFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    //protected $ingredient=Ingredient::class;
     public function definition(): array
     {
         return [
