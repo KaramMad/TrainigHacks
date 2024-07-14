@@ -60,11 +60,12 @@ class CategoryController extends Controller
             $query->with('focusAreas');
             $query->where('private','0');
         }])->where('id', '=', request('category_id'))->get();
-        foreach ($category as $cat) {
-            $cat->exercise_count = $cat->exercises->count();
-            $cat->total_calories = $cat->exercises->sum('calories');
-            $cat->total_time = $cat->exercises->sum('time');
-        }
+        $category=$category->map(function($cat) {
+            $cat['exercise_count'] = $cat->exercises->count();
+            $cat['total_calories'] = $cat->exercises->sum('calories');
+            $cat['total_time'] = $cat->exercises->sum('time');
+            return $cat;
+        });
         if (request('gender') === 'female') {
             $category->makeHidden(['image', 'men_image', 'description']);
         }

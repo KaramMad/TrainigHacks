@@ -51,11 +51,12 @@ class ExerciseTypeController extends Controller
             $query->where('gender','male');
         }])->where('id',$id)->get();
 
-        foreach ($exerciseType as $exercise) {
-            $exercise->exercise_count = $exercise->exercises->count();
-            $exercise->total_calories = $exercise->exercises->sum('calories');
-            $exercise->total_time = $exercise->exercises->sum('time');
-        }
+        $exerciseType=$exerciseType->map(function($type) {
+            $type['exercise_count'] = $type->exercises->count();
+            $type['total_calories'] = $type->exercises->sum('calories');
+            $type['total_time'] = $type->exercises->sum('time');
+            return $type;
+        });
         return $this->success($exerciseType);
     }
 

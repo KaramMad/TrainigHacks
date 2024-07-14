@@ -4,31 +4,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $dates = ['deleted_at'];
+    protected array $dates = ['deleted_at'];
     protected $guarded = ['id'];
 
-    public function user()
+    public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    public function comments()
+    public function comments():HasMany
     {
         return $this->hasMany(Comment::class)->whereNull('parent_id');
     }
-    public function likes()
+    public function likes():MorphMany
     {
         return $this->morphMany(Like::class, 'likeable');
     }
-    public function likesCount()
+    public function likesCount():int
     {
         return $this->likes()->count();
     }
-    public function postable()
+    public function postable():MorphTo
     {
         return $this->morphTo();
     }

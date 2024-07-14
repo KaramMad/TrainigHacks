@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Exercise extends Model
@@ -13,7 +14,7 @@ class Exercise extends Model
     public $timestamps = false;
 
 
-    public function scopeFilter($query, array $filters)
+    public function scopeFilter($query, array $filters): void
     {
         $query->when($filters['category_id'] ?? false, function ($query, $category) {
 
@@ -22,19 +23,19 @@ class Exercise extends Model
             });
         });
     }
-    public function muscles()
+    public function muscles(): BelongsToMany
     {
         return $this->belongsToMany(Muscle::class, 'muscle_exercise')->withPivot('exercise_count', 'total_time', 'total_calories');
     }
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'exercise_category');
     }
-    public function focusAreas()
+    public function focusAreas(): BelongsToMany
     {
         return $this->belongsToMany(FocusArea::class, 'exercise_focus_area');
     }
-    public function exerciseTypes(){
+    public function exerciseTypes(): BelongsTo{
         return $this->belongsTo(ExerciseType::class);
     }
 }

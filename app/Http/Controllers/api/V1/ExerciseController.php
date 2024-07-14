@@ -20,11 +20,12 @@ class ExerciseController extends Controller
             $query->with('focusAreas');
             $query->where('private','0');
         }])->where('id','=',$request->muscle_id)->get();
-        foreach ($exercise as $muscle) {
-            $muscle->exercise_count = $muscle->exercises->count();
-            $muscle->total_calories = $muscle->exercises->sum('calories');
-            $muscle->total_time = $muscle->exercises->sum('time');
-        }
+        $exercise=$exercise->map(function($muscle) {
+            $muscle['exercise_count'] = $muscle->exercises->count();
+            $muscle['total_calories'] = $muscle->exercises->sum('calories');
+            $muscle['total_time'] = $muscle->exercises->sum('time');
+            return $muscle;
+        });
         return AppSP::apiResponse("success",$exercise,'exercise',true,200);
     }
     /**

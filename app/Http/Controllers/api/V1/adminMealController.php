@@ -47,6 +47,10 @@ class AdminMealController extends Controller
     {
         $data = $request->validated();
         $data = Meal::latest()->filter(request(['search_text']))->get();
+        $data = $data->map(function ($meal) {
+            $meal['isfavorite'] = $meal->isfav();
+            return $meal;
+        });
         return $this->success($data);
     }
     /* Store a newly created resource in storage.

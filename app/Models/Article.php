@@ -15,7 +15,7 @@ class Article extends Model
         'Article',
     ];
     const UPDATED_AT=null;
-    public function getCreatedAtAttribute($value)
+    public function getCreatedAtAttribute($value): string
     {
         return $this->attributes['created_at'] = Carbon::parse($value)->format('d F Y');
     }

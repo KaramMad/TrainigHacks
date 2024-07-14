@@ -12,7 +12,7 @@ class TrainingDay extends Model
         'day'
     ];
 
-    public function users()
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_training_days');
     }

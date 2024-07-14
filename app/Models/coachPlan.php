@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ExerciseType extends Model
+class coachPlan extends Model
 {
     use HasFactory;
     protected $guarded=[''];
-    public function exercises():HasMany{
-        return $this->hasMany(Exercise::class);
+    public function coaches(): BelongsTo
+    {
+        return $this->belongsTo(Coach::class);
     }
 }
