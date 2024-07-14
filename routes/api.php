@@ -57,6 +57,7 @@ Route::group([
     Route::post('ingredient/store', [IngredientController::class, 'store']);
     Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
+    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);// *********************************
     Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
     Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
     Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
@@ -92,6 +93,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::post('ingredient/store', [IngredientController::class, 'store']);
     Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
+    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
     Route::delete('meal/destroy\{id}', [AdminMealController::class, 'destroy']);
     Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
     Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
