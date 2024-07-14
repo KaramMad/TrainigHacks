@@ -65,8 +65,8 @@ class MealController extends Controller // for coach
         $user = auth()->user();
         $mealDay = Meal::with('ingredients')
             ->where('day_id', $data['day_id'])
-             ->where('categoryName', $data['categoryName'])
-             ->where('equipment', $data['equipment'])
+            ->where('categoryName', $data['categoryName'])
+            ->where('equipment', $data['equipment'])
             ->where('coach_id', $data['coach_id'])
             ->where('target', $user->target)
             ->get();
