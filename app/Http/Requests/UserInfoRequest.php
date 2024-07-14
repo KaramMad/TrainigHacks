@@ -26,7 +26,7 @@ class UserInfoRequest extends FormRequest
     {
         return [
             'gender' => 'required|sometimes|string|in:male,female',
-            'target' => 'required|sometimes|string|in:lose weight,build muscle,keep fit',
+            'target' => 'required|string|in:lose weight,build muscle,keep fit',
             'weight' => 'required|sometimes|numeric|min:45|max:220',
             'tall' => 'required|sometimes|numeric|min:140|max:220',
             'preferred_time' => 'required|sometimes',

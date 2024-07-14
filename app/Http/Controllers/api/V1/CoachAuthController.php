@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\api\V1;
+
 use App\Http\Requests\coachInfoRequest;
 use App\Http\Requests\coachLoginRequest;
 use Illuminate\Http\Request;
@@ -18,11 +19,11 @@ class CoachAuthController extends Controller
      */
     public function index()
     {
-         $coach=Coach::query()->first()->get();
-         if(!$coach){
-            return AppSP::apiResponse("There is no coaches has been found",null,'data',false,404);
+        $coach = Coach::query()->first()->get();
+        if (!$coach) {
+            return AppSP::apiResponse("There is no coaches has been found", null, 'data', false, 404);
         }
-        return AppSP::apiResponse("Success",$coach,'coach',true,200);
+        return AppSP::apiResponse("Success", $coach, 'coach', true, 200);
     }
 
     /**
@@ -36,15 +37,15 @@ class CoachAuthController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(coachInfoRequest $request,Coach $cc)
+    public function store(coachInfoRequest $request, Coach $cc)
     {
         $data = $request->validated();
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::update($data['image'], $cc['image'],"Profiles");
+            $data['image'] = ImageController::update($data['image'], $cc['image'], "Profiles");
         }
         $data['password'] = Hash::make($request->password);
-        $coach=Coach::find(Auth::id());
-            $coach->update($data);
+        $coach = Coach::find(Auth::id());
+        $coach->update($data);
 
         return response()->json([
 
@@ -58,11 +59,11 @@ class CoachAuthController extends Controller
      */
     public function show($id)
     {
-        $coach=Coach::query()->first()->where('id','=',$id)->get();
-        if(!$coach){
-            return AppSP::apiResponse("not found",null,'data',false,404);
+        $coach = Coach::query()->first()->where('id', '=', $id)->get();
+        if (!$coach) {
+            return AppSP::apiResponse("not found", null, 'data', false, 404);
         }
-        return AppSP::apiResponse("Success",$coach,'coach',true,200);
+        return AppSP::apiResponse("Success", $coach, 'coach', true, 200);
     }
 
     /**
@@ -83,20 +84,19 @@ class CoachAuthController extends Controller
 
     public function coachLogin(coachLoginRequest $request)
     {
-        $data=$request->validated();
+        $data = $request->validated();
         $verification = Coach::query()->firstWhere('phone_number', '=', $request->phone_number);
 
-            if (Hash::check($data['password'],$verification['password'])) {
-                return AppSP::apiResponse('Coach Login Successfully', $verification->createToken("API TOKEN", ['coach'])->accessToken, 'token', true);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => [
-                        'error' => 'Phone Number & Password does not match with our record.'
-                    ],
-                ], 401);
-            }
-
+        if (Hash::check($data['password'], $verification['password'])) {
+            return AppSP::apiResponse('Coach Login Successfully', $verification->createToken("API TOKEN", ['coach'])->accessToken, 'token', true);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => [
+                    'error' => 'Phone Number & Password does not match with our record.'
+                ],
+            ], 401);
+        }
     }
     public function coachLogout()
     {

@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^10.48",
         "laravel/passport": "^11.8",
         "laravel/sanctum": "^3.3",
@@ -25,8 +25,10 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "App\\Helper\\": "app/Helper/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
+
         }
     },
     "autoload-dev": {

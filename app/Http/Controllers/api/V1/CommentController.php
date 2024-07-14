@@ -7,15 +7,21 @@ use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Helper\OffensiveWordChecker;
+
 
 class CommentController extends Controller
 {
-
-
     public function store(CommentRequest $request)
     {
         $data = $request->validated();
         $data['user_id'] = Auth::id();
+
+        if (OffensiveWordChecker::containsOffensiveWords($data['body'])) {
+            return response()->json([
+                'message' => 'Your comment contains offensive words and cannot be submitted.'
+            ], 400);
+        }
         $imagePath = null;
         if ($request->hasFile('image')) {
             $data['image'] = ImageController::store($request->file('image'), 'Posts');
