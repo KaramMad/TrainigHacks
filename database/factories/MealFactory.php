@@ -20,17 +20,16 @@ class MealFactory extends Factory
     public function definition(): array
     {
         return [
-            'target' => $this->faker->randomElement(['build muscle', 'lose weight', 'keep fit']),
+            'target' => $this->faker->randomElement([/*'build muscle',*/'lose weight', /*'keep fit'*/]),
             'calories' => $this->faker->numberBetween(100, 1000),
             'protein' => $this->faker->numberBetween(10, 50),
             'image' => 'Meals/1719782087.png',
             'description' => $this->faker->paragraph,
-            'day_id' => $this->faker->randomElement(['1', '2', '3', '4', '5', null]),
-            'coach_id' => $this->faker->randomElement(['1', null, null]),
+            'day_id' => $this->faker->randomElement([/*'1', '2', '3', '4', '5'*/'1', null]),
+            'coach_id' => $this->faker->randomElement(['1', null]),
             'name' => $this->faker->word(),
             'type' => $this->faker->randomElement(['vegetarian', 'sugar free', 'none']),
             'categoryName' => $this->faker->randomElement(['breakfast', 'lunch', 'dinner', 'snack', null]),
-            'equipment' => $this->faker->randomElement(['with equipment', 'without equipment']),
             'sugar' => $this->faker->numberBetween(2, 100),
             'salt' => $this->faker->numberBetween(2, 100),
             'warning' =>  $this->faker->randomElement(['High in salt, not suitable for high blood pressure', 'High in sugar, not suitable for diabetes', 'High in calories, not suitable for heart conditions', null]),

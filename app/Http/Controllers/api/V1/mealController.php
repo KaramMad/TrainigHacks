@@ -57,7 +57,6 @@ class MealController extends Controller // for coach
     {
         $data = $request->validate([
             'categoryName' => 'required|string|max:255',
-            'equipment' => 'required|string|max:255',
             'day_id' => 'required|exists:training_days,id',
             'coach_id' => 'required|exists:coaches,id',
         ]);
@@ -66,7 +65,6 @@ class MealController extends Controller // for coach
         $mealDay = Meal::with('ingredients')
             ->where('day_id', $data['day_id'])
             ->where('categoryName', $data['categoryName'])
-            ->where('equipment', $data['equipment'])
             ->where('coach_id', $data['coach_id'])
             ->where('target', $user->target)
             ->get();
