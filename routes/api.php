@@ -70,16 +70,19 @@ Route::group([
     Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
+
+
     Route::group(['prefix' => 'plan'], function () {
-        Route::get('/getAllPlan',[CoachPlanController::class,'index']);
-        Route::get('/planWithExercises',[CoachPlanController::class,'show']);
+        Route::get('/getAllPlan', [CoachPlanController::class, 'index']);
+        Route::post('/planWithExercises', [CoachPlanController::class, 'show']);
         Route::post('/create', [CoachPlanController::class, 'store']);
-        Route::delete('/deletePlan/{id}',[CoachPlanController::class,'destroy']);
+        Route::delete('/deletePlan/{id}', [CoachPlanController::class, 'destroy']);
     });
+
+
     Route::group(['prefix' => 'exercise'], function () {
         Route::post('/create', [ExerciseController::class, 'createExercisePlan']);
-        Route::delete('deletePlanExercise/{id}',[ExerciseController::class,'destroy']);
-
+        Route::delete('deletePlanExercise/{id}', [ExerciseController::class, 'destroy']);
     });
 });
 
@@ -140,7 +143,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::post('exercise/gender', [ExerciseController::class, 'filtering']);
     Route::get('exercise/getall', [ExerciseController::class, 'index']);
     Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
-    Route::post('exercise/exercisePlan',[ExerciseController::class,'showPlanExerciseByDay']);
+    Route::post('exercise/exercisePlan', [ExerciseController::class, 'showPlanExerciseByDay']);
     Route::get('exercise/getall/{id}', [ExerciseController::class, 'show']);
     Route::get('meal/GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
     Route::get('meal/AddMealToFavoritesList/{meal}', [FavoriteController::class, 'AddMealToFavoritesList']);

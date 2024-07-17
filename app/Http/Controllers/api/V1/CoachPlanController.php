@@ -2,7 +2,7 @@
 
 
 namespace App\Http\Controllers\api\V1;
-
+use Illuminate\Http\Request;
 use App\Models\coachPlan;
 use App\Http\Requests\StorecoachPlanRequest;
 use App\Http\Requests\UpdatecoachPlanRequest;
@@ -43,10 +43,10 @@ class CoachPlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(coachPlan $coachPlan)
+    public function show(Request $request)
     {
         $coachId=Auth::id();
-        $data=coachPlan::with('exercises')->where('coach_id',$coachId)->get();
+        $data=coachPlan::with('exercises')->where('coach_id',$coachId)->where('plan_name',$request->plan_name)->get();
         return $this->success($data);
     }
 
