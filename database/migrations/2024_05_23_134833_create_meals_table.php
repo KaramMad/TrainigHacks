@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('preparation_method')->nullable();
             $table->text('description');
-            $table->string('equipment')->nullable();
             $table->text('warning')->nullable();
             $table->unsignedBiginteger('day_id')->unsigned()->nullable();
             $table->unsignedBiginteger('coach_id')->unsigned()->nullable();
