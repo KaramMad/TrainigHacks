@@ -55,12 +55,27 @@ class MealController extends Controller // for coach
     */
     public function show(Request $request)
     {
-        $mealDay = Meal::with('ingredients')->where('day_id', $request->id)->where('categoryName',$request->categoryName)
-            ->where('target', '=', $request->target)->whereNotNull('coach_id')->get();
+        $data = $request->validate([
+            'categoryName' => 'required|string|max:255',
+            'equipment' => 'required|string|max:255',
+            'day_id' => 'required|exists:training_days,id',
+            'coach_id' => 'required|exists:coaches,id',
+        ]);
+
+        $user = auth()->user();
+        $mealDay = Meal::with('ingredients')
+            ->where('day_id', $data['day_id'])
+            ->where('categoryName', $data['categoryName'])
+            ->where('equipment', $data['equipment'])
+            ->where('coach_id', $data['coach_id'])
+            ->where('target', $user->target)
+            ->get();
+
         return response()->json([
-            'meal' => $mealDay
+            'meal' => $mealDay,
         ]);
     }
+
 
     public function update(Request $request, string $id)
     {

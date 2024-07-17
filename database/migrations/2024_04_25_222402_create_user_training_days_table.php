@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('user_training_days', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned();
-            $table->integer('training_days_id')->unsigned();
+            $table->unsignedBiginteger('user_id')->unsigned();
+            $table->unsignedBiginteger('training_days_id')->unsigned();
             $table->unique(['user_id','training_days_id']);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

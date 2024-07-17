@@ -32,7 +32,7 @@ class ExerciseFactory extends Factory
             'target'=>$this->faker->randomElement(['lose_weight','build_muscle','keep_fit']),
             'level'=>$this->faker->randomElement(['beginner','intermediate','advanced']),
             'gender'=>$this->faker->randomElement(['male','female']),
-            'choose'=>null,
+            'choose'=>$this->faker->randomElement(['equipment','no_equipment']),
             'private'=>$this->faker->randomElement([0,1]),
             'diseases'=>$this->faker->randomElement(['heart','none','knee','breath']),
         ];

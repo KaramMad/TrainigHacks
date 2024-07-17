@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Helper\OffensiveWordChecker;
 
 class PostController extends Controller
 {
@@ -28,12 +29,18 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
+        if (OffensiveWordChecker::containsOffensiveWords($data['body'])) {
+            return response()->json([
+                'message' => 'Your post contains offensive words and cannot be submitted.'
+            ], 400);
+        }
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($request->file('image'), 'Posts');
+            $data['image'] = ImageController::store($data['image'], 'Posts');
         }
+
         if ($request->hasFile('video')) {
-            $data['video'] = ImageController::store($request->file('video'), 'Posts');
+            $data['video'] = ImageController::store($data['video'], 'Posts');
         }
 
         $user = Auth::user();

@@ -15,7 +15,8 @@ class IngredientFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    //protected $ingredient=Ingredient::class;
+    protected $model = \App\Models\Ingredient::class;
+
     public function definition(): array
     {
         return [

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table){
-            $table->increments('id');
+            $table->id();
             $table->string('name')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('weight')->nullable();
             $table->string('bio')->default('null');
             $table->enum('gender',['male','female'])->nullable();
-            $table->enum('target',['lose weight','build muscle','keep fit'])->nullable();
+            $table->enum('target',['lose_weight','build_muscle','keep_fit']);
             $table->enum('diseases',['heart','knee','breath','none','diabetes','blood_pressure'])->nullable()->default('none');
             $table->enum('activity',['Sedentary','Lightly_Active','Very_Active']);
             $table->time('preferred_time')->nullable();

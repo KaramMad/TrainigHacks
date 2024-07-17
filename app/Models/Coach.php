@@ -31,5 +31,5 @@ class Coach extends Authenticatable
     }
     public function plans(): HasMany{
         return $this->hasMany(coachPlan::class);
-    }
+    }  
 }

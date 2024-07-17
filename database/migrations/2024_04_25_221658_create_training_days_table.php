@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('training_days', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('day');
             $table->timestamps();
         });

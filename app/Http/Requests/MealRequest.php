@@ -23,7 +23,9 @@ class MealRequest extends FormRequest
             'image' => 'required|image|mimes:png,jpeg,webp|max:2048',
             'description' => 'required|string',
             'preparation_method' => 'required|string',
+            'equipment' => 'required|string',
             'day_id' => 'required|exists:training_days,id',
+            'coach_id' => 'required|exists:coaches,id',
         ];
     }
 }

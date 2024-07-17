@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
-class ExercisesTypeRequest extends FormRequest
+use Illuminate\Validation\ValidationException;
+use Illuminate\Contracts\Validation\Validator;
+class StoreExercisePlanReques extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +23,6 @@ class ExercisesTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'exercise_type_id' => 'required|min:1|exists:exercise_types,id',
             'exercise_name' => 'required|string|',
             'description' => 'required|string|',
             'calories' => 'required|numeric|max:130',
@@ -35,11 +35,26 @@ class ExercisesTypeRequest extends FormRequest
             'gender' => 'required|string|in:male,female',
             'choose' => 'required|in:equipment,no_equipment',
             'focus_area' => 'required|array',
-            'muscle' => 'required|array',
-            'muscle.*.id' => 'exists:muscles,id',
+            'muscle'=>'required|array',
+            'muscle.*.id'=>'exists:muscles,id',
             'category' => 'required|array',
+            'day_id'=>'required|array',
+            'day_id.*.id'=>'exists:training_days',
+            'plan_id'=>'required|array',
+            'plan_id.*.id'=>'exists:coach_plans,id',
             'diseases' => 'required|in:heart,none,knee,breath',
-            'private' => 'required|boolean',
         ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        return throw new ValidationException($validator, $this->response($validator));
+    }
+    protected function response($validator)
+    {
+        return response()->json([
+            'status' => false,
+            'message' => 'validation failed',
+            'errors' => $validator->errors()
+        ], 422);
     }
 }

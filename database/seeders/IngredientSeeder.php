@@ -23,6 +23,7 @@ class IngredientSeeder extends Seeder
         if (Meal::count() == 0) {
             \App\Models\Meal::factory()->count(10)->create();
         }
+
         foreach (Ingredient::all() as $ingredient) {
             $meals = Meal::inRandomOrder()->take(rand(1, 6))->pluck('id');
             $ingredient->meals()->attach($meals);

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
-class StorecoachPlanRequest extends FormRequest
+class exercisePlanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,13 @@ class StorecoachPlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
-            'plan_name'=>'required|string|max:50',
-            'description'=>'required|string|max:500',
+            'day_id'=>'required|exists:training_days,id',
+            'choose'=>'required|in:equipment,no_equipment',
+            'coach_id'=>'required|',
         ];
     }
+
+
     protected function failedValidation(Validator $validator)
     {
         return throw new ValidationException($validator, $this->response($validator));

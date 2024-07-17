@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->text('body');
             $table->string('image')->nullable();
             $table->string('video')->nullable();
             $table->unsignedBigInteger('postable_id');
             $table->string('postable_type');
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->unsignedBiginteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

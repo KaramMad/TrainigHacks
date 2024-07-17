@@ -35,7 +35,7 @@ class AddExerciseRequest extends FormRequest
             'target' => 'required|string|in:lose_weight,build_muscle,keep_fit',
             'level' => 'required|in:beginner,intermediate,advanced',
             'gender' => 'required|string|in:male,female',
-            'choose' => 'required|in:equipment,no_eqiupment',
+            'choose' => 'required|in:equipment,no_equipment',
             'focus_area' => 'required|array',
             'muscle'=>'required|array',
             'muscle.*.id'=>'exists:muscles,id',

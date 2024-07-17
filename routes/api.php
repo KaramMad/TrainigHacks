@@ -22,6 +22,8 @@ use App\Http\Controllers\api\V1\likeController;
 use App\Http\Controllers\api\V1\PostController;
 use App\Http\Controllers\api\V1\ExerciseTypeController;
 use App\Http\Controllers\api\V1\FavoriteController;
+use App\Http\Controllers\api\V1\ChatController;
+use App\Http\Controllers\api\V1\CoachPlanController;
 use App\Models\ExerciseType;
 use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
@@ -56,7 +58,7 @@ Route::group([
     Route::post('ingredient/store', [IngredientController::class, 'store']);
     Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
-    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);// *********************************
+    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']); // *********************************
     Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
     Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
     Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
@@ -68,6 +70,17 @@ Route::group([
     Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
+    Route::group(['prefix' => 'plan'], function () {
+        Route::get('/getAllPlan',[CoachPlanController::class,'index']);
+        Route::get('/planWithExercises',[CoachPlanController::class,'show']);
+        Route::post('/create', [CoachPlanController::class, 'store']);
+        Route::delete('/deletePlan/{id}',[CoachPlanController::class,'destroy']);
+    });
+    Route::group(['prefix' => 'exercise'], function () {
+        Route::post('/create', [ExerciseController::class, 'createExercisePlan']);
+        Route::delete('deletePlanExercise/{id}',[ExerciseController::class,'destroy']);
+
+    });
 });
 
 //Admin Auth & Routes
@@ -84,6 +97,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::delete('category/deleteCategory/{id}', [CategoryController::class, 'destroy']);
     Route::post('exercise/addNewExercises', [ExerciseController::class, 'store']);
     Route::post('exercise/addNewExercisesType', [ExerciseController::class, 'createExerciseType']);
+    Route::delete('exercise/deleteExercise/{id}', [ExerciseController::class, 'destroy']);
     Route::post('exerciseType/addExerciseType', [ExerciseTypeController::class, 'store']);
     Route::delete('exerciseType/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
@@ -125,6 +139,8 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('challenge/getAll', [ChallengeController::class, 'index']);
     Route::post('exercise/gender', [ExerciseController::class, 'filtering']);
     Route::get('exercise/getall', [ExerciseController::class, 'index']);
+    Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
+    Route::post('exercise/exercisePlan',[ExerciseController::class,'showPlanExerciseByDay']);
     Route::get('exercise/getall/{id}', [ExerciseController::class, 'show']);
     Route::get('meal/GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
     Route::get('meal/AddMealToFavoritesList/{meal}', [FavoriteController::class, 'AddMealToFavoritesList']);
@@ -154,6 +170,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
     Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']); // neeeewwwww
+
 
 
 });

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum('diseases',['heart','none','knee','breath']);
             $table->enum('level',['beginner','intermediate','advanced']);
             $table->enum('gender',['male','female']);
-            $table->enum('choose',['equipment','no_eqiupment'])->nullable();
+            $table->enum('choose',['equipment','no_equipment'])->nullable();
             $table->boolean('private')->default(0);
 
         });

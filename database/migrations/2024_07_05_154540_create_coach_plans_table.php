@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('coach_plans', function (Blueprint $table) {
             $table->id();
-            $table->string('plane_name');
+            $table->unsignedBiginteger('coach_id')->unsigned()->nullable();
+            $table->foreign('coach_id')->references('id')->on('coaches')->onDelete('cascade');
+            $table->string('plan_name');
+            $table->string('description');
             $table->timestamps();
         });
     }

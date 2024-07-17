@@ -17,17 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-
-        $this->call(ExerciseTypeSeeder::class);
-        $this->call([ChallengeSeeder::class]);
-        $this->call([ArticleSeeder::class]);
-        $this->call([FocusAreaSeeder::class]);
-        $this->call([DaysOfTheWeek::class]);
-        $this->call([MuscleAreaSeeder::class]);
-        $this->call([MuscleCategorySeeder::class]);
-        $this->call([MuscleLevelSeeder::class]);
-        $this->call(ExerciseSeeder::class);
         \App\Models\Admin::factory()->create([
             'name'=>'karam',
             'phone_number'=>'0943365119',
@@ -41,8 +30,20 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::create([
             'name'=>'karam',
             'email'=>'karamalmadne@gmail.com',
+            'target'=>'build_muscle',
             'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
+        $this->call(ExerciseTypeSeeder::class);
+        $this->call([ChallengeSeeder::class]);
+        $this->call([ArticleSeeder::class]);
+        $this->call([FocusAreaSeeder::class]);
+        $this->call([DaysOfTheWeek::class]);
+        $this->call([MuscleAreaSeeder::class]);
+        $this->call([MuscleCategorySeeder::class]);
+        $this->call([MuscleLevelSeeder::class]);
+        $this->call(CoachSeeder::class);
+        $this->call(CoachPlanSeeder::class);
+        $this->call(ExerciseSeeder::class);
         $this->call(IngredientSeeder::class);
         $this->call(MealSeeder::class);
     }
