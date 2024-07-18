@@ -5,10 +5,12 @@ namespace App\Http\Controllers\api\V1;
 use App\Http\Requests\AddChallengeRequest;
 use App\Http\Requests\UpdateChallengeRequest;
 use App\Models\Challenge;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
 class ChallengeController extends Controller
 {
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      */
@@ -34,13 +36,13 @@ class ChallengeController extends Controller
 
         $data = $request->validated();
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($data['image'], "Challenge");
+            $data['image'] = ImageTrait::store($data['image'], "Challenge");
         }
         if ($request->hasFile('gif')) {
-            $data['gif'] = ImageController::store($data['gif'], "Challenge");
+            $data['gif'] = ImageTrait::store($data['gif'], "Challenge");
         }
         if($request->hasFile('secondry_image')){
-            $data['secondry_image'] = ImageController::store($data['secondry_image'], "Challenge");
+            $data['secondry_image'] = ImageTrait::store($data['secondry_image'], "Challenge");
 
         }
         $challenge=Challenge::create($data);

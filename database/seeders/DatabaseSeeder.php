@@ -25,6 +25,11 @@ class DatabaseSeeder extends Seeder
         \App\Models\Coach::create([
             'name'=>'karam',
             'phone_number'=>'0943365119',
+            'bio'=>'fight for your success',
+            'description'=>'funny',
+            'age'=>'21',
+            'price'=>'5000',
+            'image'=>'Profiles/Ammis.jpg',
             'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
         \App\Models\User::create([

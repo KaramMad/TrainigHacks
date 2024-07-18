@@ -5,10 +5,12 @@ namespace App\Http\Controllers\api\V1;
 use App\Http\Requests\AddNewExerciseTypeRequest;
 use App\Models\Exercise;
 use App\Models\ExerciseType;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
 class ExerciseTypeController extends Controller
 {
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +35,7 @@ class ExerciseTypeController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($data['image'], 'ExerciseType');
+            $data['image'] = ImageTrait::store($data['image'], 'ExerciseType');
         }
         $data = ExerciseType::create($data);
         return $this->success($data, 'Exercise Type Added successfully', 200);

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\api\V1;
 use App\Providers\AppServiceProvider as AppSP;
 use App\Http\Requests\ArticlRequest;
 use App\Models\Article as Articl;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      */
@@ -37,7 +39,7 @@ class ArticleController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('Image')) {
-            $data['Image'] = ImageController::store($data['Image'], "Articls");
+            $data['Image'] = ImageTrait::store($data['Image'], "Articls");
         }
         $articl = Articl::create($data);
         if (!$articl) {

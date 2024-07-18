@@ -1,11 +1,9 @@
 <?php
-
-namespace App\Http\Controllers\api\V1;
+namespace App\Traits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
-class ImageController extends Controller
-{
+Trait ImageTrait {
     public static function store($file,$directory){
         $destpath = public_path("Uploads/$directory/");
         $extension=$file->getClientOriginalExtension();

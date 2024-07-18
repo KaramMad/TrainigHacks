@@ -8,14 +8,12 @@ use App\Models\Category;
 use App\Models\Exercise;
 use App\Models\Muscle;
 use App\Models\Muscle_Level;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
 class MuscleController extends Controller
 {
-
-
-
-
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      */
@@ -57,10 +55,10 @@ class MuscleController extends Controller
         $data = $request->validated();
         $muscle = Muscle::create($data);
         if ($request->hasFile('men_image')) {
-            $data['men_image'] = ImageController::store($data['men_image'], "Muscle");
+            $data['men_image'] = ImageTrait::store($data['men_image'], "Muscle");
         }
         if ($request->hasFile('women_image')) {
-            $data['women_image'] = ImageController::store($data['women_image'], "Muscle");
+            $data['women_image'] = ImageTrait::store($data['women_image'], "Muscle");
         }
         $muscle->muscleLevels()->create([
             'level' => $data['level'],

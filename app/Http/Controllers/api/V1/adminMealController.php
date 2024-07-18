@@ -16,9 +16,11 @@ use App\Http\Requests\SearchRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Providers\AppServiceProvider as AppSP;
+use App\Traits\ImageTrait;
 
 class AdminMealController extends Controller
 {
+    use ImageTrait;
     /* Display a listing of the resource.
      */
     public function index()
@@ -59,7 +61,7 @@ class AdminMealController extends Controller
     {
         $validatedData = $request->validated();
         if ($request->hasFile('image')) {
-            $validatedData['image'] = ImageController::store($validatedData['image'], 'Meals');
+            $validatedData['image'] = ImageTrait::store($validatedData['image'], 'Meals');
         }
 
         $diseases = ['heart', 'knee', 'breath', 'blood pressure', 'diabetes'];

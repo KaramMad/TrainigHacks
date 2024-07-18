@@ -24,6 +24,7 @@ use App\Http\Controllers\api\V1\ExerciseTypeController;
 use App\Http\Controllers\api\V1\FavoriteController;
 use App\Http\Controllers\api\V1\ChatController;
 use App\Http\Controllers\api\V1\CoachPlanController;
+use App\Http\Controllers\api\V1\RatingController;
 use App\Models\ExerciseType;
 use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
@@ -173,7 +174,10 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
     Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']); // neeeewwwww
-
+    Route::prefix('rating')->group(function () {
+        Route::post('/create',[RatingController::class,'store']);
+        Route::post('/coachRate',[RatingController::class,'coachRate']);
+    });
 
 
 });

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\api\V1;
 use App\Http\Requests\MuscleCategoryRequest;
 use App\Models\Category;
 use App\Providers\AppServiceProvider as AppSP;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
 
 class CategoryController extends Controller
 {
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      */
@@ -36,13 +38,13 @@ class CategoryController extends Controller
 
         $data = $request->validated();
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($data['image'], "MuscleCategory");
+            $data['image'] = ImageTrait::store($data['image'], "MuscleCategory");
         }
         if ($request->hasFile('men_image')) {
-            $data['men_image'] = ImageController::store($data['men_image'], "MuscleCategory");
+            $data['men_image'] = ImageTrait::store($data['men_image'], "MuscleCategory");
         }
         if ($request->hasFile('women_image')) {
-            $data['women_image'] = ImageController::store($data['women_image'], "MuscleCategory");
+            $data['women_image'] = ImageTrait::store($data['women_image'], "MuscleCategory");
         }
 
         $muscle = Category::create($data);

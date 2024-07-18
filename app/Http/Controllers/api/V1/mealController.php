@@ -14,9 +14,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Providers\AppServiceProvider as AppSP;
+use App\Traits\ImageTrait;
 
 class MealController extends Controller // for coach
 {
+    use ImageTrait;
     //show all meals
     public function index()
     {
@@ -35,7 +37,7 @@ class MealController extends Controller // for coach
         $coachId = Auth::id();
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($data['image'], 'Meals');
+            $data['image'] = ImageTrait::store($data['image'], 'Meals');
         }
         $data['coach_id'] = $coachId;
         $status = Meal::Create($data);

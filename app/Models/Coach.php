@@ -31,5 +31,12 @@ class Coach extends Authenticatable
     }
     public function plans(): HasMany{
         return $this->hasMany(coachPlan::class);
-    }  
+    }
+    public function ratings(): MorphMany{
+        return $this->morphMany(Rating::class,'rateable');
+    }
+    public function averageRating()
+    {
+        return $this->ratings()->avg('rating');
+    }
 }

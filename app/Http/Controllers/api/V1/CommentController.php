@@ -8,10 +8,11 @@ use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Helper\OffensiveWordChecker;
-
+use App\Traits\ImageTrait;
 
 class CommentController extends Controller
 {
+    use ImageTrait;
     public function store(CommentRequest $request)
     {
         $data = $request->validated();
@@ -24,7 +25,7 @@ class CommentController extends Controller
         }
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($request->file('image'), 'Posts');
+            $data['image'] = ImageTrait::store($request->file('image'), 'Posts');
         }
 
         $user = Auth::user();

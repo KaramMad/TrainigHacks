@@ -13,11 +13,13 @@ use App\Models\Exercise;
 use App\Models\ExerciseType;
 use App\Models\Muscle;
 use App\Models\TrainingDay;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
 class ExerciseController extends Controller
 {
+    use ImageTrait;
     public function filtering(Request $request)
     {
         $exercise = Muscle::with(['exercises' => function ($query) {
@@ -61,7 +63,7 @@ class ExerciseController extends Controller
         $data = $request->validated();
         $exercise = Exercise::find(Auth::id());
         if ($request->hasFile('gif')) {
-            $data['image'] = ImageController::store($data['image'], 'Exercises');
+            $data['image'] = ImageTrait::store($data['image'], 'Exercises');
         }
         $exercise = Exercise::create($data);
         $exercise->categories()->attach($request->category);
@@ -76,7 +78,7 @@ class ExerciseController extends Controller
         $data = $request->validated();
         $exercise = Exercise::find(Auth::id());
         if ($request->hasFile('gif')) {
-            $data['image'] = ImageController::store($data['image'], 'Exercises');
+            $data['image'] = ImageTrait::store($data['image'], 'Exercises');
         }
         $coachId=Auth::id();
         $plan = coachPlan::where('id', $request->plan_id)
@@ -105,7 +107,7 @@ class ExerciseController extends Controller
         $data = $request->validated();
         $exercise = Exercise::find(Auth::id());
         if ($request->hasFile('gif')) {
-            $data['image'] = ImageController::store($data['image'], 'Exercises');
+            $data['image'] = ImageTrait::store($data['image'], 'Exercises');
         }
         $exercise = Exercise::create($data);
         $exercise->categories()->attach($request->category);
@@ -120,18 +122,13 @@ class ExerciseController extends Controller
     public function showPlanExerciseByDay(exercisePlanRequest $request)
     {
         $data = $request->validated();
-
-        $data = TrainingDay::with(['exercises'=>function($query){
-            $user = Auth::user();
-            $query->with('focusAreas');
-            //$query->with(['focusAreas','categories','muscles']);
-            $query->where('choose',request('choose'))->where('target',$user->target);
-            $query->with(['coachPlan'=>function($q){
-                $q->where('coach_id',request('coach_id'));
-            }]);
-
-        }])->where('id',$request->day_id)->get();
-        return $this->success($data,'hello');
+        $user = Auth::user();
+        $data=Exercise::withwherehas('coachPlan',function($query){
+            $query->where('coach_id',request('coach_id'));
+        })->withwherehas('days',function($query){
+            $query->where('training_days.id',request('day_id'));
+        })->where('choose',$request->choose)->where('target',$user->target)->with('focusAreas')->get();
+        return $this->success($data);
     }
 
     /**

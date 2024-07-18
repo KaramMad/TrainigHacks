@@ -8,10 +8,11 @@ use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Helper\OffensiveWordChecker;
+use App\Traits\ImageTrait;
 
 class PostController extends Controller
 {
-
+    use ImageTrait;
     public function index()
     {
         $posts = Post::all();
@@ -36,11 +37,11 @@ class PostController extends Controller
         }
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($data['image'], 'Posts');
+            $data['image'] = ImageTrait::store($data['image'], 'Posts');
         }
 
         if ($request->hasFile('video')) {
-            $data['video'] = ImageController::store($data['video'], 'Posts');
+            $data['video'] = ImageTrait::store($data['video'], 'Posts');
         }
 
         $user = Auth::user();

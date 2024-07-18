@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\api\V1;
 
-use App\Http\Controllers\api\V1\ImageController;
 use App\Providers\AppServiceProvider as AppSP;
 use App\Http\Requests\ResendCodeRequest;
 use Illuminate\Support\Facades\Validator;

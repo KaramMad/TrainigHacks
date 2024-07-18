@@ -9,17 +9,22 @@ use App\Models\Coach;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\AppServiceProvider as AppSP;
+use App\Traits\ImageTrait;
 use Illuminate\Support\Facades\App;
 
 class CoachAuthController extends Controller
 {
-
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $coach = Coach::query()->first()->get();
+        $coach = $coach->map(function ($rating) {
+            $rating['rating'] = $rating->averageRating();
+            return $rating;
+        });
         if (!$coach) {
             return AppSP::apiResponse("There is no coaches has been found", null, 'data', false, 404);
         }
@@ -41,7 +46,7 @@ class CoachAuthController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::update($data['image'], $cc['image'], "Profiles");
+            $data['image'] = ImageTrait::update($data['image'], $cc['image'], "Profiles");
         }
         $data['password'] = Hash::make($request->password);
         $coach = Coach::find(Auth::id());

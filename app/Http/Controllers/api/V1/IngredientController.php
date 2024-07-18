@@ -6,9 +6,11 @@ use App\Providers\AppServiceProvider as AppSP;
 use App\Models\Ingredient;
 use App\Models\Meal;
 use App\Http\Requests\IngredientRequest;
+use App\Traits\ImageTrait;
 
 class IngredientController extends Controller
 {
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      */
@@ -39,7 +41,7 @@ class IngredientController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('image')) {
-            $data['image'] = ImageController::store($data['image'], 'Ingredients');
+            $data['image'] = ImageTrait::store($data['image'], 'Ingredients');
         }
         $ingredient = Ingredient::create($data);
 

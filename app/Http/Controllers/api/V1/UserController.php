@@ -11,17 +11,19 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Providers\AppServiceProvider as AppSP;
+use App\Traits\ImageTrait;
 use GuzzleHttp\Psr7\Request;
 
 class UserController extends Controller
 {
+    use ImageTrait;
     public function trainerInfo(UserInfoRequest $request,User $use)
     {
         $validated = $request->validated();
         $user = User::find(Auth::id());
         if ($request->hasFile('image')) {
 
-           $validated['image']=ImageController::update($validated['image'],$use['image'],"Profiles");
+           $validated['image']=ImageTrait::update($validated['image'],$use['image'],"Profiles");
 
         }
 
