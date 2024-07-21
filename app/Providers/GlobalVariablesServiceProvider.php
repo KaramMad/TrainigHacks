@@ -112,6 +112,52 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'ExerciseType/sleep.jpg',
         'ExerciseType/sun.jpg',
     ];
+    protected const product_category =[
+        'Clothes',
+        'Sports_equipment',
+        'Food_Supplements',
+    ];
+    protected const product_color =[
+        'white',
+        'black',
+        'red',
+        'green',
+        'pink',
+        'blue',
+        'brown',
+        'yellow',
+    ];
+    protected const product_size =[
+        'Xsmall',
+        'small',
+        'large',
+        'Xlarge',
+        'Xlarge',
+    ];
+    protected const category_porduct_image=[
+        'ProductCategory/Clothes.png',
+        'ProductCategory/Food.png',
+        'ProductCategory/SportsEquipment.png'
+    ];
+    protected const product_measuring_unit=[
+        'kg',
+        'g',
+        'pound',
+        'meter',
+        'km',
+    ];
+    public static function product_category():array{
+        return self::product_category;
+    }
+    public static function product_color():array{
+        return self::product_color;
+    }
+    public static function product_size():array{
+        return self::product_size;
+    }
+    public static function category_porduct_image():array{
+        return self::category_porduct_image;
+    }
     public static function FastWorkout():array
     {
         return self::FastWorkout;
