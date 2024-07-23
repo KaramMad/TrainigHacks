@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\V1;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Helper\OffensiveWordChecker;
@@ -41,22 +42,43 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function showComments($postId)
     {
-        //
+        // تحقق من وجود المنشور
+        $post = Post::find($postId);
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found.'
+            ], 404);
+        }
+
+        // احصل على جميع التعليقات المتعلقة بالمنشور
+        $comments = Comment::where('post_id', $postId)->get();
+
+        return response()->json([
+            'post_id' => $postId,
+            'comments' => $comments
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+//جربيه يا لنوشة على شانك هلا نعستي 
+    public function getRepliesByComment($commentId)
     {
-        //
+        $comment = Comment::find($commentId);
+        if (!$comment) {
+            return response()->json([
+                'message' => 'Comment not found.'
+            ], 404);
+        }
+
+        $replies = Comment::where('parent_id', $commentId)->get();
+
+        return response()->json([
+            'comment_id' => $commentId,
+            'replies' => $replies
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //

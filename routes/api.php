@@ -65,6 +65,7 @@ Route::group([
     Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
     Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
     Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
+    Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']); // neeeewwwww
     Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
     Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
     Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
@@ -117,6 +118,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
     Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
     Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
+    Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']);
     Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
     Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
     Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
@@ -167,6 +169,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
     Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
     Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
+    Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']);
     Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
     Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
     Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww

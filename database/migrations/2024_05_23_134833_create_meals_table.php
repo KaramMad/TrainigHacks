@@ -24,8 +24,8 @@ return new class extends Migration
             $table->text('warning')->nullable();
             $table->unsignedBiginteger('day_id')->unsigned()->nullable();
             $table->unsignedBiginteger('coach_id')->unsigned()->nullable();
-            $table->foreign('day_id')->references('id')->on('training_days')->onDelete('cascade');
-            $table->foreign('coach_id')->references('id')->on('coaches')->onDelete('cascade');
+            $table->foreign('day_id')->references('id')->on('training_days')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('coach_id')->references('id')->on('coaches')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
