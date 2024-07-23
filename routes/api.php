@@ -108,7 +108,9 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
     Route::post('meal/store', [AdminMealController::class, 'store']);
+    Route::get('meal/getAll', [AdminMealController::class, 'getAllMeal']);
     Route::post('ingredient/store', [IngredientController::class, 'store']);
+    Route::get('ingredient/getAll', [IngredientController::class, 'getAllIngredients']);
     Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
     Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
