@@ -24,6 +24,7 @@ use App\Http\Controllers\api\V1\ExerciseTypeController;
 use App\Http\Controllers\api\V1\FavoriteController;
 use App\Http\Controllers\api\V1\ChatController;
 use App\Http\Controllers\api\V1\CoachPlanController;
+use App\Http\Controllers\api\V1\ProductController;
 use App\Http\Controllers\api\V1\RatingController;
 use App\Models\ExerciseType;
 use App\Models\Favorite;
@@ -108,7 +109,9 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
     Route::post('meal/store', [AdminMealController::class, 'store']);
+    Route::get('meal/getAll', [AdminMealController::class, 'getAllMeal']);
     Route::post('ingredient/store', [IngredientController::class, 'store']);
+    Route::get('ingredient/getAll', [IngredientController::class, 'getAllIngredients']);
     Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
     Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
@@ -125,6 +128,11 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
+
+    Route::group(['prefix' => 'products'], function () {
+        Route::post('/create', [ProductController::class, 'store']);
+        Route::delete('/DeleteProduct/{id}', [ProductController::class, 'destroy']);
+    });
 });
 
 //Trainer Auth & Routes
@@ -177,11 +185,18 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
     Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']); // neeeewwwww
+
     Route::prefix('rating')->group(function () {
         Route::post('/create',[RatingController::class,'store']);
         Route::post('/coachRate',[RatingController::class,'coachRate']);
     });
 
+    Route::group(['prefix' => 'products'], function () {
+        Route::get('/allProducts', [ProductController::class, 'index']);
+        Route::get('/getByid/{product}', [ProductController::class, 'show']);
+        Route::get('/mostSales',[ProductController::class,'mostSales']);
+        Route::get('/common',[ProductController::class,'common']);
+    });
 
 });
 

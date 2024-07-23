@@ -51,5 +51,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ExerciseSeeder::class);
         $this->call(IngredientSeeder::class);
         $this->call(MealSeeder::class);
+        $this->call([CatproductSeeder::class,ProductColorSeeder::class,ProductSizeSeeder::class]);
+        $this->call(ProductSeeder::class);
     }
 }

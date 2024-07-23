@@ -23,6 +23,10 @@ class AdminMealController extends Controller
     use ImageTrait;
     /* Display a listing of the resource.
      */
+    public function getAllmeal(){
+        $data = Meal::with('ingredients')->latest()->whereNull('coach_id')->get();
+        return $this->success($data);
+    }
     public function index()
     {
         $data = Meal::with('ingredients')->latest()->whereNull('coach_id')->get();
