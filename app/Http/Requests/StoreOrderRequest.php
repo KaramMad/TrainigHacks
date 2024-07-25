@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
-class StoreCatproductRequest extends FormRequest
+class StoreOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,7 @@ class StoreCatproductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|string',
-            'image'=>'required|image|mimes:png,jpg',
-            'description'=>'nullable|string',
-            'category_id'=>'sometimes|min:1|integer',
+
         ];
     }
     protected function failedValidation(Validator $validator)

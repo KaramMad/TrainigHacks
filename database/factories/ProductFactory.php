@@ -29,7 +29,7 @@ class ProductFactory extends Factory
             'measuring_unit'=>$this->faker->randomElement(['kg','g','pounds']),
             'protein'=>$this->faker->randomElement(['null','19']),
             'expiration_date' => $this->faker->dateTimeBetween('now','+3 years'),
-            'category_id'=>rand(1,3),
+            'category_id'=>rand(1,8),
             'sales_count'=>$this->faker->numberBetween(1,100),
             'view_count'=>$this->faker->numberBetween(1,100),
 

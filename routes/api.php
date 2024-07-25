@@ -17,6 +17,7 @@ use App\Models\Exercise;
 use App\Http\Controllers\api\V1\CoachController;
 use App\Http\Controllers\api\V1\MealController;
 use App\Http\Controllers\api\V1\AdminMealController;
+use App\Http\Controllers\api\V1\CatproductController;
 use App\Http\Controllers\api\V1\CommentController;
 use App\Http\Controllers\api\V1\likeController;
 use App\Http\Controllers\api\V1\PostController;
@@ -193,6 +194,12 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('/getByid/{product}', [ProductController::class, 'show']);
         Route::get('/mostSales',[ProductController::class,'mostSales']);
         Route::get('/common',[ProductController::class,'common']);
+        Route::post('/search',[ProductController::class,'search']);
+        Route::post('/catWithProduct',[CatproductController::class,'index']);
+        Route::get('/GetFavoritesList', [FavoriteController::class, 'GetProductFavoritesList']);
+        Route::get('/AddproductToFavoritesList/{product}', [FavoriteController::class, 'AddProductToFavoritesList']);
+        Route::get('/{product}/isfav', [FavoriteController::class, 'isProductFavorite']);
+        Route::delete('/deleteFromFavorite/{product}', [FavoriteController::class, 'deleteProductFromFavorite']);
     });
 
 });

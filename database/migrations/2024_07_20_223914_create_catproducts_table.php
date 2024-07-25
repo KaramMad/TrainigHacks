@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('catproducts', function (Blueprint $table) {
             $table->id();
-            $table->string('category_name');
-            $table->string('image');
+            $table->string('category_name')->index();
+            $table->string('image')->nullable();
             $table->string('description');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
         });
     }

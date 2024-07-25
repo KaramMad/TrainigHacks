@@ -6,6 +6,8 @@ use App\Models\Catproduct;
 use App\Http\Requests\StoreCatproductRequest;
 use App\Http\Requests\UpdateCatproductRequest;
 use App\Traits\ImageTrait;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class CatproductController extends Controller
 {
@@ -13,17 +15,29 @@ class CatproductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data=Validator::make($request->all(),[
+            'category'=>'required|exists:catproducts,category_name|string',
+        ]);
+        $data=Catproduct::with(['products'=>function($query){
+            $query->isfav();
+        }])->where('parent_id',null)->where('category_name','=',$request->category)->get();
+        return $this->success($data);
+
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(StoreCatproductRequest $request)
     {
-        //
+        $data=$request->validated();
+        if($request->hasFile('image')){
+            $data['image']=ImageTrait::store($data['image'],'ProductCategory');
+        }
+        $data=Catproduct::create($data);
+        return $this->success($data,'Subcategory created succesfully');
     }
 
     /**

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('meals', function (Blueprint $table) {
             $table->id();
-            $table->string("name")->default('null');
+            $table->string("name")->default('null')->index();
             $table->enum('categoryName', ['breakfast', 'lunch','dinner','snack'])->nullable();
             $table->enum('target', ['build muscle', 'lose weight','keep fit'])/*->nullable()*/;
             $table->enum('type', ['vegetarian', 'sugar free', 'none'])->nullable()->default('none');
