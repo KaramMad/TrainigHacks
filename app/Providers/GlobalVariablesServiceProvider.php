@@ -128,11 +128,11 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'yellow',
     ];
     protected const product_size =[
-        'Xsmall',
-        'small',
-        'large',
-        'Xlarge',
-        'Xlarge',
+        'XS',
+        'S',
+        'L',
+        'XL',
+        'XXL',
     ];
     protected const category_porduct_image=[
         'ProductCategory/Clothes.png',
