@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('weight')->nullable();
             $table->string('measuring_unit')->nullable();
             $table->string('protein')->nullable();
+            $table->string('creatine')->nullable();
             $table->unsignedBigInteger('sales_count')->default(0)->index();
             $table->unsignedBigInteger('view_count')->default(0)->index();
             $table->timestamp('expiration_date')->nullable();

@@ -24,6 +24,11 @@ class ProductController extends Controller
         });
         return $this->success($data);
     }
+    public function adminIndex()
+    {
+        $data=Product::orderBy('id')->latest()->with('colors')->with('sizes')->get();
+        return $this->success($data);
+    }
     public function mostSales(){
         $data=Product::with(['colors','sizes'])->orderBy('sales_count','desc')->take(10)->get();
         $data=$data->map(function($product){

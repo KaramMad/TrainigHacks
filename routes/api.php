@@ -25,6 +25,7 @@ use App\Http\Controllers\api\V1\ExerciseTypeController;
 use App\Http\Controllers\api\V1\FavoriteController;
 use App\Http\Controllers\api\V1\ChatController;
 use App\Http\Controllers\api\V1\CoachPlanController;
+use App\Http\Controllers\api\V1\PosterController;
 use App\Http\Controllers\api\V1\ProductController;
 use App\Http\Controllers\api\V1\RatingController;
 use App\Models\ExerciseType;
@@ -61,18 +62,18 @@ Route::group([
     Route::post('ingredient/store', [IngredientController::class, 'store']);
     Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
-    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']); // *********************************
-    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
-    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
-    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
-    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
-    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
-    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
-    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
-    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
-    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
-    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
-    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
+    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
+    Route::post('post/addpost', [PostController::class, 'store']);
+    Route::get('post/showAllPost', [PostController::class, 'index']);
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
+    Route::post('comment/addcomment', [CommentController::class, 'store']);
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']);
+    Route::get('likePost/{id}', [likeController::class, 'likePost']);
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']);
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']);
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
 
 
     Route::group(['prefix' => 'plan'], function () {
@@ -116,21 +117,23 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
     Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
     Route::delete('meal/destroy\{id}', [AdminMealController::class, 'destroy']);
-    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
-    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
-    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
-    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
-    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
-    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
-    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
-    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
-    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
-    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
-    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
+    Route::post('post/addpost', [PostController::class, 'store']);
+    Route::get('post/showAllPost', [PostController::class, 'index']);
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
+    Route::post('comment/addcomment', [CommentController::class, 'store']);
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']);
+    Route::get('likePost/{id}', [likeController::class, 'likePost']);
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']);
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']);
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
 
     Route::group(['prefix' => 'products'], function () {
         Route::post('/create', [ProductController::class, 'store']);
+        Route::get('/allProducts', [ProductController::class, 'adminIndex']);
         Route::delete('/DeleteProduct/{id}', [ProductController::class, 'destroy']);
+        Route::post('/Poster/create', [PosterController::class, 'store']);
     });
 });
 
@@ -185,23 +188,23 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']); // neeeewwwww
 
     Route::prefix('rating')->group(function () {
-        Route::post('/create',[RatingController::class,'store']);
-        Route::post('/coachRate',[RatingController::class,'coachRate']);
+        Route::post('/create', [RatingController::class, 'store']);
+        Route::post('/coachRate', [RatingController::class, 'coachRate']);
     });
 
     Route::group(['prefix' => 'products'], function () {
         Route::get('/allProducts', [ProductController::class, 'index']);
         Route::get('/getByid/{product}', [ProductController::class, 'show']);
-        Route::get('/mostSales',[ProductController::class,'mostSales']);
-        Route::get('/common',[ProductController::class,'common']);
-        Route::post('/search',[ProductController::class,'search']);
-        Route::post('/catWithProduct',[CatproductController::class,'index']);
+        Route::get('/mostSales', [ProductController::class, 'mostSales']);
+        Route::get('/common', [ProductController::class, 'common']);
+        Route::post('/search', [ProductController::class, 'search']);
+        Route::post('/catWithProduct', [CatproductController::class, 'index']);
         Route::get('/GetFavoritesList', [FavoriteController::class, 'GetProductFavoritesList']);
         Route::get('/AddproductToFavoritesList/{product}', [FavoriteController::class, 'AddProductToFavoritesList']);
         Route::get('/{product}/isfav', [FavoriteController::class, 'isProductFavorite']);
         Route::delete('/deleteFromFavorite/{product}', [FavoriteController::class, 'deleteProductFromFavorite']);
+        Route::get('/poster/all', [PosterController::class, 'index']);
     });
-
 });
 
 

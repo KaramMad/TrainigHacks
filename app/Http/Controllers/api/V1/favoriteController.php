@@ -61,7 +61,7 @@ class FavoriteController extends Controller
         });
         return response()->json([
             'message' => 'success',
-            'meal' => $favs,
+            'products' => $favs,
         ]);
     }
     public function isFavorite(Meal $meal)
