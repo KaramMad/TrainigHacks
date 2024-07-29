@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\api\V1;
 
-use App\Http\Requests\StoreRatingRequest;
-use App\Models\Coach;
-use App\Models\Rating;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
 
-class RatingController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,26 +27,23 @@ class RatingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRatingRequest $request)
+    public function store(StoreOrderRequest $request)
     {
-        $data=$request->validated();
-        $user=Auth::user();
-        $coach=Coach::find($data['rateable_id']);
-        
-        $data['user_id']=$user->id;
-        $coach->ratings()->create($data);
-        return $this->success($data,'rating successfully');
+        //
     }
 
     /**
      * Display the specified resource.
      */
-
+    public function show(Order $order)
+    {
+        //
+    }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rating $rating)
+    public function edit(Order $order)
     {
         //
     }
@@ -56,7 +51,7 @@ class RatingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rating $rating)
+    public function update(UpdateOrderRequest $request, Order $order)
     {
         //
     }
@@ -64,7 +59,7 @@ class RatingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rating $rating)
+    public function destroy(Order $order)
     {
         //
     }

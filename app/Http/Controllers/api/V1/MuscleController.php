@@ -25,12 +25,12 @@ class MuscleController extends Controller
             $query->where('level',request('level'));
         }])->get();
         foreach ($muscles as $muscle) {
-            $muscle->exercise_count = $muscle->exercises->count();
-            $muscle->total_calories = $muscle->exercises->sum('calories');
-            $muscle->total_time = $muscle->exercises->sum('time');
-            $muscle->level=$muscle->muscleLevels->first()->level;
-            $muscle->men_image=$muscle->muscleLevels->first()->men_image;
-            $muscle->women_image=$muscle->muscleLevels->first()->women_image;
+            $muscle['exercise_count'] = $muscle->exercises->count();
+            $muscle['total_calories'] = $muscle->exercises->sum('calories');
+            $muscle['total_time'] = $muscle->exercises->sum('time');
+            $muscle['level']=$muscle->muscleLevels->first()->level;
+            $muscle['men_image']=$muscle->muscleLevels->first()->men_image;
+            $muscle['women_image']=$muscle->muscleLevels->first()->women_image;
         }
         $muscles->makeHidden('muscleLevels');
         $muscles->makeHidden('exercises');

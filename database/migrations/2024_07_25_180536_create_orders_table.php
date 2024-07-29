@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('color_products', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('color')->index();
+            $table->foreignId('user_id')->constrained();
+            $table->enum('status',['pending','sent','recieved'])->default('pending');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('color_products');
+        Schema::dropIfExists('orders');
     }
 };

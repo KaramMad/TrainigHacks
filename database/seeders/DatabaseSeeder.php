@@ -18,25 +18,25 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Admin::factory()->create([
-            'name'=>'karam',
-            'phone_number'=>'0943365119',
-            'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
+            'name' => 'karam',
+            'phone_number' => '0943365119',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
         \App\Models\Coach::create([
-            'name'=>'karam',
-            'phone_number'=>'0943365119',
-            'bio'=>'fight for your success',
-            'description'=>'funny',
-            'age'=>'21',
-            'price'=>'5000',
-            'image'=>'Profiles/Ammis.jpg',
-            'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
+            'name' => 'karam',
+            'phone_number' => '0943365119',
+            'bio' => 'fight for your success',
+            'description' => 'funny',
+            'age' => '21',
+            'price' => '5000',
+            'image' => 'Profiles/Ammis.jpg',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
         \App\Models\User::create([
-            'name'=>'karam',
-            'email'=>'karamalmadne@gmail.com',
-            'target'=>'build_muscle',
-            'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
+            'name' => 'karam',
+            'email' => 'karamalmadne@gmail.com',
+            'target' => 'build_muscle',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
         $this->call(ExerciseTypeSeeder::class);
         $this->call([ChallengeSeeder::class]);
@@ -51,7 +51,13 @@ class DatabaseSeeder extends Seeder
         $this->call(ExerciseSeeder::class);
         $this->call(IngredientSeeder::class);
         $this->call(MealSeeder::class);
-        $this->call([CatproductSeeder::class,ProductColorSeeder::class,ProductSizeSeeder::class]);
-        $this->call(ProductSeeder::class);
+        $this->call([CatproductSeeder::class, ProductColorSeeder::class, ProductSizeSeeder::class]);
+        $this->call([SubCatgroiesSeeder::class, ProductSeeder::class]);
+        for ($i = 0; $i < 5; $i++) {
+
+            \App\Models\Poster::create([
+                'image' => 'ProductPosters/untitled.jpg',
+            ]);
+        }
     }
 }

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('color_products', function (Blueprint $table) {
+        Schema::create('posters', function (Blueprint $table) {
             $table->id();
-            $table->string('color')->index();
+            $table->string('image');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('color_products');
+        Schema::dropIfExists('posters');
     }
 };

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\api\V1;
 
+use App\Http\Requests\SearchProductRequest;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Traits\ImageTrait;
+use GuzzleHttp\Psr7\Request;
 
 class ProductController extends Controller
 {
@@ -16,17 +18,43 @@ class ProductController extends Controller
     public function index()
     {
         $data=Product::orderBy('id')->latest()->with('colors')->with('sizes')->get();
+        $data=$data->map(function($product){
+            $product['isfavorite']=$product->isfav();
+            return $product;
+        });
+        return $this->success($data);
+    }
+    public function adminIndex()
+    {
+        $data=Product::orderBy('id')->latest()->with('colors')->with('sizes')->get();
         return $this->success($data);
     }
     public function mostSales(){
         $data=Product::with(['colors','sizes'])->orderBy('sales_count','desc')->take(10)->get();
+        $data=$data->map(function($product){
+            $product['isfavorite']=$product->isfav();
+            return $product;
+        });
         return $this->success($data);
     }
     public function common(){
         $data=Product::with(['colors','sizes'])->orderBy('view_count','desc')->take(10)->get();
+        $data=$data->map(function($product){
+            $product['isfavorite']=$product->isfav();
+            return $product;
+        });
         return $this->success($data);
     }
 
+    public function search(SearchProductRequest $request){
+        $data=$request->validated();
+        $data=Product::latest()->filter(request(['search_text','category','brand']))->take(10)->get();
+        $data=$data->map(function($product){
+            $product['isfavorite']=$product->isfav();
+            return $product;
+        });
+        return $this->success($data);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -58,6 +86,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product=$product->load(['colors','sizes']);
+        $product['isfavorite']=$product->isfav();
         return $this->success($product);
     }
 

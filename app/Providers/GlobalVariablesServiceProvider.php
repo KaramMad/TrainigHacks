@@ -128,11 +128,11 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'yellow',
     ];
     protected const product_size =[
-        'Xsmall',
-        'small',
-        'large',
-        'Xlarge',
-        'Xlarge',
+        'XS',
+        'S',
+        'L',
+        'XL',
+        'XXL',
     ];
     protected const category_porduct_image=[
         'ProductCategory/Clothes.png',
@@ -146,6 +146,16 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         'meter',
         'km',
     ];
+    protected const sub_Categories=[
+        'shorts',
+        'pants',
+        'shirts',
+        'T-shirt',
+        'socks',
+    ];
+    public static function sub_Categories(){
+        return self::sub_Categories;
+    }
     public static function product_category():array{
         return self::product_category;
     }

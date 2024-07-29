@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\api\V1;
 
-use App\Http\Requests\StoreRatingRequest;
-use App\Models\Coach;
-use App\Models\Rating;
+use App\Http\Requests\PosterRequest;
+use App\Models\Poster;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class RatingController extends Controller
+class PosterController extends Controller
 {
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $data=Poster::inRandomOrder()->take(3)->get();
+        return $this->success($data);
     }
 
     /**
@@ -29,26 +30,28 @@ class RatingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRatingRequest $request)
+    public function store(PosterRequest $request)
     {
         $data=$request->validated();
-        $user=Auth::user();
-        $coach=Coach::find($data['rateable_id']);
-        
-        $data['user_id']=$user->id;
-        $coach->ratings()->create($data);
-        return $this->success($data,'rating successfully');
+        if($request->hasFile('image')){
+            $data['image']=ImageTrait::store($data['image'],'ProductPosters');
+        }
+        return $this->success($data);
+
     }
 
     /**
      * Display the specified resource.
      */
-
+    public function show(Poster $poster)
+    {
+        //
+    }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rating $rating)
+    public function edit(Poster $poster)
     {
         //
     }
@@ -56,7 +59,7 @@ class RatingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rating $rating)
+    public function update(Request $request, Poster $poster)
     {
         //
     }
@@ -64,7 +67,7 @@ class RatingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rating $rating)
+    public function destroy(Poster $poster)
     {
         //
     }

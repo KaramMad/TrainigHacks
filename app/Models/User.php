@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -69,5 +71,11 @@ class User extends Authenticatable
     public function postsWithBio()
     {
         return $this->posts()->with('user', 'postable');
+    }
+    public function favorite():BelongsToMany{
+        return $this->belongsToMany(Product::class,'product_favorites');
+    }
+    public function orders():HasMany{
+        return $this->hasMany(Product::class);
     }
 }
