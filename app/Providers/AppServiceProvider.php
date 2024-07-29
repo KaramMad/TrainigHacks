@@ -4,15 +4,16 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Services\UserService;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
+    public function register()
     {
-        //
+
     }
 
     /**
@@ -34,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
      */
 
     public static function apiResponse(
-        string $message = "success",$data = null,
+        string $message = "success",
+        $data = null,
         string $dataKey = 'data',
         bool $status = true,
         int $error = 200,

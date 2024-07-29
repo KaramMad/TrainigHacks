@@ -24,6 +24,8 @@ return new class extends Migration
             $table->enum('diseases',['heart','knee','breath','none','diabetes','blood_pressure'])->nullable()->default('none');
             $table->enum('activity',['Sedentary','Lightly_Active','Very_Active']);
             $table->time('preferred_time')->nullable();
+            $table->unsignedBiginteger('notification_id')->unsigned()->nullable();
+            $table->foreign('notification_id')->references('id')->on('notifications')->onDelete('cascade')->onUpdate('cascade');
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

@@ -55,7 +55,7 @@ Route::group([
     Route::post('store', [MealController::class, 'store']);
     Route::post('show', [MealController::class, 'show']);
     Route::delete('destroy/{id}', [MealController::class, 'destroy']);
-    Route::get('index', [MealController::class, 'index']);
+    Route::get('meal/index', [MealController::class, 'index']);
     Route::post('meal/store', [MealController::class, 'store']);
     Route::post('ingredient/store', [IngredientController::class, 'store']);
     Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
@@ -110,6 +110,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
     Route::post('meal/store', [AdminMealController::class, 'store']);
     Route::get('meal/getAll', [AdminMealController::class, 'getAllMeal']);
+    Route::delete('meal/destroy/{id}', [AdminMealController::class, 'destroy']);
     Route::post('ingredient/store', [IngredientController::class, 'store']);
     Route::get('ingredient/getAll', [IngredientController::class, 'getAllIngredients']);
     Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
