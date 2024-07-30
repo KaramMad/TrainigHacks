@@ -43,10 +43,10 @@ class CoachPlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show()
     {
         $coachId=Auth::id();
-        $data=coachPlan::with('exercises')->where('coach_id',$coachId)->where('plan_name',$request->plan_name)->get();
+        $data=coachPlan::with('exercises')->where('coach_id',$coachId)->where('plan_name',request('plan_name'))->get();
         return $this->success($data);
     }
 

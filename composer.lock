@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b59f17ee9efe55f2bb8f21f25c3c2f28",
+    "content-hash": "b5668996013fd26350bbc8124c9c54d8",
     "packages": [
         {
             "name": "brick/math",
@@ -2545,6 +2545,85 @@
             "time": "2021-06-28T04:27:21+00:00"
         },
         {
+            "name": "mgcodeur/laravel-currency-converter",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mgcodeur/laravel-currency-converter.git",
+                "reference": "a3f8d14a7c1ba9416aadefaef1f3cbc5905b993c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mgcodeur/laravel-currency-converter/zipball/a3f8d14a7c1ba9416aadefaef1f3cbc5905b993c",
+                "reference": "a3f8d14a7c1ba9416aadefaef1f3cbc5905b993c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^10.0||^11.0",
+                "php": "^8.1||^8.2",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.0.1",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.10.0||^8.1.1",
+                "orchestra/testbench": "^8.22.0||^9.0.0",
+                "pestphp/pest": "^2.20",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mgcodeur\\CurrencyConverter\\CurrencyConverterServiceProvider"
+                    ],
+                    "aliases": {
+                        "CurrencyConverter": "Mgcodeur\\CurrencyConverter\\Facades\\CurrencyConverter"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mgcodeur\\CurrencyConverter\\": "src/",
+                    "Mgcodeur\\CurrencyConverter\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mgcodeur",
+                    "email": "mgcodeur@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Currency Converter: Effortlessly convert currencies in your Laravel applications, no API key required. It's fast, easy, and completely free.",
+            "homepage": "https://github.com/mgcodeur/laravel-currency-converter",
+            "keywords": [
+                "laravel",
+                "laravel-currency-converter",
+                "mgcodeur"
+            ],
+            "support": {
+                "issues": "https://github.com/mgcodeur/laravel-currency-converter/issues",
+                "source": "https://github.com/mgcodeur/laravel-currency-converter/tree/1.0.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mgcodeur",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-04-29T09:06:16+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.6.0",
             "source": {
@@ -4139,6 +4218,66 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.16.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53",
+                "reference": "ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.28|^10.0|^11.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7|^8.0",
+                "pestphp/pest": "^1.22",
+                "phpunit/phpunit": "^9.5.24",
+                "spatie/pest-plugin-test-time": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.16.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-20T07:29:11+00:00"
         },
         {
             "name": "stella-maris/clock",

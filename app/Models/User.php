@@ -76,6 +76,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Product::class,'product_favorites');
     }
     public function orders():HasMany{
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Order::class);
+    }
+    public function subscribedCoaches():BelongsToMany
+    {
+        return $this->belongsToMany(Coach::class,'subscriptions')->withPivot('status','start_date','end_date');
     }
 }
