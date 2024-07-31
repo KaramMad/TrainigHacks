@@ -63,22 +63,20 @@ class ExerciseController extends Controller
         $data = $request->validated();
         $exercise = Exercise::find(Auth::id());
         if ($request->hasFile('gif')) {
-            $data['image'] = ImageTrait::store($data['image'], 'Exercises');
+            $data['gif'] = ImageTrait::store($data['gif'], 'Exercises');
         }
         $exercise = Exercise::create($data);
         $exercise->categories()->attach($request->category);
         $exercise->muscles()->attach($request->muscle);
         $exercise->focusAreas()->attach($request->focus_area);
-        return response()->json([
-            'message' => "Exercises added successfully",
-        ]);
+        return $this->success($data,'create exercise successfully');
     }
     public function createExercisePlan(StoreExercisePlanReques $request)
     {
         $data = $request->validated();
         $exercise = Exercise::find(Auth::id());
         if ($request->hasFile('gif')) {
-            $data['image'] = ImageTrait::store($data['image'], 'Exercises');
+            $data['gif'] = ImageTrait::store($data['gif'], 'Exercises');
         }
         $coachId=Auth::id();
         $plan = coachPlan::where('id', $request->plan_id)
@@ -95,7 +93,7 @@ class ExerciseController extends Controller
         $exercise->muscles()->attach($request->muscle);
         $exercise->focusAreas()->attach($request->focus_area);
         $exercise->days()->attach($request->day_id);
-        $exercise->coachPlan()->attach($request->plan_id);
+        $exercise->coachPlans()->attach($request->plan_id);
         return response()->json([
             'message' => "Exercises added to Plan successfully",
         ]);
@@ -107,7 +105,7 @@ class ExerciseController extends Controller
         $data = $request->validated();
         $exercise = Exercise::find(Auth::id());
         if ($request->hasFile('gif')) {
-            $data['image'] = ImageTrait::store($data['image'], 'Exercises');
+            $data['gif'] = ImageTrait::store($data['gif'], 'Exercises');
         }
         $exercise = Exercise::create($data);
         $exercise->categories()->attach($request->category);

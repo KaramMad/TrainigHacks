@@ -2,6 +2,8 @@
 
 
 namespace App\Http\Controllers\api\V1;
+
+use App\Models\Exercise;
 use Illuminate\Http\Request;
 use App\Models\coachPlan;
 use App\Http\Requests\StorecoachPlanRequest;
@@ -15,8 +17,8 @@ class CoachPlanController extends Controller
      */
     public function index()
     {
-        $coachId=Auth::id();
-        $data=coachPlan::where('coach_id',$coachId)->get();
+        $coachId = Auth::id();
+        $data = coachPlan::where('coach_id', $coachId)->get();
         return $this->success($data);
     }
 
@@ -33,11 +35,11 @@ class CoachPlanController extends Controller
      */
     public function store(StorecoachPlanRequest $request)
     {
-        $data=$request->validated();
-        $coachId=Auth::id();
-        $data['coach_id']=$coachId;
-        $data=coachPlan::create($data);
-        return $this->success($data,'created Plan Successfully');
+        $data = $request->validated();
+        $coachId = Auth::id();
+        $data['coach_id'] = $coachId;
+        $data = coachPlan::create($data);
+        return $this->success($data, 'created Plan Successfully');
     }
 
     /**
@@ -45,8 +47,10 @@ class CoachPlanController extends Controller
      */
     public function show()
     {
-        $coachId=Auth::id();
-        $data=coachPlan::with('exercises')->where('coach_id',$coachId)->where('plan_name',request('plan_name'))->get();
+        $coachId = Auth::id();
+        $data = Exercise::wherehas('coachPlans',function ($query) use ($coachId){
+            $query->where('coach_id', $coachId)->where('coach_plans.id',request('coachPlanId'));
+        })->get();
         return $this->success($data);
     }
 
@@ -68,7 +72,7 @@ class CoachPlanController extends Controller
      */
     public function destroy($id)
     {
-        $coachId=Auth::id();
+        $coachId = Auth::id();
         $des = coachPlan::find($id);
         if ($des->coach_id != $coachId) {
             return response()->json(['Error' => 'You do not have permission to delete this Plan'], 422);

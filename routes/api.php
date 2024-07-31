@@ -47,10 +47,7 @@ use \App\Http\Controllers\api\V1\FatoorahController;
 
 //Coach Auth & Routes
 Route::post('coach/login', [CoachAuthController::class, 'coachLogin']);
-Route::post('/pay', [FatoorahController::class, 'payOrder']);
-Route::get('/', function () {
-    return view('welcome');
-});
+
 Route::get('/callback', [FatoorahController::class, 'callBack']);
 Route::get('/error', [FatoorahController::class, 'makePyamentRefunded']);
 Route::post('/makeRefund', [FatoorahController::class, 'makePyamentRefunded']);
@@ -201,8 +198,9 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::post('/coachRate', [RatingController::class, 'coachRate']);
     });
     Route::prefix('subscription')->group(function () {
-       Route::post('/create', [SubscriptionController::class, 'store']);
-       Route::get('/index', [SubscriptionController::class, 'index']);
+        Route::post('/create', [SubscriptionController::class, 'store']);
+        Route::get('/index', [SubscriptionController::class, 'index']);
+        Route::post('/pay', [FatoorahController::class, 'payOrder']);
     });
 
     Route::group(['prefix' => 'products'], function () {
@@ -221,6 +219,8 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::post('/order/create', [\App\Http\Controllers\api\V1\OrderController::class, 'store']);
         Route::get('/order/index', [\App\Http\Controllers\api\V1\OrderController::class, 'index']);
         Route::delete('/order/cancel/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'destroy']);
+        Route::post('/order/pay', [FatoorahController::class, 'payOrder']);
+
     });
 });
 

@@ -107,6 +107,7 @@ class FatoorahController extends Controller
                 //$currencies = CurrencyConverter::convert($yourOrder->total)->from('EUR')->to('KWD')->get();
                 if ($yourOrder->billable_type === "App\\Models\\Order") {
                     $yourOrder->billable->status = 'preparing';
+                    $yourOrder->billable->order_date=now();
                     $yourOrder->billable->save();
                     return $this->success($yourOrder, 'Paid Successfully');
                 } elseif ($yourOrder->billable_type === "App\Models\Subscription") {

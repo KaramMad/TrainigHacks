@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->enum('status',['pending','preparing','sent','received'])->default('pending');
+            $table->timestamp('order_date')->nullable();
             $table->timestamps();
         });
     }

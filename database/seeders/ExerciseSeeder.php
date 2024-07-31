@@ -31,7 +31,7 @@ class ExerciseSeeder extends Seeder
             $exercise->categories()->attach($category);
             $exercise->muscles()->attach($muscle);
             $exercise->days()->attach($day_id);
-            $exercise->coachPlan()->attach($plans);
+            $exercise->coachPlans()->attach($plans);
         }
     }
 }

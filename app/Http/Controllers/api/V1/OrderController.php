@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FatoorahServices;
+
 class OrderController extends Controller
 {
     /**
@@ -20,18 +21,28 @@ class OrderController extends Controller
     {
         $this->fatoorahServices = $fatoorahServices;
     }
+
     public function index()
     {
         $orders = Order::with(['user' => function ($query) {
             $query->select('id', 'name', 'email');
-        }, 'bill', 'products'=>function ($query) {
-            $query->select('products.id', 'products.name', 'products.price','quantity');
+        }, 'bill', 'products' => function ($query) {
+            $query->select('products.id', 'products.name', 'products.price', 'quantity');
         }]);
 
         if (Auth::guard('admin')->check()) {
             $orders = $orders->get();
+            $orders = $orders->map(function ($order) {
+                $order['product_count'] = $order->products->count();
+
+                return $order;
+            });
         } else {
             $orders = $orders->where('user_id', auth()->user()->id)->get();
+            $orders = $orders->map(function ($order) {
+                $order['product_count'] = $order->products->count();
+                return $order;
+            });
         }
 
         return $this->success($orders);
@@ -53,6 +64,7 @@ class OrderController extends Controller
         $order = $request->validated();
         $user = Auth::user();
         $order['user_id'] = $user['id'];
+        $order['order_date'] = now();
         $order = Order::create($order);
         $products = collect($request->products)->map(function ($product) {
             return [
@@ -106,10 +118,10 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        if($order->status!=='pending'){
-            return $this->failed('The order has been already processed cannot cancel',403);
+        if ($order->status !== 'pending') {
+            return $this->failed('The order has been already processed cannot cancel', 403);
         }
-        foreach ($order->products as $product){
+        foreach ($order->products as $product) {
             $product->increment('stock', $product->pivot->quantity);
         }
 //        $invoiceId=$order->bill->InvoiceId;

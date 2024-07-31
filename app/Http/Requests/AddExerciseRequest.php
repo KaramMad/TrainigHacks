@@ -30,7 +30,7 @@ class AddExerciseRequest extends FormRequest
             'calories' => 'required|numeric|max:130',
             'time' => 'required|',
             'reps' => 'required|numeric|max:12|',
-            'gif' => 'nullable|image|mimes:gif|max:2048',
+            'gif' => 'required|image|mimes:gif|max:2048',
             'video_link' => 'required|string',
             'target' => 'required|string|in:lose_weight,build_muscle,keep_fit',
             'level' => 'required|in:beginner,intermediate,advanced',

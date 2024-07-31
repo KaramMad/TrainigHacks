@@ -42,7 +42,7 @@ class Exercise extends Model
     public function days(): BelongsToMany{
         return $this->belongsToMany(TrainingDay::class,'training_day_exercises');
     }
-    public function coachPlan(): BelongsToMany{
+    public function coachPlans(): BelongsToMany{
         return $this->belongsToMany(coachPlan::class,'exercise_plan','exercise_id','plan_id');
     }
 }
