@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\api\V1\SubscriptionController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\V1\AuthController;
 use App\Http\Controllers\api\V1\AdminController;
@@ -13,8 +12,6 @@ use App\Http\Controllers\api\V1\ChallengeController;
 use App\Http\Controllers\api\V1\ExerciseController;
 use App\Http\Controllers\api\V1\MuscleController;
 use App\Http\Controllers\api\V1\IngredientController;
-use App\Models\Category;
-use App\Models\Exercise;
 use App\Http\Controllers\api\V1\CoachController;
 use App\Http\Controllers\api\V1\MealController;
 use App\Http\Controllers\api\V1\AdminMealController;
@@ -29,9 +26,7 @@ use App\Http\Controllers\api\V1\CoachPlanController;
 use App\Http\Controllers\api\V1\PosterController;
 use App\Http\Controllers\api\V1\ProductController;
 use App\Http\Controllers\api\V1\RatingController;
-use App\Models\ExerciseType;
 use App\Models\Favorite;
-use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\api\V1\FatoorahController;
 
 /*
@@ -47,10 +42,11 @@ use \App\Http\Controllers\api\V1\FatoorahController;
 
 //Coach Auth & Routes
 Route::post('coach/login', [CoachAuthController::class, 'coachLogin']);
-
 Route::get('/callback', [FatoorahController::class, 'callBack']);
-Route::get('/error', [FatoorahController::class, 'makePyamentRefunded']);
-Route::post('/makeRefund', [FatoorahController::class, 'makePyamentRefunded']);
+Route::get('/error', function (){
+    return response()->json(['message'=>'something went wrong,try again later'],422);
+});
+Route::post('/makeRefund', [FatoorahController::class, 'makePaymentRefunded']);
 
 Route::group([
     'prefix' => 'coach',
@@ -161,8 +157,6 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('challenge/getAll', [ChallengeController::class, 'index']);
     Route::post('exercise/gender', [ExerciseController::class, 'filtering']);
     Route::get('exercise/getall', [ExerciseController::class, 'index']);
-    Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
-    Route::post('exercise/exercisePlan', [ExerciseController::class, 'showPlanExerciseByDay']);
     Route::get('exercise/getall/{id}', [ExerciseController::class, 'show']);
     Route::get('meal/GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
     Route::get('meal/AddMealToFavoritesList/{meal}', [FavoriteController::class, 'AddMealToFavoritesList']);
@@ -177,32 +171,22 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::post('admin/meal/search', [AdminMealController::class, 'search']);
     Route::get('admin/meal/getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
     Route::post('admin/meal/showByCategory', [AdminMealController::class, 'showByCategory']);
-    Route::post('coach/meal/show', [MealController::class, 'show']);
     Route::get('ingredient/index/{id}', [IngredientController::class, 'index']);
     Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
-    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
-    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
-    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
-    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
-    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
-    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
-    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
-    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
-    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
-    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
-    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
-    Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']); // neeeewwwww
+    Route::post('post/addpost', [PostController::class, 'store']);
+    Route::get('post/showAllPost', [PostController::class, 'index']);
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
+    Route::post('comment/addcomment', [CommentController::class, 'store']);
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']);
+    Route::get('likePost/{id}', [likeController::class, 'likePost']);
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']);
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']);
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
+    Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']);
 
-    Route::prefix('rating')->group(function () {
-        Route::post('/create', [RatingController::class, 'store']);
-        Route::post('/coachRate', [RatingController::class, 'coachRate']);
-    });
-    Route::prefix('subscription')->group(function () {
-        Route::post('/create', [SubscriptionController::class, 'store']);
-        Route::get('/index', [SubscriptionController::class, 'index']);
-        Route::post('/pay', [FatoorahController::class, 'payOrder']);
-    });
-
+    // Store-Section
     Route::group(['prefix' => 'products'], function () {
         Route::get('/allProducts', [ProductController::class, 'index']);
         Route::get('/getByid/{product}', [ProductController::class, 'show']);
@@ -221,6 +205,22 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::delete('/order/cancel/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'destroy']);
         Route::post('/order/pay', [FatoorahController::class, 'payOrder']);
 
+    });
+
+    // Premium-section
+    Route::prefix('subscription')->group(function () {
+        Route::post('/create', [SubscriptionController::class, 'store']);
+        Route::get('/index', [SubscriptionController::class, 'index']);
+        Route::post('/pay', [FatoorahController::class, 'payOrder']);
+    });
+    Route::middleware(['subscription'])->group(function () {
+
+        Route::prefix('rating')->group(function () {
+            Route::post('/create/{coach_id}', [RatingController::class, 'store']);
+        });
+        Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
+        Route::post('exercise/exercisePlan/{coach_id}', [ExerciseController::class, 'showPlanExerciseByDay']);
+        Route::post('coach/meal/show/{coach_id}', [MealController::class, 'show']);
     });
 });
 

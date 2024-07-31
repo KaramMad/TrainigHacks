@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api\V1;
 
+use App\Models\Subscription;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\AppServiceProvider as AppSP;
 use App\Http\Requests\AddExerciseRequest;
@@ -121,7 +122,7 @@ class ExerciseController extends Controller
     {
         $data = $request->validated();
         $user = Auth::user();
-        $data=Exercise::withwherehas('coachPlan',function($query){
+        $data=Exercise::withwherehas('coachPlans',function($query){
             $query->where('coach_id',request('coach_id'));
         })->withwherehas('days',function($query){
             $query->where('training_days.id',request('day_id'));

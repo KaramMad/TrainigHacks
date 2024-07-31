@@ -152,7 +152,7 @@ class FatoorahController extends Controller
 
     }
 
-    public function makePyamentRefunded(Request $request)
+    public function makePaymentRefunded(Request $request)
     {
         $data = [
             'Key' => 4217201,

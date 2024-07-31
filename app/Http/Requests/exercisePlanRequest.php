@@ -25,7 +25,6 @@ class exercisePlanRequest extends FormRequest
         return [
             'day_id'=>'required|exists:training_days,id',
             'choose'=>'required|in:equipment,no_equipment',
-            'coach_id'=>'required|',
         ];
     }
 

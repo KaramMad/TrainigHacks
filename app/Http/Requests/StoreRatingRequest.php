@@ -24,7 +24,7 @@ class StoreRatingRequest extends FormRequest
     {
         return [
             'rating'=>'required|integer|min:1|max:5',
-            'rateable_id'=>'required|integer',
+
 
         ];
     }

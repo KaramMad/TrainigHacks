@@ -80,6 +80,7 @@ class OrderController extends Controller
         foreach ($order->products as $product) {
             $product->decrement('stock', $product->pivot->quantity);
             $total += $product->pivot->quantity * $product->price;
+            $order['product_count']=$order->products->count();
         }
         $bill = new Bill();
 
