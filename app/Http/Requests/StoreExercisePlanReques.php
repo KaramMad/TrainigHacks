@@ -37,7 +37,6 @@ class StoreExercisePlanReques extends FormRequest
             'focus_area' => 'required|array',
             'muscle'=>'required|array',
             'muscle.*.id'=>'exists:muscles,id',
-            'category' => 'required|array',
             'day_id'=>'required|array',
             'day_id.*.id'=>'exists:training_days',
             'plan_id'=>'required|array',

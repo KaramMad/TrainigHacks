@@ -106,15 +106,18 @@ class FatoorahController extends Controller
             if ($yourOrder) {
                 //$currencies = CurrencyConverter::convert($yourOrder->total)->from('EUR')->to('KWD')->get();
                 if ($yourOrder->billable_type === "App\\Models\\Order") {
+                    $yourOrder->paid = true;
+                    $yourOrder->save();
                     $yourOrder->billable->status = 'preparing';
                     $yourOrder->billable->order_date=now();
                     $yourOrder->billable->save();
-                    return $this->success($yourOrder, 'Paid Successfully');
+                    return redirect('https://tan-dionne-10.tiiny.site/');
                 } elseif ($yourOrder->billable_type === "App\Models\Subscription") {
                     $yourOrder->paid = true;
+                    $yourOrder->save();
                     $yourOrder->billable->status = true;
                     $yourOrder->billable->save();
-                    return $this->success($yourOrder, 'Paid Successfully');
+                    return redirect('https://tan-dionne-10.tiiny.site/');
 
                 } else {
                     return response()->json(['status' => false]);
@@ -134,11 +137,9 @@ class FatoorahController extends Controller
 
                     $yourOrder->billable->delete();
                     $yourOrder->billable->save();
-                    return $this->success($yourOrder, 'Paid Successfully');
                 } elseif ($yourOrder->billable_type === "App\Models\Subscription") {
                     $yourOrder->billable->delete();
                     $yourOrder->billable->save();
-                    return $this->success($yourOrder, 'Paid Successfully');
 
                 } else {
                     return response()->json(['status' => false]);
@@ -148,7 +149,7 @@ class FatoorahController extends Controller
                 return $this->failed('No order found with this invoiceId');
             }
         }
-        return response()->json(["error" => 'error', 'status' => false], 404);
+        return redirect('https://green-lorna-95.tiiny.site/');
 
     }
 

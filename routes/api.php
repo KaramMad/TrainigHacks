@@ -43,8 +43,8 @@ use \App\Http\Controllers\api\V1\FatoorahController;
 //Coach Auth & Routes
 Route::post('coach/login', [CoachAuthController::class, 'coachLogin']);
 Route::get('/callback', [FatoorahController::class, 'callBack']);
-Route::get('/error', function (){
-    return response()->json(['message'=>'something went wrong,try again later'],422);
+Route::get('/error', function () {
+    return response()->json(['message' => 'something went wrong,try again later'], 422);
 });
 Route::post('/makeRefund', [FatoorahController::class, 'makePaymentRefunded']);
 
@@ -107,10 +107,12 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::post('exercise/addNewExercises', [ExerciseController::class, 'store']);
     Route::post('exercise/addNewExercisesType', [ExerciseController::class, 'createExerciseType']);
     Route::delete('exercise/deleteExercise/{id}', [ExerciseController::class, 'destroy']);
+    Route::get('exercise/getall', [ExerciseController::class, 'index']);
     Route::post('exerciseType/addExerciseType', [ExerciseTypeController::class, 'store']);
     Route::delete('exerciseType/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
+    Route::get('challenge/getAll', [ChallengeController::class, 'index']);
     Route::post('meal/store', [AdminMealController::class, 'store']);
     Route::get('meal/getAll', [AdminMealController::class, 'getAllMeal']);
     Route::post('ingredient/store', [IngredientController::class, 'store']);

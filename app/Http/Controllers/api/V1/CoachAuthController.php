@@ -25,6 +25,11 @@ class CoachAuthController extends Controller
             $rating['rating'] = $rating->averageRating();
             return $rating;
         });
+        $user=Auth::user();
+        foreach ($coach as $coaches) {
+
+        $coaches['subscribed']=$user->subscribedCoaches()->where('coach_id', $coaches->id)->where('status',true)->exists();
+        }
         if (!$coach) {
             return AppSP::apiResponse("There is no coaches has been found", null, 'data', false, 404);
         }

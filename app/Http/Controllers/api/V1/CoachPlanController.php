@@ -48,7 +48,7 @@ class CoachPlanController extends Controller
     public function show()
     {
         $coachId = Auth::id();
-        $data = Exercise::wherehas('coachPlans',function ($query) use ($coachId){
+        $data = Exercise::withwherehas('coachPlans',function ($query) use ($coachId){
             $query->where('coach_id', $coachId)->where('coach_plans.id',request('coachPlanId'));
         })->get();
         return $this->success($data);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\api\V1;
 
-use App\Models\Subscription;
+
 use Illuminate\Support\Facades\Auth;
 use App\Providers\AppServiceProvider as AppSP;
 use App\Http\Requests\AddExerciseRequest;
@@ -11,16 +11,14 @@ use App\Http\Requests\ExercisesTypeRequest;
 use App\Http\Requests\StoreExercisePlanReques;
 use App\Models\coachPlan;
 use App\Models\Exercise;
-use App\Models\ExerciseType;
 use App\Models\Muscle;
-use App\Models\TrainingDay;
 use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 
 class ExerciseController extends Controller
 {
     use ImageTrait;
+
     public function filtering(Request $request)
     {
         $exercise = Muscle::with(['exercises' => function ($query) {
@@ -37,6 +35,7 @@ class ExerciseController extends Controller
         });
         return AppSP::apiResponse("success", $exercise, 'exercise', true, 200);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -70,8 +69,9 @@ class ExerciseController extends Controller
         $exercise->categories()->attach($request->category);
         $exercise->muscles()->attach($request->muscle);
         $exercise->focusAreas()->attach($request->focus_area);
-        return $this->success($data,'create exercise successfully');
+        return $this->success($data, 'create exercise successfully');
     }
+
     public function createExercisePlan(StoreExercisePlanReques $request)
     {
         $data = $request->validated();
@@ -79,9 +79,9 @@ class ExerciseController extends Controller
         if ($request->hasFile('gif')) {
             $data['gif'] = ImageTrait::store($data['gif'], 'Exercises');
         }
-        $coachId=Auth::id();
+        $coachId = Auth::id();
         $plan = coachPlan::where('id', $request->plan_id)
-            ->where('coach_id',$coachId)
+            ->where('coach_id', $coachId)
             ->first();
 
         if (!$plan) {
@@ -90,7 +90,6 @@ class ExerciseController extends Controller
             ], 403);
         }
         $exercise = Exercise::create($data);
-        $exercise->categories()->attach($request->category);
         $exercise->muscles()->attach($request->muscle);
         $exercise->focusAreas()->attach($request->focus_area);
         $exercise->days()->attach($request->day_id);
@@ -115,6 +114,7 @@ class ExerciseController extends Controller
         $exercise = Exercise::with('focusAreas')->with('categories')->with('muscles')->get();
         return $this->success($exercise, 'exercise added successfully to ExerciseType');
     }
+
     /**
      * Display the specified resource.
      */
@@ -122,11 +122,11 @@ class ExerciseController extends Controller
     {
         $data = $request->validated();
         $user = Auth::user();
-        $data=Exercise::withwherehas('coachPlans',function($query){
-            $query->where('coach_id',request('coach_id'));
-        })->withwherehas('days',function($query){
-            $query->where('training_days.id',request('day_id'));
-        })->where('choose',$request->choose)->where('target',$user->target)->with('focusAreas')->get();
+        $data = Exercise::withwherehas('coachPlans', function ($query) {
+            $query->where('coach_id', request('coach_id'));
+        })->withwherehas('days', function ($query) {
+            $query->where('training_days.id', request('day_id'));
+        })->where('choose', $request->choose)->where('target', $user->target)->with('focusAreas')->get();
         return $this->success($data);
     }
 
@@ -157,6 +157,6 @@ class ExerciseController extends Controller
             Exercise::where('id', '=', $id)->delete();
             return response()->json('success');
         }
-        return $this->failed('not found',404);
+        return $this->failed('not found', 404);
     }
 }

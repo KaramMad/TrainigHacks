@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FatoorahServices;
+use Mgcodeur\CurrencyConverter\Facades\CurrencyConverter;
 
 class OrderController extends Controller
 {
@@ -80,7 +81,8 @@ class OrderController extends Controller
         foreach ($order->products as $product) {
             $product->decrement('stock', $product->pivot->quantity);
             $total += $product->pivot->quantity * $product->price;
-            $order['product_count']=$order->products->count();
+            $order['product_count'] = $order->products->count();
+            $order['total'] = $total;
         }
         $bill = new Bill();
 
@@ -119,23 +121,52 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        if ($order->status !== 'pending') {
-            return $this->failed('The order has been already processed cannot cancel', 403);
-        }
-        foreach ($order->products as $product) {
-            $product->increment('stock', $product->pivot->quantity);
-        }
-//        $invoiceId=$order->bill->InvoiceId;
-//        $total=$order->bill->total;
 
-//        $data = [
-//            'Key' => 4221222,
-//            'KeyType' => 'invoiceId',
-//            'RefundChargeOnCustomer' => false,
-//            'Amount' => 3476,
-//        ];
-//        return $this->fatoorahServices->makeRefund($data);
-        $order->delete();
-        return $this->success($order, 'order deleted successfully');
+        if ($order->status == 'preparing') {
+            $invoiceId = $order->bill->InvoiceId;
+            $total = $order->bill->total;
+            $currencies = CurrencyConverter::convert($total)->from('EUR')->to('KWD')->get();
+            if ($currencies > 500) {
+                $currencies -= 500;
+                $order->bill->total = CurrencyConverter::convert(500)->from('KWD')->to('EUR')->get();
+            }
+
+            $data = [
+                'Key' => $invoiceId,
+                'KeyType' => 'invoiceId',
+                'RefundChargeOnCustomer' => false,
+                'Amount' => 10,
+            ];
+
+            $response = $this->fatoorahServices->makeRefund($data);
+            if ($response['IsSuccess']) {
+                $RefundId = $response['Data']['RefundId'];
+                $order->bill->RefundId = $RefundId;
+                $order->bill->save();
+            }
+            foreach ($order->products as $product) {
+                $product->increment('stock', $product->pivot->quantity);
+            }
+            $data = [
+                'Key' => $order->bill->RefundId,
+                'KeyType' => 'refundId',
+
+            ];
+            $order->delete();
+
+
+            return $this->success($order, 'order deleted successfully');
+        } else if ($order->status !== 'pending')
+            return $this->failed('The order has been already processed cannot cancel', 403);
+        else {
+            foreach ($order->products as $product) {
+                $product->increment('stock', $product->pivot->quantity);
+            }
+
+            $order->delete();
+            return $this->success($order, 'order deleted successfully');
+        }
+
+
     }
 }

@@ -15,7 +15,7 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        $user=Auth::user();
+        $user = Auth::user();
         $user->subscribedCoaches;
         return $this->success($user);
     }
@@ -37,22 +37,30 @@ class SubscriptionController extends Controller
         $user = Auth::user();
 
         // Check if the user is already subscribed to the coach
-        if ($user->subscribedCoaches()->where('coach_id', $data['coach_id'])->exists()) {
+        if ($user->subscribedCoaches()->where('coach_id', $data['coach_id'])->where('status', true)->exists()) {
             return $this->failed('You are already subscribed to this coach.');
         }
+         if($user->subscribedCoaches()->where('coach_id', $data['coach_id'])->where('status', false)->exists()){
+          $temp=Subscription::where('coach_id', $data['coach_id'])->where('status', false)->first();
+          $temp->bill()->delete();
+          $temp->delete();
+         }
 
-        $data=Subscription::create([
+
+
+
+        $data = Subscription::create([
             'coach_id' => $data['coach_id'],
-            'user_id'=>$user->id,
-            'start_date'=>now(),
-            'end_date'=>now()->addMonth(),
+            'user_id' => $user->id,
+            'start_date' => now(),
+            'end_date' => now()->addMonth(),
         ]);
 
-        $bill=new Bill();
-        $bill['total']=$data->coach->price;
+        $bill = new Bill();
+        $bill['total'] = $data->coach->price;
         $data->bill()->save($bill);
 
-        return $this->success($data,'Subscription created successfully.');
+        return $this->success($data, 'Subscription created successfully.');
 
 
     }

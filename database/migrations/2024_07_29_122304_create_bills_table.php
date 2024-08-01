@@ -16,8 +16,8 @@ return new class extends Migration
             $table->morphs('billable');
             $table->boolean('paid')->default(false);
             $table->unsignedFloat('total');
-            $table->string('InvoiceId')->nullable();
-            $table->string('RefundId')->nullable();
+            $table->bigInteger('InvoiceId')->nullable();
+            $table->bigInteger('RefundId')->nullable();
             $table->timestamps();
         });
     }
