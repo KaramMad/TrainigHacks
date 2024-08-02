@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -73,5 +75,15 @@ class User extends Authenticatable
     public function notifications()
     {
         return $this->belongsToMany(Notification::class, 'notification_users');
+    }
+    public function favorite():BelongsToMany{
+        return $this->belongsToMany(Product::class,'product_favorites');
+    }
+    public function orders():HasMany{
+        return $this->hasMany(Order::class);
+    }
+    public function subscribedCoaches():BelongsToMany
+    {
+        return $this->belongsToMany(Coach::class,'subscriptions')->withPivot('status','start_date','end_date');
     }
 }

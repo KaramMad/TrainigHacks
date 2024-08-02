@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -19,13 +18,13 @@ return new class extends Migration
             $table->unsignedBigInteger('calories');
             $table->string('time')->nullable();
             $table->unsignedBigInteger('reps')->nullable();
-            $table->string('image')->nullable();
+            $table->string('gif')->nullable();
             $table->string('video_link');
-            $table->enum('target',['lose_weight','build_muscle','keep_fit']);
-            $table->enum('diseases',['heart','none','knee','breath']);
-            $table->enum('level',['beginner','intermediate','advanced']);
-            $table->enum('gender',['male','female']);
-            $table->enum('choose',['equipment','no_equipment'])->nullable();
+            $table->enum('target', ['lose_weight', 'build_muscle', 'keep_fit']);
+            $table->enum('diseases', ['heart', 'none', 'knee', 'breath']);
+            $table->enum('level', ['beginner', 'intermediate', 'advanced']);
+            $table->enum('gender', ['male', 'female']);
+            $table->enum('choose', ['equipment', 'no_equipment'])->nullable();
             $table->boolean('private')->default(0);
 
         });

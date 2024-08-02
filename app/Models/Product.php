@@ -21,4 +21,34 @@ class Product extends Model
         return $this->belongsToMany(ProductSize::class,'product_size','product_id','size_id');
 
     }
+    public function favoritedby():BelongsToMany{
+        return $this->belongsToMany(User::class,'product_favorites');
+    }
+    public function isfav(): bool
+    {
+        return auth()->user()->favorite->contains($this->id);
+    }
+    public function scopeFilter($query,array $filters){
+        $query->when($filters['search_text'] ?? false, function ($query, $search) {
+
+            $query
+                ->where('name', 'like', $search . "%");
+        });
+        $query->when($filters['category'] ?? false, function ($query, $category) {
+
+            $query->whereHas('category', function ($categoryQuery) use ($category) {
+                $categoryQuery->where('category_name', '=', $category)->where('parent_id',1);
+            });
+        });
+        $query->when($filters['home_Category'] ?? false, function ($query, $category) {
+
+            $query->whereHas('category', function ($categoryQuery) use ($category) {
+                $categoryQuery->where('category_name', '=', $category)->where('parent_id',null);
+            });
+        });
+
+    }
+    public function orders():BelongsToMany{
+        return $this->belongsToMany(Order::class,'order_products')->withPivot('quantity');
+    }
 }

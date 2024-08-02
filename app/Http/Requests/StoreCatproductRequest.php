@@ -26,6 +26,7 @@ class StoreCatproductRequest extends FormRequest
             'name'=>'required|string',
             'image'=>'required|image|mimes:png,jpg',
             'description'=>'nullable|string',
+            'category_id'=>'sometimes|min:1|integer',
         ];
     }
     protected function failedValidation(Validator $validator)

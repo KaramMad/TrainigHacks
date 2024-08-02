@@ -16,9 +16,10 @@ return new class extends Migration
             $table->integer('rating');
             $table->morphs('rateable');
             $table->string('comments')->nullable();
-            $table->unsignedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('user_id');
+            $table->unique(['user_id', 'rateable_id']);
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->onDelete('cascade')->references('id')->on('users');
         });
     }
 

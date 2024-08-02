@@ -26,7 +26,7 @@ class AdminMealRequest extends FormRequest
             'image' => 'required|image|mimes:png,jpeg,webp|max:2048',
             'warning' => 'nullable|string',
             'description' => 'required|string',
-            'preparation_method' => 'required|string',
+            'preparation_method' => 'nullable|string',
             'ingredients' => 'required|sometimes|array',
             'categoryName' => 'required|string|in:breakfast,lunch,dinner,snack',
 
