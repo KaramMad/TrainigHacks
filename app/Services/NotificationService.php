@@ -11,9 +11,9 @@ class NotificationService
 {
     public function sendNotification(string $fcm, array $message)
     {
-        $apiUrl = 'https://fcm.googleapis.com/v1/projects/rich-food-notification/messages:send';
+        $apiUrl = 'https://fcm.googleapis.com/v1/projects/homeworkoutnoti/messages:send';
         $access_token = Cache::remember('access_token', now()->addHour(), function () use ($apiUrl) {
-            $credentialsFilePath = storage_path('app/fcm1.json');
+            $credentialsFilePath = storage_path('app/fcm.json');
             $client = new \Google_Client();
             $client->setAuthConfig($credentialsFilePath);
             $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
@@ -36,7 +36,9 @@ class NotificationService
                 ]
             ]
         ];
+
         $this->sendNotification($fcm, $message);
+        return $message['message']['notification'];
         //(newSendNotificationService)->sendByFcm($this->fcmToken, $this->message);
 
     }

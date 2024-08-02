@@ -33,12 +33,12 @@ class SendTrainingNotification extends Command
 
         foreach ($users as $user) {
             if ($user->last_login_at === null || $user->last_login_at->lt(Carbon::today())) {
-                $this->userService->sendNotification(
+                $this->userService->sendTrainingNotification(
                     $user->fcm_token,
-                    [
-                        'body' => 'Don\'t forget to do your training today!',
-                        'title' => 'Training Reminder'
-                    ]
+                    // [
+                    //     'body' => 'Don\'t forget to do your training today!',
+                    //     'title' => 'Training Reminder'
+                    // ]
                 );
             }
         }

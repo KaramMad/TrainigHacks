@@ -20,6 +20,7 @@ class SendNotificationBeforePreferredTime extends Command
     public function handle()
     {
         $users = User::all();
+
         foreach ($users as $user) {
             $preferredTime = Carbon::parse($user->preferred_time);
             $notificationTime = $preferredTime->subMinutes(15);
@@ -28,12 +29,12 @@ class SendNotificationBeforePreferredTime extends Command
                 // $user->notifications()->create([
                 //     'notification' => 'Your training time is 15 minutes later!',
                 // ]);
-                $this->userService->sendNotification(
+                $this->userService->sendPreferdTimeNotification(
                     $user->fcm_token,
-                    [
-                        'body' => 'Your preferred time is in 15 minutes!',
-                        'title' => 'Reminder'
-                    ]
+                    // [
+                    //     'body' => 'Your preferred time is in 15 minutes!',
+                    //     'title' => 'Reminder'
+                    // ]
                 );
                 // (newSendNotificationService)->sendByFcm($this->fcmToken, $this->message);
             }

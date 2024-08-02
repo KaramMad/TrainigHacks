@@ -10,7 +10,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-    protected $guarded=['id'];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,10 +42,11 @@ class User extends Authenticatable
 
     public function trainingDays()
     {
-        return $this->belongsToMany(TrainingDay::class, 'user_training_days','user_id','training_days_id');
+        return $this->belongsToMany(TrainingDay::class, 'user_training_days', 'user_id', 'training_days_id');
     }
-    public function favorites(){
-        return $this->belongsToMany(Meal::class,'favorites')->withTimestamps();
+    public function favorites()
+    {
+        return $this->belongsToMany(Meal::class, 'favorites')->withTimestamps();
     }
     public function comment()
     {
@@ -71,6 +72,6 @@ class User extends Authenticatable
     }
     public function notifications()
     {
-        return $this->hasMany(Notification::class);
+        return $this->belongsToMany(Notification::class, 'notification_users');
     }
 }

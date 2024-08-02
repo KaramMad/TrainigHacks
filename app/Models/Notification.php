@@ -9,8 +9,9 @@ class Notification extends Model
 {
     use HasFactory;
     protected $guarded = [''];
-    public function user()
+    protected $casts = ['data'=>'array'];
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class,'notification_users');
     }
 }

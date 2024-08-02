@@ -12,6 +12,7 @@ use App\Http\Controllers\api\V1\ChallengeController;
 use App\Http\Controllers\api\V1\ExerciseController;
 use App\Http\Controllers\api\V1\MuscleController;
 use App\Http\Controllers\api\V1\IngredientController;
+use App\Http\Controllers\api\V1\NotificationController;
 use App\Models\Category;
 use App\Models\Exercise;
 use App\Http\Controllers\api\V1\CoachController;
@@ -61,18 +62,18 @@ Route::group([
     Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
     Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']); // *********************************
-    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
-    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
-    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
-    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
-    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
-    Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']); // neeeewwwww
-    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
-    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
-    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
-    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
-    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
-    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
+    Route::post('post/addpost', [PostController::class, 'store']);
+    Route::get('post/showAllPost', [PostController::class, 'index']);
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
+    Route::post('comment/addcomment', [CommentController::class, 'store']);
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']);
+    Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']);
+    Route::get('likePost/{id}', [likeController::class, 'likePost']);
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']);
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']);
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
 
 
     Route::group(['prefix' => 'plan'], function () {
@@ -117,18 +118,18 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
     Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
     Route::delete('meal/destroy\{id}', [AdminMealController::class, 'destroy']);
-    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
-    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
-    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
-    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
-    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
+    Route::post('post/addpost', [PostController::class, 'store']);
+    Route::get('post/showAllPost', [PostController::class, 'index']);
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
+    Route::post('comment/addcomment', [CommentController::class, 'store']);
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']);
     Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']);
-    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
-    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
-    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
-    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
-    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
-    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
+    Route::get('likePost/{id}', [likeController::class, 'likePost']);
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']);
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']);
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
 
     Route::group(['prefix' => 'products'], function () {
         Route::post('/create', [ProductController::class, 'store']);
@@ -173,19 +174,21 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::post('coach/meal/show', [MealController::class, 'show']);
     Route::get('ingredient/index/{id}', [IngredientController::class, 'index']);
     Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
-    Route::post('post/addpost', [PostController::class, 'store']); // neeeewwwww
-    Route::get('post/showAllPost', [PostController::class, 'index']); // neeeewwwww
-    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']); // neeeewwwww
-    Route::post('comment/addcomment', [CommentController::class, 'store']); // neeeewwwww
-    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']); // neeeewwwww
+    Route::post('post/addpost', [PostController::class, 'store']);
+    Route::get('post/showAllPost', [PostController::class, 'index']);
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
+    Route::post('comment/addcomment', [CommentController::class, 'store']);
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']);
     Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']);
-    Route::get('likePost/{id}', [likeController::class, 'likePost']); // neeeewwwww
-    Route::get('likeComment/{id}', [likeController::class, 'likeComment']); // neeeewwwww
-    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']); // neeeewwwww
-    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']); // neeeewwwww
-    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']); // neeeewwwww
-    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']); // neeeewwwww
-    Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']); // neeeewwwww
+    Route::get('likePost/{id}', [likeController::class, 'likePost']);
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']);
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']);
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
+    Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']);
+    Route::post('token', [NotificationController::class, 'updateToken']);
+    Route::get('notifications', [NotificationController::class, 'getAllNotifications']);
 
     Route::prefix('rating')->group(function () {
         Route::post('/create',[RatingController::class,'store']);
@@ -208,3 +211,7 @@ Route::get('muscle/allArea', [MuscleController::class, 'index']);
 Route::get('challenge/allChallenge', [MuscleController::class, 'index']);
 Route::get('category/show', [CategoryController::class, 'index']);
 Route::post('category', [CategoryController::class, 'show']);
+//Route::post('test', [NotificationController::class, 'sendPreferdTimeNotification']);
+
+//Route::put('token', [NotificationController::class, 'updateToken'])->middleware('auth:user');
+//Route::get('notifications', [NotificationController::class, 'getAllNotifications'])->middleware('auth:user');
