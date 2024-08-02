@@ -33,8 +33,8 @@ class RatingController extends Controller
     {
         $data=$request->validated();
         $user=Auth::user();
-        $coach=Coach::find($data['rateable_id']);
-        
+        $coach=Coach::find(request('coach_id'));
+
         $data['user_id']=$user->id;
         $coach->ratings()->create($data);
         return $this->success($data,'rating successfully');

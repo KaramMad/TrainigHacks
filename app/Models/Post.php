@@ -22,7 +22,7 @@ class Post extends Model
     }
     public function comments():HasMany
     {
-        return $this->hasMany(Comment::class)->whereNull('parent_id');
+        return $this->hasMany(Comment::class)->whereNull('comment_id');
     }
     public function likes():MorphMany
     {
@@ -31,6 +31,10 @@ class Post extends Model
     public function likesCount():int
     {
         return $this->likes()->count();
+    }
+    public function commentsCount(): int
+    {
+        return $this->comments()->count();
     }
     public function postable():MorphTo
     {

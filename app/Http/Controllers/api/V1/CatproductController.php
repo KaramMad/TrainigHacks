@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class CatproductController extends Controller
 {
     use ImageTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -30,6 +31,15 @@ class CatproductController extends Controller
             $product['isfavorite'] = $user->favorite->contains($product->id);
             return $product;
         });
+        return $this->success($data);
+    }
+
+    public function mainCat()
+    {
+        $data = Catproduct::where('parent_id', null)->select('id', 'category_name', 'image', 'description')->get();
+        if (!$data) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
         return $this->success($data);
     }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->index();
             $table->string('description');
             $table->string('brand')->index();
-            $table->float('price');
+            $table->bigInteger('price');
             $table->string('stock');
             $table->string('image');
             $table->string('weight')->nullable();

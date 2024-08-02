@@ -14,6 +14,7 @@ use App\Traits\ImageTrait;
 class CommentController extends Controller
 {
     use ImageTrait;
+
     public function store(CommentRequest $request)
     {
         $data = $request->validated();
@@ -39,21 +40,33 @@ class CommentController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function showComments($postId)
     {
-        // تحقق من وجود المنشور
         $post = Post::find($postId);
         if (!$post) {
             return response()->json([
                 'message' => 'Post not found.'
             ], 404);
         }
-
-        // احصل على جميع التعليقات المتعلقة بالمنشور
-        $comments = Comment::where('post_id', $postId)->get();
+        $comments = Comment::where('post_id', $postId)
+            ->with('user', 'images', 'likes')
+            ->get()
+            ->map(function ($comment) {
+                return [
+                    'id' => $comment->id,
+                    'body' => $comment->body,
+                    'user_name' => $comment->user ? $comment->user->name : null,
+                    'user_avatar' => $comment->user ? $comment->user->image : null,
+                    'likes_count' => $comment->likes()->count(),
+                    'images' => $comment->images ? $comment->images->map(function ($image) {
+                        return [
+                            'id' => $image->id,
+                            'path' => $image->path,
+                            'url' => url($image->path)
+                        ];
+                    })->toArray() : []
+                ];
+            });
 
         return response()->json([
             'post_id' => $postId,
@@ -61,7 +74,7 @@ class CommentController extends Controller
         ]);
     }
 
-//جربيه يا لنوشة على شانك هلا نعستي 
+    //جربيه يا لنوشة على شانك هلا نعستي
     public function getRepliesByComment($commentId)
     {
         $comment = Comment::find($commentId);
@@ -84,9 +97,6 @@ class CommentController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $comment = Comment::findOrFail($id);

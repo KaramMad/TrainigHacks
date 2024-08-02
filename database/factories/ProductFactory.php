@@ -21,7 +21,7 @@ class ProductFactory extends Factory
         return [
             'name'=>$this->faker->word(),
             'description'=>$this->faker->paragraph(),
-            'price'=>$this->faker->randomFloat(2,1,1000),
+            'price'=>$this->faker->numberBetween(1,100),
             'stock'=>$this->faker->numberBetween(1,100),
             'brand'=>$this->faker->randomElement(['nike','adidas']),
             'image'=>'Products/Products.png',

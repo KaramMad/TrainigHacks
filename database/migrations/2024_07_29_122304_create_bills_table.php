@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->text('notification');
+            $table->morphs('billable');
+            $table->boolean('paid')->default(false);
+            $table->unsignedFloat('total');
+            $table->bigInteger('InvoiceId')->nullable();
+            $table->bigInteger('RefundId')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('bills');
     }
 };

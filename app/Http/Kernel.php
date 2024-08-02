@@ -71,4 +71,8 @@ class Kernel extends HttpKernel
         'scope'=> \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
 
     ];
+    protected $routeMiddleware = [
+        // Other middleware
+        'subscription' => \App\Http\Middleware\subscription::class,
+    ];
 }

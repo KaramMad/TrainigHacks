@@ -40,11 +40,15 @@ class Product extends Model
                 $categoryQuery->where('category_name', '=', $category)->where('parent_id',1);
             });
         });
-        $query->when($filters['brand'] ?? false,function($query,$brand){
-            $query->where('brand','like',$brand);
+        $query->when($filters['home_Category'] ?? false, function ($query, $category) {
+
+            $query->whereHas('category', function ($categoryQuery) use ($category) {
+                $categoryQuery->where('category_name', '=', $category)->where('parent_id',null);
+            });
         });
+
     }
     public function orders():BelongsToMany{
-        return $this->belongsToMany(Order::class,'order_products');
+        return $this->belongsToMany(Order::class,'order_products')->withPivot('quantity');
     }
 }

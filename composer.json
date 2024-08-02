@@ -6,11 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "google/apiclient": "^2.17",
         "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^10.48",
         "laravel/passport": "^11.8",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "mgcodeur/laravel-currency-converter": "^1.0",
         "ultramsg/whatsapp-php-sdk": "^2.0"
     },
     "require-dev": {

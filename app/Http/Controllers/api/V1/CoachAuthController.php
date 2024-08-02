@@ -20,7 +20,13 @@ class CoachAuthController extends Controller
      */
     public function index()
     {
+        $user=Auth::user();
         $coach = Coach::query()->first()->get();
+        foreach ($coach as $coaches) {
+        $coaches['subscribed']=$user->subscribedCoaches()->where('coach_id', $coaches->id)->where('status',true)->exists();
+        $coaches->save();
+        }
+        $coach=Coach::orderBy('subscribed','DESC')->get();
         $coach = $coach->map(function ($rating) {
             $rating['rating'] = $rating->averageRating();
             return $rating;
