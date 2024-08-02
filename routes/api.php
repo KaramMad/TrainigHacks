@@ -214,7 +214,6 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('/order/index', [\App\Http\Controllers\api\V1\OrderController::class, 'index']);
         Route::delete('/order/cancel/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'destroy']);
         Route::post('/order/pay', [FatoorahController::class, 'payOrder']);
-
     });
 
     // Premium-section
