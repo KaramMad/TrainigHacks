@@ -17,7 +17,7 @@ class AdminMealRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:16',
-            'target' => 'nullable|in:build muscle,lose weight',
+            'target' => 'required|in:build muscle,lose weight,keep fit',
             'type' => 'nullable|in:vegetarian,sugar free,none',
             'calories' => 'required|string',
             'protein' => 'required|string',
@@ -28,7 +28,7 @@ class AdminMealRequest extends FormRequest
             'description' => 'required|string',
             'preparation_method' => 'nullable|string',
             'ingredients' => 'required|sometimes|array',
-            'categoryName' => 'required|sometimes',
+            'categoryName' => 'required|string|in:breakfast,lunch,dinner,snack',
 
 
         ];

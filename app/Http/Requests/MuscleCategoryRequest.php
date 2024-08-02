@@ -25,20 +25,22 @@ class MuscleCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'category_name' => 'required|string|in:strength,cardio,yoga,warm_up,stretching',
-             'image'=>'required|mimes:png',
-             'men_image'=>'required|mimes:jpg',
-             'women_image'=>'required|mimes:jpg',
-             'description'=>'required|string'
+            'category_name' => 'required|string|in:strength,cardio,yoga,warm_up,stretching',
+            'image' => 'required|mimes:png',
+            'men_image' => 'required|mimes:jpg',
+            'women_image' => 'required|mimes:jpg',
+            'description' => 'required|string'
 
 
         ];
     }
 
-    protected function failedValidation(Validator $validator){
-        return throw new ValidationException($validator,$this->response($validator));
+    protected function failedValidation(Validator $validator)
+    {
+        return throw new ValidationException($validator, $this->response($validator));
     }
-    protected function response($validator){
+    protected function response($validator)
+    {
         return response()->json([
             'status' => false,
             'message' => 'validation failed',
