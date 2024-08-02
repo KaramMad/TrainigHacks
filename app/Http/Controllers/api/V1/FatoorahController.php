@@ -35,7 +35,7 @@ class FatoorahController extends Controller
                     'CustomerEmail' => $customer->email,
                     'InvoiceValue' => $totalInvoiceItem,//$order['total']
                     'CustomerReference' => $order->id,//$order_id
-                    'DisplayCurrencyIso' => 'EUR',//$order['currency'],
+                    'DisplayCurrencyIso' => 'KWD',//$order['currency'],
                     'NotificationOption' => 'EML',
                     'CallBackUrl' => env('success_url'),
                     'ErrorUrl' => env('error_url'),
@@ -64,7 +64,7 @@ class FatoorahController extends Controller
                     'CustomerEmail' => $customer->email,
                     'InvoiceValue' => $totalInvoiceItem,
                     'CustomerReference' => $subscribe->id,
-                    'DisplayCurrencyIso' => 'EUR',
+                    'DisplayCurrencyIso' => 'KWD',
                     'NotificationOption' => 'EML',
                     'CallBackUrl' => env('success_url'),
                     'ErrorUrl' => env('error_url'),

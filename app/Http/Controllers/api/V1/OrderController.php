@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api\V1;
 
+use App\Http\Requests\filterByStatusRequest;
 use App\Models\Bill;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
@@ -47,6 +48,11 @@ class OrderController extends Controller
         }
 
         return $this->success($orders);
+    }
+
+    public function filterByStatus(filterByStatusRequest $request)
+    {
+
     }
 
     /**
@@ -125,17 +131,19 @@ class OrderController extends Controller
         if ($order->status == 'preparing') {
             $invoiceId = $order->bill->InvoiceId;
             $total = $order->bill->total;
-            $currencies = CurrencyConverter::convert($total)->from('EUR')->to('KWD')->get();
-            if ($currencies > 500) {
-                $currencies -= 500;
-                $order->bill->total = CurrencyConverter::convert(500)->from('KWD')->to('EUR')->get();
-            }
+            $temp = $total * 0.10;
+
+
+            $order->bill->total =  $temp;
+            $order->bill->save();
 
             $data = [
                 'Key' => $invoiceId,
                 'KeyType' => 'invoiceId',
                 'RefundChargeOnCustomer' => false,
-                'Amount' => 10,
+                'ServiceChargeOnCustomer' => false,
+                'Amount' => $total-$temp,
+
             ];
 
             $response = $this->fatoorahServices->makeRefund($data);
@@ -147,14 +155,7 @@ class OrderController extends Controller
             foreach ($order->products as $product) {
                 $product->increment('stock', $product->pivot->quantity);
             }
-            $data = [
-                'Key' => $order->bill->RefundId,
-                'KeyType' => 'refundId',
-
-            ];
             $order->delete();
-
-
             return $this->success($order, 'order deleted successfully');
         } else if ($order->status !== 'pending')
             return $this->failed('The order has been already processed cannot cancel', 403);

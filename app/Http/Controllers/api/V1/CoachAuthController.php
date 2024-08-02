@@ -20,16 +20,17 @@ class CoachAuthController extends Controller
      */
     public function index()
     {
+        $user=Auth::user();
         $coach = Coach::query()->first()->get();
+        foreach ($coach as $coaches) {
+        $coaches['subscribed']=$user->subscribedCoaches()->where('coach_id', $coaches->id)->where('status',true)->exists();
+        $coaches->save();
+        }
+        $coach=Coach::orderBy('subscribed','DESC')->get();
         $coach = $coach->map(function ($rating) {
             $rating['rating'] = $rating->averageRating();
             return $rating;
         });
-        $user=Auth::user();
-        foreach ($coach as $coaches) {
-
-        $coaches['subscribed']=$user->subscribedCoaches()->where('coach_id', $coaches->id)->where('status',true)->exists();
-        }
         if (!$coach) {
             return AppSP::apiResponse("There is no coaches has been found", null, 'data', false, 404);
         }

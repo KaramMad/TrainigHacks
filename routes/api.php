@@ -109,6 +109,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::delete('exercise/deleteExercise/{id}', [ExerciseController::class, 'destroy']);
     Route::get('exercise/getall', [ExerciseController::class, 'index']);
     Route::post('exerciseType/addExerciseType', [ExerciseTypeController::class, 'store']);
+    Route::get('exerciseType/getAll', [ExerciseTypeController::class, 'index']);
     Route::delete('exerciseType/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
