@@ -23,7 +23,7 @@ class MealFactory extends Factory
             'target' => $this->faker->randomElement([/*'build muscle',*/'lose weight', /*'keep fit'*/]),
             'calories' => $this->faker->numberBetween(100, 1000),
             'protein' => $this->faker->numberBetween(10, 50),
-            'image' => 'Meals/1719782087.png',
+            'image' => 'Meals/1721938375.png',
             'description' => $this->faker->paragraph,
             'day_id' => $this->faker->randomElement([/*'1', '2', '3', '4', '5'*/'1', null]),
             'coach_id' => $this->faker->randomElement(['1', null]),

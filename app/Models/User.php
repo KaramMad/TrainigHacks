@@ -86,4 +86,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Coach::class,'subscriptions')->withPivot('status','start_date','end_date');
     }
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }
