@@ -5,7 +5,9 @@ namespace App\Http\Controllers\api\V1;
 use App\Http\Requests\StoreSubscriptionRequest;
 use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Models\Bill;
+use App\Models\Coach;
 use App\Models\Subscription;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
@@ -15,9 +17,18 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $user->subscribedCoaches;
-        return $this->success($user);
+        $user=Auth::user();
+        $coach = Coach::query()->first()->get();
+        foreach ($coach as $coaches) {
+            $coaches['subscribed']=$user->subscribedCoaches()->where('coach_id', $coaches->id)->where('status',true)->exists();
+            $coaches->save();
+        }
+        $coach=Coach::where('subscribed',true)->get();
+        $coach = $coach->map(function ($rating) {
+            $rating['rating'] = $rating->averageRating();
+            return $rating;
+        });
+        return $this->success($coach);
     }
 
     /**

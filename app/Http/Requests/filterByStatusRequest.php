@@ -22,7 +22,7 @@ class filterByStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'string|in:pending,sent,received',
+            'status' => 'string|in:pending,preparing,sent,received',
             'paid' => 'boolean',
         ];
     }
