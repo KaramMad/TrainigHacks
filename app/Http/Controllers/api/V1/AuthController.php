@@ -14,6 +14,7 @@ use App\Mail\SendCode;
 use App\Models\TempUser;
 use App\Models\VerfiyCode;
 use Dflydev\DotAccessData\Data;
+
 class AuthController extends Controller
 {
 
@@ -24,6 +25,7 @@ class AuthController extends Controller
             'name' => 'required|max:55|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/',
+            'fcm_token' => 'required'
         ]);
         $data = $request->all();
         if ($validateTrainer->fails()) {
@@ -66,6 +68,7 @@ class AuthController extends Controller
             $tempUser = TempUser::query()->firstWhere('code', '=', $request->code);
             $userData['name'] = $tempUser['name'];
             $userData['email'] = $tempUser['email'];
+            $userData['fcm_token'] = $tempUser['fcm_token'];
             $userData['password'] = Hash::make($tempUser['password']);
             $tempUser->delete();
             $user = User::query()->create($userData);
@@ -109,7 +112,8 @@ class AuthController extends Controller
             $request->all(),
             [
                 'email' => 'required|email|exists:users',
-                'password' => 'required|min:8|'
+                'password' => 'required|min:8|',
+                'fcm_token' => 'required|string',
             ]
         );
         $data = $request->all();
@@ -121,7 +125,7 @@ class AuthController extends Controller
         if (auth()->guard('web')->attempt($request->only(['email', 'password']))) {
             config(['auth.guards.user.provider' => 'auth.guards.user']);
             $user = User::query()->select('users.*')->find(auth()->guard('web')->user()['id']);
-
+            $user->update(['fcm_token'=>$request->fcm_token]);
             return AppSP::apiResponse('Trainer Login Successfully', $user->createToken("HomeWorkout", ['user'])->accessToken, 'token');
         } else {
             return response()->json([
@@ -201,5 +205,4 @@ class AuthController extends Controller
             return AppSP::apiResponse('Password Reset Successfully', null, 'data', true, 201);
         }
     }
-
 }
