@@ -21,5 +21,6 @@ class TrainingDay extends Model
     {
         return $this->belongsToMany(Exercise::class, 'training_day_exercises');
     }
+    
 
 }

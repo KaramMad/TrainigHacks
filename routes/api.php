@@ -13,6 +13,7 @@ use App\Http\Controllers\api\V1\ExerciseController;
 use App\Http\Controllers\api\V1\MuscleController;
 use App\Http\Controllers\api\V1\IngredientController;
 use App\Http\Controllers\api\V1\NotificationController;
+use App\Http\Controllers\api\V1\ReportController;
 use App\Http\Controllers\api\V1\CoachController;
 use App\Http\Controllers\api\V1\MealController;
 use App\Http\Controllers\api\V1\AdminMealController;
@@ -195,6 +196,8 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']);
     Route::post('token', [NotificationController::class, 'updateToken']);
     Route::get('notifications', [NotificationController::class, 'getAllNotifications']);
+    // Reports
+    Route::post('report/creatReport', [ReportController::class, 'createOrUpdateReport']);
 
     // Store-Section
     Route::group(['prefix' => 'products'], function () {
@@ -214,6 +217,9 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('/order/index', [\App\Http\Controllers\api\V1\OrderController::class, 'index']);
         Route::delete('/order/cancel/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'destroy']);
         Route::post('/order/pay', [FatoorahController::class, 'payOrder']);
+
+
+
     });
 
     // Premium-section
@@ -240,7 +246,9 @@ Route::get('muscle/allArea', [MuscleController::class, 'index']);
 Route::get('challenge/allChallenge', [MuscleController::class, 'index']);
 Route::get('category/show', [CategoryController::class, 'index']);
 Route::post('category', [CategoryController::class, 'show']);
-//Route::post('test', [NotificationController::class, 'sendPreferdTimeNotification']);
+
+Route::post('testPreferdTime', [NotificationController::class, 'sendPreferdTime']);
+Route::post('testTrainingDay', [NotificationController::class, 'sendTrainingDay']);
 
 //Route::put('token', [NotificationController::class, 'updateToken'])->middleware('auth:user');
 //Route::get('notifications', [NotificationController::class, 'getAllNotifications'])->middleware('auth:user');

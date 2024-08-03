@@ -65,4 +65,27 @@ class NotificationController extends Controller
         $user = Auth::user();
         return $user->load('notifications')->notifications;
     }
+
+    public function sendPreferdTime(NotificationRequest $request )
+    {
+        $data = $request->validated('fcm_token');
+
+        $this->service->sendPreferdTimeNotification($data);
+        return response()->json([
+            'message' => 'send notifiction seccessfuly'
+        ]);
+
+    }
+    public function sendTrainingDay(NotificationRequest $request )
+    {
+        $data = $request->validated('fcm_token');
+
+        $this->service->sendTrainingNotification($data);
+        return response()->json([
+            'message' => 'send notifiction seccessfuly'
+        ]);
+ 
+
+
+    }
 }
