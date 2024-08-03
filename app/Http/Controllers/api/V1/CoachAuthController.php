@@ -15,18 +15,19 @@ use Illuminate\Support\Facades\App;
 class CoachAuthController extends Controller
 {
     use ImageTrait;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user=Auth::user();
+        $user = Auth::user();
         $coach = Coach::query()->first()->get();
         foreach ($coach as $coaches) {
-        $coaches['subscribed']=$user->subscribedCoaches()->where('coach_id', $coaches->id)->where('status',true)->exists();
-        $coaches->save();
+            $coaches['subscribed'] = $user->subscribedCoaches()->where('coach_id', $coaches->id)->where('status', true)->exists();
+            $coaches->save();
         }
-        $coach=Coach::orderBy('subscribed','DESC')->get();
+        $coach = Coach::orderBy('subscribed', 'DESC')->get();
         $coach = $coach->map(function ($rating) {
             $rating['rating'] = $rating->averageRating();
             return $rating;
@@ -36,6 +37,21 @@ class CoachAuthController extends Controller
         }
         return AppSP::apiResponse("Success", $coach, 'coach', true, 200);
     }
+
+    public function adminIndex()
+    {
+
+        $coach = Coach::query()->first()->get();
+        $coach = $coach->map(function ($rating) {
+            $rating['rating'] = $rating->averageRating();
+            return $rating;
+        });
+        if (!$coach) {
+            return AppSP::apiResponse("There is no coaches has been found", null, 'data', false, 404);
+        }
+        return AppSP::apiResponse("Success", $coach, 'coach', true, 200);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -109,6 +125,7 @@ class CoachAuthController extends Controller
             ], 401);
         }
     }
+
     public function coachLogout()
     {
         Auth::guard('coach')->user()->tokens()->delete();

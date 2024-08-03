@@ -98,7 +98,7 @@ Route::group([
 Route::post('admin/login', [AdminController::class, 'login']);
 Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']], function () {
     Route::get('articl/allArticls', [ArticleController::class, 'getAll']);
-    Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
+    Route::get('coach/allCoach', [CoachAuthController::class, 'adminIndex']);
     Route::post('coach/addNewCoach', [AdminController::class, 'createCoaches']);
     Route::post('articl/addNewArticls', [ArticleController::class, 'store']);
     Route::delete('articl/deleteArticl/{id}', [ArticleController::class, 'destroy']);
@@ -115,7 +115,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::delete('exerciseType/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
-    Route::get('challenge/getAll', [ChallengeController::class, 'index']);
+    Route::get('challenge/getAll', [ChallengeController::class, 'adminIndex']);
     Route::post('meal/store', [AdminMealController::class, 'store']);
     Route::get('meal/getAll', [AdminMealController::class, 'getAllMeal']);
     Route::delete('meal/destroy/{id}', [AdminMealController::class, 'destroy']);
@@ -143,6 +143,9 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::get('/allProducts', [ProductController::class, 'adminIndex']);
         Route::delete('/DeleteProduct/{id}', [ProductController::class, 'destroy']);
         Route::post('/Poster/create', [PosterController::class, 'store']);
+        Route::get('/order/index', [\App\Http\Controllers\api\V1\OrderController::class, 'index']);
+        Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);
+
     });
 });
 
@@ -215,7 +218,6 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::delete('/order/cancel/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'destroy']);
         Route::post('/order/pay', [FatoorahController::class, 'payOrder']);
     });
-
     // Premium-section
     Route::prefix('subscription')->group(function () {
         Route::post('/create', [SubscriptionController::class, 'store']);
@@ -230,6 +232,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
         Route::post('exercise/exercisePlan/{coach_id}', [ExerciseController::class, 'showPlanExerciseByDay']);
         Route::post('coach/meal/show/{coach_id}', [MealController::class, 'show']);
+
     });
 });
 

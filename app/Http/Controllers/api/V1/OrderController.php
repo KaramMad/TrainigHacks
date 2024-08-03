@@ -52,7 +52,13 @@ class OrderController extends Controller
 
     public function filterByStatus(filterByStatusRequest $request)
     {
-
+        $data = $request->validated();
+        $data = Order::with(['user' => function ($query) {
+            $query->select('id', 'name', 'email');
+        }, 'bill', 'products' => function ($query) {
+            $query->select('products.id', 'products.name', 'products.price', 'quantity');
+        }])->latest()->filter(request(['status', 'paid']))->get();
+        return $this->success($data);
     }
 
     /**
@@ -98,20 +104,22 @@ class OrderController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
+
+    public function sent(Order $order)
     {
-        //
+        if ($order->status != 'preparing') {
+            return AppSP::apiResponse('order is not pending', null, 'data', false, 403);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
+
+    public function receive(Order $order)
     {
-        //
+        if ($order->status != 'sent') {
+            return AppSP::apiResponse('order is not sent', null, 'data', false, 403);
+        }
+        $order->status = 'received';
+        $order->save();
     }
 
     /**
@@ -134,7 +142,7 @@ class OrderController extends Controller
             $temp = $total * 0.10;
 
 
-            $order->bill->total =  $temp;
+            $order->bill->total = $temp;
             $order->bill->save();
 
             $data = [
@@ -142,7 +150,7 @@ class OrderController extends Controller
                 'KeyType' => 'invoiceId',
                 'RefundChargeOnCustomer' => false,
                 'ServiceChargeOnCustomer' => false,
-                'Amount' => $total-$temp,
+                'Amount' => $total - $temp,
 
             ];
 

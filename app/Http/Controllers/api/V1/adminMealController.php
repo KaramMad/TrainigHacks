@@ -40,7 +40,7 @@ class AdminMealController extends Controller
     // just for now
     public function popularMeal()
     {
-        $data = Meal::with('ingredients')->whereNull('coach_id')->take(5)->orderBy('name')->get();
+        $data = Meal::with('ingredients')->whereNull('coach_id')->inRandomOrder()->take(5)->orderBy('name')->get();
         $data = $data->map(function ($meal) {
             $meal['isfavorite'] = $meal->isfav();
             return $meal;

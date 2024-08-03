@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBiginteger('exercise_id');
             $table->unsignedBiginteger('training_day_id');
 
-
             $table->foreign('exercise_id')->references('id')
                 ->on('exercises')->onDelete('cascade');
             $table->foreign('training_day_id')->references('id')
