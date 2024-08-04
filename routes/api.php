@@ -13,6 +13,7 @@ use App\Http\Controllers\api\V1\ExerciseController;
 use App\Http\Controllers\api\V1\MuscleController;
 use App\Http\Controllers\api\V1\IngredientController;
 use App\Http\Controllers\api\V1\NotificationController;
+use App\Http\Controllers\api\V1\ReportController;
 use App\Http\Controllers\api\V1\CoachController;
 use App\Http\Controllers\api\V1\MealController;
 use App\Http\Controllers\api\V1\AdminMealController;
@@ -99,7 +100,7 @@ Route::group([
 Route::post('admin/login', [AdminController::class, 'login']);
 Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']], function () {
     Route::get('articl/allArticls', [ArticleController::class, 'getAll']);
-    Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
+    Route::get('coach/allCoach', [CoachAuthController::class, 'adminIndex']);
     Route::post('coach/addNewCoach', [AdminController::class, 'createCoaches']);
     Route::post('articl/addNewArticls', [ArticleController::class, 'store']);
     Route::delete('articl/deleteArticl/{id}', [ArticleController::class, 'destroy']);
@@ -116,7 +117,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     Route::delete('exerciseType/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
     Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
     Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
-    Route::get('challenge/getAll', [ChallengeController::class, 'index']);
+    Route::get('challenge/getAll', [ChallengeController::class, 'adminIndex']);
     Route::post('meal/store', [AdminMealController::class, 'store']);
     Route::get('meal/getAll', [AdminMealController::class, 'getAllMeal']);
     Route::delete('meal/destroy/{id}', [AdminMealController::class, 'destroy']);
@@ -144,6 +145,11 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::get('/allProducts', [ProductController::class, 'adminIndex']);
         Route::delete('/DeleteProduct/{id}', [ProductController::class, 'destroy']);
         Route::post('/Poster/create', [PosterController::class, 'store']);
+        Route::get('/order/index', [\App\Http\Controllers\api\V1\OrderController::class, 'index']);
+        Route::get('/order/status/sent/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'sent']);
+        Route::get('/order/status/received/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'receive']);
+        Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);
+
     });
 });
 
@@ -196,6 +202,10 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']);
     Route::post('token', [NotificationController::class, 'updateToken']);
     Route::get('notifications', [NotificationController::class, 'getAllNotifications']);
+<<<<<<< HEAD
+=======
+    // Reports
+>>>>>>> e0b1285573de36bb0902968a44fd51eae0c8c48a
     Route::post('report/creatReport', [ReportController::class, 'createOrUpdateReport']);
 
     // Store-Section
@@ -217,8 +227,9 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::delete('/order/cancel/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'destroy']);
         Route::post('/order/pay', [FatoorahController::class, 'payOrder']);
 
-    });
 
+
+    });
     // Premium-section
     Route::prefix('subscription')->group(function () {
         Route::post('/create', [SubscriptionController::class, 'store']);
@@ -233,6 +244,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
         Route::post('exercise/exercisePlan/{coach_id}', [ExerciseController::class, 'showPlanExerciseByDay']);
         Route::post('coach/meal/show/{coach_id}', [MealController::class, 'show']);
+
     });
 });
 
@@ -243,7 +255,9 @@ Route::get('muscle/allArea', [MuscleController::class, 'index']);
 Route::get('challenge/allChallenge', [MuscleController::class, 'index']);
 Route::get('category/show', [CategoryController::class, 'index']);
 Route::post('category', [CategoryController::class, 'show']);
-//Route::post('test', [NotificationController::class, 'sendPreferdTimeNotification']);
+
+Route::post('testPreferdTime', [NotificationController::class, 'sendPreferdTime']);
+Route::post('testTrainingDay', [NotificationController::class, 'sendTrainingDay']);
 
 //Route::put('token', [NotificationController::class, 'updateToken'])->middleware('auth:user');
 //Route::get('notifications', [NotificationController::class, 'getAllNotifications'])->middleware('auth:user');

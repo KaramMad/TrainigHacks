@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->default('null');
             $table->string('password')->default('null');
             $table->string('code');
+            $table->string('fcm_token');
             $table->timestamps();
         });
     }

@@ -34,4 +34,14 @@ class Order extends Model
     {
         return $this->morphOne(Bill::class, 'billable');
     }
+    public function scopeFilter($query, array $filters){
+        $query->when($filters['status'] ?? null, function ($query, $status) {
+            $query->where('status','=',$status);
+        });
+        $query->when($filters['paid'] ?? null, function ($query, $paid) {
+            $query->whereHas('bill', function ($paidQuery) use ($paid) {
+                $paidQuery->where('paid', '=', $paid);
+            });
+        });
+    }
 }
