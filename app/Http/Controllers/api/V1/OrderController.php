@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FatoorahServices;
+use App\Providers\AppServiceProvider as AppSP;
 use Mgcodeur\CurrencyConverter\Facades\CurrencyConverter;
 
 class OrderController extends Controller
@@ -110,6 +111,8 @@ class OrderController extends Controller
         if ($order->status != 'preparing') {
             return AppSP::apiResponse('order is not pending', null, 'data', false, 403);
         }
+        $order->status = 'sent';
+        $order->save();
     }
 
 
@@ -120,6 +123,10 @@ class OrderController extends Controller
         }
         $order->status = 'received';
         $order->save();
+        foreach($order->products as $item){
+            $item->increment('sales_count',$item->pivot->quantity);
+        }
+
     }
 
     /**
