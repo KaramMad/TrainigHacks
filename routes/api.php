@@ -28,7 +28,6 @@ use App\Http\Controllers\api\V1\CoachPlanController;
 use App\Http\Controllers\api\V1\PosterController;
 use App\Http\Controllers\api\V1\ProductController;
 use App\Http\Controllers\api\V1\RatingController;
-use App\Http\Controllers\api\V1\ReportController;
 use App\Models\Favorite;
 use \App\Http\Controllers\api\V1\FatoorahController;
 
@@ -202,10 +201,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']);
     Route::post('token', [NotificationController::class, 'updateToken']);
     Route::get('notifications', [NotificationController::class, 'getAllNotifications']);
-<<<<<<< HEAD
-=======
     // Reports
->>>>>>> e0b1285573de36bb0902968a44fd51eae0c8c48a
     Route::post('report/creatReport', [ReportController::class, 'createOrUpdateReport']);
 
     // Store-Section

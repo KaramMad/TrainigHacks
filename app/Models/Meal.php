@@ -45,4 +45,5 @@ class Meal extends Model
     {
         return $this->belongsToMany(Ingredient::class, 'meal_ingredient');
     }
+    
 }

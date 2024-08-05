@@ -2,18 +2,11 @@
 
 namespace App\Http\Controllers\api\V1;
 
-<<<<<<< HEAD
-use App\Models\Report;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
-=======
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Models\Report;
 use App\Models\User;
->>>>>>> e0b1285573de36bb0902968a44fd51eae0c8c48a
 
 class ReportController extends Controller
 {
@@ -35,10 +28,6 @@ class ReportController extends Controller
         $userId = $request->user()->id;
         $today = Carbon::today();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e0b1285573de36bb0902968a44fd51eae0c8c48a
         $report = Report::where('user_id', $userId)
             ->where('report_date', $today)
             ->first();
@@ -74,10 +63,6 @@ class ReportController extends Controller
         return ($hours * 3600) + ($minutes * 60) + $seconds;
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e0b1285573de36bb0902968a44fd51eae0c8c48a
     private function secondsToTime($seconds)
     {
         $hours = floor($seconds / 3600);

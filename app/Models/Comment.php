@@ -40,4 +40,12 @@ class Comment extends Model
     {
         return $this->hasMany(Image::class);
     }
+    public function islike(): bool
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return false;
+        }
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
 }
