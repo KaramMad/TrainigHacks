@@ -11,7 +11,7 @@ class NotificationService
 {
     public function sendNotification(string $fcm, array $message)
     {
-        $apiUrl = 'https://fcm.googleapis.com/v1/projects/homeworkoutnoti/messages:send';
+        $apiUrl = 'https://fcm.googleapis.com/v1/projects/home-workout-24924/messages:send';
         $access_token = Cache::remember('access_token', now()->addHour(), function () use ($apiUrl) {
             $credentialsFilePath = storage_path('app/fcm.json');
             $client = new \Google_Client();

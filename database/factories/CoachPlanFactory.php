@@ -15,13 +15,17 @@ class CoachPlanFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    protected $plan=coachPlan::class;
+    protected $plan = coachPlan::class;
+
     public function definition(): array
     {
         return [
-            'coach_id'=>$this->faker->randomElement([1,2,3,4]),
-            'plan_name'=>$this->faker->word(),
-            'description'=>$this->faker->paragraph(),
+            'coach_id' => $this->faker->randomElement([1, 2, 3, 4]),
+            'plan_name' => $this->faker->word(),
+            'description' => $this->faker->paragraph(),
+            'target' => $this->faker->randomElement(['lose_weight', 'build_muscle', 'keep_fit']),
+            'level' => $this->faker->randomElement(['beginner', 'intermediate','advanced']),
+            'choose' => $this->faker->randomElement(['equipment', 'no_equipment']),
         ];
     }
 }

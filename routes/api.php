@@ -145,6 +145,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::delete('/DeleteProduct/{id}', [ProductController::class, 'destroy']);
         Route::post('/Poster/create', [PosterController::class, 'store']);
         Route::get('/order/index', [\App\Http\Controllers\api\V1\OrderController::class, 'index']);
+        Route::get('/order/bill', [\App\Http\Controllers\api\V1\BillController::class, 'index']);
         Route::get('/order/status/sent/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'sent']);
         Route::get('/order/status/received/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'receive']);
         Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);

@@ -19,5 +19,9 @@ class coachPlan extends Model
     public function exercises():BelongsToMany{
         return $this->belongsToMany(Exercise::class,'exercise_plan','exercise_id','plan_id');
     }
+    public function userProgress():BelongsToMany
+    {
+        return $this->belongsToMany(User::class,'user_plan_progress')->withPivot('status','date');
+    }
 
 }

@@ -89,6 +89,10 @@ class ExerciseController extends Controller
                 'message' => 'The specified plan does not belong to you.'
             ], 403);
         }
+
+        $data['target'] = $plan->target;
+        $data['level'] = $plan->level;
+        $data['choose'] = $plan->choose;
         $exercise = Exercise::create($data);
         $exercise->muscles()->attach($request->muscle);
         $exercise->focusAreas()->attach($request->focus_area);
@@ -96,6 +100,7 @@ class ExerciseController extends Controller
         $exercise->coachPlans()->attach($request->plan_id);
         return response()->json([
             'message' => "Exercises added to Plan successfully",
+            'exercise' => $exercise,
         ]);
     }
 
@@ -122,11 +127,11 @@ class ExerciseController extends Controller
     {
         $data = $request->validated();
         $user = Auth::user();
-        $data = Exercise::withwherehas('coachPlans', function ($query) {
-            $query->where('coach_id', request('coach_id'));
-        })->withwherehas('days', function ($query) {
+        $data = Exercise::wherehas('coachPlans', function ($query) use ($user) {
+            $query->where('coach_id', request('coach_id'))->where('target',$user->target)->where('level',$user->level)->where('choose',request('choose'));
+        })->wherehas('days', function ($query) {
             $query->where('training_days.id', request('day_id'));
-        })->where('choose', $request->choose)->where('target', $user->target)->with('focusAreas')->get();
+        })->with('focusAreas')->get();
         return $this->success($data);
     }
 

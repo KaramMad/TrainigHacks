@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreign('coach_id')->references('id')->on('coaches')->onDelete('cascade');
             $table->string('plan_name');
             $table->string('description');
+            $table->enum('target',['lose_weight', 'build_muscle', 'keep_fit']);
+            $table->enum('choose', ['equipment', 'no_equipment']);
+            $table->enum('level', ['beginner', 'intermediate', 'advanced']);
             $table->timestamps();
         });
     }
