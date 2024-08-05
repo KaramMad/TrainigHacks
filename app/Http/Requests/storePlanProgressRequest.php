@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Contracts\Validation\Validator;
-class StoreSubscriptionRequest extends FormRequest
+
+class storePlanProgressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +24,6 @@ class StoreSubscriptionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'coach_id'=>'required|exists:coaches,id',
             'choose'=>'required|in:equipment,no_equipment',
         ];
     }

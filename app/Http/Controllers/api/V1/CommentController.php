@@ -20,34 +20,76 @@ class CommentController extends Controller
         $data = $request->validated();
         $data['user_id'] = Auth::id();
 
+        
         if (OffensiveWordChecker::containsOffensiveWords($data['body'])) {
             return response()->json([
                 'message' => 'Your comment contains offensive words and cannot be submitted.'
             ], 400);
         }
-        $imagePath = null;
+
+
         if ($request->hasFile('image')) {
-            $data['image'] = ImageTrait::store($request->file('image'), 'Posts');
+            $data['image'] = ImageTrait::store($request->file('image'), 'Comments');
         }
 
         $user = Auth::user();
         $comment = new Comment($data);
         $user->comments()->save($comment);
 
+
+        $post = $comment->post;
+
+        $postLikesCount = $post ? $post->likes()->count() : 0;
+        $postIsLike = $post ? $post->islike() : false;
+
+
+        $commentImagePath = $comment->image
+            ? $comment->image
+            : null;
+
         return response()->json([
             'message' => 'Comment added successfully',
-            'comment' => $comment
+            'comment' => [
+                'id' => $comment->id,
+                'body' => $comment->body,
+                'user_name' => $user->name,
+                'user_avatar' => $user->image,
+                'created_at' => $comment->created_at,
+                'updated_at' => $comment->updated_at,
+                'likes_count' => $comment->likes()->count(),
+                'islike' => $comment->islike(),
+                'image' => $commentImagePath,
+            ],
+            'post' => $post ? [
+                'id' => $post->id,
+                'body' => $post->body,
+                'postable_id' => $post->postable_id,
+                'postable_type' => $post->postable_type,
+                'created_at' => $post->created_at,
+                'updated_at' => $post->updated_at,
+                'images' => $post->images->map(function ($image) {
+                    return [
+                        'id' => $image->id,
+                        'path' => $image->path,
+                        'url' => $image->path
+                    ];
+                }),
+                'likes_count' => $postLikesCount,
+                'islike' => $postIsLike,
+            ] : null
         ]);
     }
 
     public function showComments($postId)
     {
         $post = Post::find($postId);
+
         if (!$post) {
             return response()->json([
                 'message' => 'Post not found.'
             ], 404);
         }
+
         $comments = Comment::where('post_id', $postId)
             ->with('user', 'images', 'likes')
             ->get()
@@ -58,6 +100,7 @@ class CommentController extends Controller
                     'user_name' => $comment->user ? $comment->user->name : null,
                     'user_avatar' => $comment->user ? $comment->user->image : null,
                     'likes_count' => $comment->likes()->count(),
+                    'islike' => $comment->islike(),
                     'images' => $comment->images ? $comment->images->map(function ($image) {
                         return [
                             'id' => $image->id,

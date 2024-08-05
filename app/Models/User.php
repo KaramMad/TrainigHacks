@@ -70,21 +70,23 @@ class User extends Authenticatable
 
     public function postsWithBio()
     {
-        return $this->posts()->with('user', 'postable');
+        return $this->posts()->with('user', 'postable', 'images');
     }
     public function notifications()
     {
         return $this->belongsToMany(Notification::class, 'notification_users');
     }
-    public function favorite():BelongsToMany{
-        return $this->belongsToMany(Product::class,'product_favorites');
+    public function favorite(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_favorites');
     }
-    public function orders():HasMany{
+    public function orders(): HasMany
+    {
         return $this->hasMany(Order::class);
     }
-    public function subscribedCoaches():BelongsToMany
+    public function subscribedCoaches(): BelongsToMany
     {
-        return $this->belongsToMany(Coach::class,'subscriptions')->withPivot('status','start_date','end_date');
+        return $this->belongsToMany(Coach::class, 'subscriptions')->withPivot('status', 'start_date', 'end_date');
     }
     public function planProgress():BelongsToMany
     {

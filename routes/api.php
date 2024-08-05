@@ -232,6 +232,8 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::post('/create', [SubscriptionController::class, 'store']);
         Route::get('/index', [SubscriptionController::class, 'index']);
         Route::post('/pay', [FatoorahController::class, 'payOrder']);
+        Route::post('progress/updateDay', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'completeDay']);
+        Route::get('progress/index', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'index']);
     });
     Route::middleware(['subscription'])->group(function () {
 
@@ -241,7 +243,6 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
         Route::post('exercise/exercisePlan/{coach_id}', [ExerciseController::class, 'showPlanExerciseByDay']);
         Route::post('coach/meal/show/{coach_id}', [MealController::class, 'show']);
-
     });
 });
 

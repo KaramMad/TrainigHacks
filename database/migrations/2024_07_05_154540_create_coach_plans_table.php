@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('target',['lose_weight', 'build_muscle', 'keep_fit']);
             $table->enum('choose', ['equipment', 'no_equipment']);
             $table->enum('level', ['beginner', 'intermediate', 'advanced']);
+            $table->unique(['coach_id', 'target','choose','level']);
             $table->timestamps();
         });
     }

@@ -22,7 +22,7 @@ class CommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => 'required',
+            'body' => 'nullable',
             'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
             'comment_id' => 'nullable|exists:comments,id',
             'post_id' => 'nullable|exists:posts,id',

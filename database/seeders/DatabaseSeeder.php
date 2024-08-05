@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'karam',
             'email' => 'karamalmadne@gmail.com',
             'target' => 'build_muscle',
-            'level'  => 'beginner',
+            'level' => 'beginner',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
         ]);
         $this->call(ExerciseTypeSeeder::class);
@@ -49,6 +49,14 @@ class DatabaseSeeder extends Seeder
         $this->call([MuscleLevelSeeder::class]);
         $this->call(CoachSeeder::class);
         $this->call(CoachPlanSeeder::class);
+        \App\Models\coachPlan::create([
+            'plan_name' => 'buildMuscle',
+            'coach_id' => 1,
+            'description' => 'love is all love',
+            'target' => 'build_muscle',
+            'level' => 'beginner',
+            'choose' => 'no_equipment'
+        ]);
         $this->call(ExerciseSeeder::class);
         $this->call(IngredientSeeder::class);
         $this->call(MealSeeder::class);

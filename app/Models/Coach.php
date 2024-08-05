@@ -13,7 +13,7 @@ class Coach extends Authenticatable
 {
     use HasFactory, HasApiTokens;
 
-    protected $guarded = ['soso'];
+    protected $guarded = [''];
     protected $hidden = ['password'];
 
     public function posts(): MorphMany
@@ -21,6 +21,11 @@ class Coach extends Authenticatable
         return $this->morphMany(Post::class, 'postable');
     }
 
+    public function scopeActive($query,$user){
+       return $query->whereHas('plans',function($query)use($user){
+           $query->where('target',$user->target)->where('level',$user->level);
+        });
+    }
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');

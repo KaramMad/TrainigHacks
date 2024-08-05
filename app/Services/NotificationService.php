@@ -23,7 +23,8 @@ class NotificationService
             return $token['access_token'];
         });
 
-        $response = Http::withHeader('Authorization', "Bearer $access_token")->post($apiUrl, $message);
+    $response = Http::withHeader('Authorization', "Bearer $access_token")->post($apiUrl, $message);
+
     }
     public function sendPreferdTimeNotification(string $fcm)
     {
