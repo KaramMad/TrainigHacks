@@ -19,12 +19,12 @@ class PostRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
-        return [
-            'body' => 'nullable|string',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'video' => 'nullable|mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4|max:10000'
-        ];
-    }
+    public function rules()
+{
+    return [
+        'body' => 'required|string',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'video' => 'nullable|mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4|max:10000'
+    ];
+}
 }

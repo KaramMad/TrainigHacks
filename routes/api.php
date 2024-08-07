@@ -203,7 +203,9 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('notifications', [NotificationController::class, 'getAllNotifications']);
     // Reports
     Route::post('report/creatReport', [ReportController::class, 'createOrUpdateReport']);
-
+    Route::post('report/creatReportSteps', [ReportController::class, 'createOrUpdateStepsReport']);
+    Route::get('report/getDailyReport', [ReportController::class, 'getDailyReport']);
+    Route::get('report/getWeeklyReport', [ReportController::class, 'getWeeklyReport']);
     // Store-Section
     Route::group(['prefix' => 'products'], function () {
         Route::get('/allProducts', [ProductController::class, 'index']);

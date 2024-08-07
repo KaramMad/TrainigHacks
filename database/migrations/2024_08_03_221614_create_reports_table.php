@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->integer('calories');
-            $table->integer('Number_of_exercises');
-            $table->time('total_time');
+            $table->integer('calories')->default(0);
+            $table->integer('Number_of_exercises')->default(0);
+            $table->time('total_time')->default('00:00:00');
             $table->date('report_date');
+            $table->integer('steps')->default(0);
+            $table->decimal('weight', 2)->nullable();
+            $table->decimal('bmi', 2)->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unique(['user_id', 'report_date']);
             $table->timestamps();
