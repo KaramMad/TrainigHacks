@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBiginteger('user_id')->unsigned();
             $table->unsignedBiginteger('product_id')->unsigned();
+            $table->enum('interactions',['view','like','purchase']);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();

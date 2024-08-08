@@ -78,7 +78,7 @@ class User extends Authenticatable
     }
     public function favorite(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'product_favorites');
+        return $this->belongsToMany(Product::class, 'product_favorites')->withPivot('interactions');
     }
     public function orders(): HasMany
     {

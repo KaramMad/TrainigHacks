@@ -177,6 +177,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::delete('meal/deleteFromFavorite/{meal}', [FavoriteController::class, 'deleteFromFavorite']);
     Route::get('meal/{meal}/isfav', [FavoriteController::class, 'isFavorite']);
     Route::get('meal/getAll', [AdminMealController::class, 'index']);
+    Route::get('meal/byId/{id}', [AdminMealController::class, 'getById']);
     Route::get('exerciseType/getType', [ExerciseTypeController::class, 'index']);
     Route::get('exerciseType/getType/{id}', [ExerciseTypeController::class, 'show']);
     Route::get('admin/meal/latestMeals', [AdminMealController::class, 'latestMeals']);
@@ -233,7 +234,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('/index', [SubscriptionController::class, 'index']);
         Route::post('/pay', [FatoorahController::class, 'payOrder']);
         Route::post('progress/updateDay', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'completeDay']);
-        Route::get('progress/index', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'index']);
+        Route::post('progress/index', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'index']);
     });
     Route::middleware(['subscription'])->group(function () {
 

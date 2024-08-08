@@ -61,9 +61,15 @@ class UserPlanProgressController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = UserPlanProgress::query()->where('status', 'unlocked')->get();
+        $user=Auth::user();
+        $plan = coachPlan::active($user, $request)->first();
+        if (!$plan) {
+            return $this->success('Completed your plane renew your Subscription');
+
+        }
+        $data = UserPlanProgress::query()->where('user_id',$user->id)->where('plan_id',$plan->id)->where('status', 'unlocked')->get();
         return $this->success($data);
     }
 }
