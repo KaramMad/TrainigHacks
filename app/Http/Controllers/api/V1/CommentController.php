@@ -20,8 +20,8 @@ class CommentController extends Controller
         $data = $request->validated();
         $data['user_id'] = Auth::id();
 
-        
-        if (OffensiveWordChecker::containsOffensiveWords($data['body'])) {
+
+        if (isset($data['body']) && OffensiveWordChecker::containsOffensiveWords($data['body'])) {
             return response()->json([
                 'message' => 'Your comment contains offensive words and cannot be submitted.'
             ], 400);
