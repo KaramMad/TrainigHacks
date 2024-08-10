@@ -66,9 +66,9 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $data = $request->validated();
-        if (OffensiveWordChecker::containsOffensiveWords($data['body'])) {
+        if (isset($data['body']) && OffensiveWordChecker::containsOffensiveWords($data['body'])) {
             return response()->json([
-                'message' => 'Your post contains offensive words and cannot be submitted.'
+                'message' => 'Your comment contains offensive words and cannot be submitted.'
             ], 400);
         }
 
@@ -91,7 +91,6 @@ class PostController extends Controller
                     $post->images()->create(['path' => $imagePath]);
                 }
             }
-        }
 
         if ($request->hasFile('video')) {
             $videoPath = ImageTrait::store($request->file('video'), 'Posts');
@@ -121,6 +120,7 @@ class PostController extends Controller
             ]
         ]);
     }
+}
 
 
 

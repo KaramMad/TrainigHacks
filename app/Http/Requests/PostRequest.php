@@ -22,7 +22,7 @@ class PostRequest extends FormRequest
     public function rules()
 {
     return [
-        'body' => 'required|string',
+        'body' => 'nullable|string',
         'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         'video' => 'nullable|mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4|max:10000'
     ];

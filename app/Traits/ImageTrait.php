@@ -4,13 +4,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 Trait ImageTrait {
-    public static function store($file,$directory){
+    public static function store($file, $directory)
+    {
         $destpath = public_path("Uploads/$directory/");
-        $extension=$file->getClientOriginalExtension();
-        $fileName=$directory."/".time() . '.' . $extension;
+        $extension = $file->getClientOriginalExtension();
+        $fileName = uniqid($directory . "/") . '.' . $extension;
         $file->move($destpath, $fileName);
         return $fileName;
     }
+
 
     public static function update($file,$old_file,$directory){
         $path = public_path("Uploads/$old_file");

@@ -16,6 +16,8 @@ class ReportController extends Controller
         $validator = Validator::make($request->all(), [
             'calories' => 'required|integer|min:0',
             'Number_of_exercises' => 'required|integer|min:0',
+            'time' => 'required|date_format:H:i:s',
+            'total_calories' => 'required|integer|min:0',
             'total_time' => 'required|date_format:H:i:s',
         ]);
 
@@ -27,7 +29,6 @@ class ReportController extends Controller
 
         $userId = $request->user()->id;
         $today = Carbon::today();
-
 
         $user = User::find($userId);
         $height = $user->tall ? $user->tall / 100 : null;
@@ -41,15 +42,16 @@ class ReportController extends Controller
             ->first();
 
         if ($report) {
-            $existingTotalTimeSeconds = $this->timeToSeconds($report->total_time);
-            $newTotalTimeSeconds = $this->timeToSeconds($request->total_time);
+            $existingTotalTimeSeconds = $this->timeToSeconds($report->time);
+            $newTotalTimeSeconds = $this->timeToSeconds($request->time);
 
             $report->update([
                 'calories' => $report->calories + $request->calories,
                 'Number_of_exercises' => $report->Number_of_exercises + $request->Number_of_exercises,
-                'total_time' => $this->secondsToTime($existingTotalTimeSeconds + $newTotalTimeSeconds),
+                'time' => $this->secondsToTime($existingTotalTimeSeconds + $newTotalTimeSeconds),
                 'weight' => $newWeight,
                 'bmi' => $bmi,
+
             ]);
         } else {
             Report::create([
@@ -57,14 +59,13 @@ class ReportController extends Controller
                 'report_date' => $today,
                 'calories' => $request->calories,
                 'Number_of_exercises' => $request->Number_of_exercises,
-                'total_time' => $request->total_time,
+                'time' => $request->time,
                 'weight' => $newWeight,
                 'bmi' => $bmi,
+                'total_calories' => $request->total_calories,
+                'total_time' => $request->total_time,
             ]);
         }
-
-        // مشان غير وزن المستخدم الاصلي
-       // $user->update(['weight' => $newWeight]);
 
         return response()->json(['message' => 'Report saved successfully']);
     }
@@ -104,107 +105,115 @@ class ReportController extends Controller
     }
 
     public function getDailyReport(Request $request)
-    {
-        $userId = $request->user()->id;
+{
+    $userId = $request->user()->id;
 
-        $today = Carbon::today()->format('Y-m-d');
+    $today = Carbon::today()->format('Y-m-d');
+
+    $report = Report::where('user_id', $userId)
+        ->whereDate('report_date', $today)
+        ->first();
+
+    if (!$report) {
+        return response()->json(['message' => 'No report found for today'], 404);
+    }
+
+    $totalCaloriesBurned = 0;
+    $user = $request->user();
+    $height = $user->tall ? $user->tall / 100 : null;
+
+    $weight = $user->weight;
+    $totalCaloriesBurned += $report->calories;
+
+    $newWeight = $this->calculateNewWeight($weight, $totalCaloriesBurned);
+
+    $bmi = $height && $weight ? $this->calculateBMI($weight, $height) : null;
+    $bmiCategory = $this->getBMICategory($bmi);
+
+    $dailyData = [
+        'date' => $report->report_date,
+        'calories' => $report->calories,
+        'total-calories' => $report->total_calories,
+        'weight' =>  $newWeight,
+        'bmi' => $bmi,
+        'bmi_category' => $bmiCategory,
+        'Number_of_exercises' => $report->Number_of_exercises,
+        'time' => $report->time,
+        'total_time' => $report->total_time,
+        'steps' => $report->steps,
+    ];
+
+    return response()->json($dailyData);
+}
 
 
-        $report = Report::where('user_id', $userId)
-            ->whereDate('report_date', $today)
-            ->first();
+public function getWeeklyReport(Request $request)
+{
+    $userId = $request->user()->id;
+    $startOfWeek = Carbon::now()->startOfWeek();
+    $endOfWeek = Carbon::now()->endOfWeek();
 
-        if (!$report) {
-            return response()->json(['message' => 'No report found for today'], 404);
-        }
+    $reports = Report::where('user_id', $userId)
+        ->whereBetween('report_date', [$startOfWeek, $endOfWeek])
+        ->orderBy('report_date', 'asc')
+        ->get();
 
-        $totalCaloriesBurned = 0;
-        $user = $request->user();
-        $height = $user->tall ? $user->tall / 100 : null;
+    if ($reports->isEmpty()) {
+        return response()->json(['message' => 'No reports found for this week'], 404);
+    }
 
-        $weight = $user->weight;
-        $totalCaloriesBurned += $report->calories;
+    $user = $request->user();
+    $height = $user->tall ? $user->tall / 100 : null;
+    $currentWeight = $user->weight;
 
-        $newWeight = $this->calculateNewWeight($weight, $totalCaloriesBurned);
+    $weeklyData = [
+        'total_steps' => 0,
+        'total_calories' => 0,
+        'calories' => 0,
+        'total_time_seconds' => 0,
+        'time_seconds' => 0,
+        'exercises' => 0,
+        'daily_reports' => [],
 
-        $bmi = $height && $weight ? $this->calculateBMI($weight, $height) : null;
-        $bmiCategory = $this->getBMICategory($bmi);
+    ];
+
+    foreach ($reports as $report) {
+        $reportDate = Carbon::parse($report->report_date);
         $dailyData = [
-            'date' => $report->report_date,
+            'date' => $reportDate->toDateString(),
             'calories' => $report->calories,
-            'weight' =>  $newWeight,
-            'bmi' => $bmi,
-            'bmi_category' => $bmiCategory,
-            'Number_of_exercises' => $report->Number_of_exercises,
-            'total_time' => $report->total_time,
+            'weight' => $user->weight,
             'steps' => $report->steps,
-        ];
+            'exercise' => $report->Number_of_exercises,
+            'total_calories' => $report->total_calories,
+            'time' => $report->time,
+                ];
 
-        return response()->json($dailyData);
+        $weeklyData['total_steps'] += $report->steps;
+        $weeklyData['calories'] += $report->calories;
+        $weeklyData['total_calories'] += $report->total_calories;
+        $weeklyData['exercises'] += $report->Number_of_exercises;
+        $weeklyData['time_seconds'] += $this->timeToSeconds($report->time);
+        $weeklyData['total_time_seconds'] += $this->timeToSeconds($report->total_time);
+        $weeklyData['daily_reports'][] = $dailyData;
     }
 
-    public function getWeeklyReport(Request $request)
-    {
-        $userId = $request->user()->id;
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
+    $newWeight = $this->calculateNewWeight($currentWeight, $weeklyData['total_calories']);
+    $bmi = $height && $newWeight ? $this->calculateBMI($newWeight, $height) : null;
+    $bmiCategory = $bmi !== null ? $this->getBMICategory($bmi) : 'Unknown';
 
-        $reports = Report::where('user_id', $userId)
-            ->whereBetween('report_date', [$startOfWeek, $endOfWeek])
-            ->orderBy('report_date', 'asc')
-            ->get();
+    $weeklyData['total_time'] = $this->secondsToTime($weeklyData['total_time_seconds']);
 
-        if ($reports->isEmpty()) {
-            return response()->json(['message' => 'No reports found for this week'], 404);
-        }
+    $weeklyData['end_of_week'] = [
+        'weight' => $newWeight,
+        'bmi' => $bmi,
+        'bmi_category' => $bmiCategory,
+        'total_calories' => $weeklyData['total_calories'],
+        'total_time' => $weeklyData['total_time'],
+    ];
 
-        $user = $request->user();
-        $height = $user->tall ? $user->tall / 100 : null;
-        $currentWeight = $user->weight;
-
-        $totalCaloriesBurned = 0;
-
-        $weeklyData = [
-            'total_steps' => 0,
-            'total_calories' => 0,
-            'total_exercises' => 0,
-            'total_time_seconds' => 0,
-            'daily_reports' => [],
-        ];
-
-        foreach ($reports as $report) {
-            $reportDate = Carbon::parse($report->report_date);
-            $dailyData = [
-                'date' => $reportDate->toDateString(),
-                'calories' => $report->calories,
-                'weight' => $user->weight,
-                'steps' => $report->steps,
-            ];
-
-            $weeklyData['total_steps'] += $report->steps;
-            $weeklyData['total_calories'] += $report->calories;
-            $weeklyData['total_exercises'] += $report->Number_of_exercises;
-            $weeklyData['total_time_seconds'] += $this->timeToSeconds($report->total_time);
-            $weeklyData['daily_reports'][] = $dailyData;
-
-            $totalCaloriesBurned += $report->calories;
-        }
-
-        $newWeight = $this->calculateNewWeight($currentWeight, $totalCaloriesBurned);
-
-
-        $bmi = $height && $newWeight ? $this->calculateBMI($newWeight, $height) : null;
-        $bmiCategory = $bmi !== null ? $this->getBMICategory($bmi) : 'Unknown';
-        $weeklyData['total_time'] = $this->secondsToTime($weeklyData['total_time_seconds']);
-
-        $weeklyData['end_of_week'] = [
-            'weight' => $newWeight,
-            'bmi' => $bmi,
-            'bmi_category' => $bmiCategory,
-        ];
-
-        return response()->json($weeklyData);
-    }
+    return response()->json($weeklyData);
+}
 
     private function calculateNewWeight($currentWeight, $caloriesBurned)
     {
