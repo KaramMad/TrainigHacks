@@ -112,6 +112,7 @@ class OrderController extends Controller
             return AppSP::apiResponse('order is not pending', null, 'data', false, 403);
         }
         $order->status = 'sent';
+        $order->order_date=now();
         $order->save();
     }
 
@@ -122,6 +123,7 @@ class OrderController extends Controller
             return AppSP::apiResponse('order is not sent', null, 'data', false, 403);
         }
         $order->status = 'received';
+        $order->order_date=now();
         $order->save();
         foreach($order->products as $item){
             $item->increment('sales_count',$item->pivot->quantity);
@@ -151,13 +153,13 @@ class OrderController extends Controller
 
             $order->bill->total = $temp;
             $order->bill->save();
-
+            $amount=$total - $temp;
             $data = [
                 'Key' => $invoiceId,
                 'KeyType' => 'invoiceId',
                 'RefundChargeOnCustomer' => false,
                 'ServiceChargeOnCustomer' => false,
-                'Amount' => $total - $temp,
+                'Amount' => $amount,
 
             ];
 

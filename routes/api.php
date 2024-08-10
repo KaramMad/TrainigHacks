@@ -145,6 +145,7 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::delete('/DeleteProduct/{id}', [ProductController::class, 'destroy']);
         Route::post('/Poster/create', [PosterController::class, 'store']);
         Route::get('/order/index', [\App\Http\Controllers\api\V1\OrderController::class, 'index']);
+        Route::get('/order/bill', [\App\Http\Controllers\api\V1\BillController::class, 'index']);
         Route::get('/order/status/sent/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'sent']);
         Route::get('/order/status/received/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'receive']);
         Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);
@@ -176,6 +177,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::delete('meal/deleteFromFavorite/{meal}', [FavoriteController::class, 'deleteFromFavorite']);
     Route::get('meal/{meal}/isfav', [FavoriteController::class, 'isFavorite']);
     Route::get('meal/getAll', [AdminMealController::class, 'index']);
+    Route::get('meal/byId/{id}', [AdminMealController::class, 'getById']);
     Route::get('exerciseType/getType', [ExerciseTypeController::class, 'index']);
     Route::get('exerciseType/getType/{id}', [ExerciseTypeController::class, 'show']);
     Route::get('admin/meal/latestMeals', [AdminMealController::class, 'latestMeals']);
@@ -233,6 +235,8 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::post('/create', [SubscriptionController::class, 'store']);
         Route::get('/index', [SubscriptionController::class, 'index']);
         Route::post('/pay', [FatoorahController::class, 'payOrder']);
+        Route::post('progress/updateDay', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'completeDay']);
+        Route::post('progress/index', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'index']);
     });
     Route::middleware(['subscription'])->group(function () {
 
@@ -242,7 +246,6 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
         Route::post('exercise/exercisePlan/{coach_id}', [ExerciseController::class, 'showPlanExerciseByDay']);
         Route::post('coach/meal/show/{coach_id}', [MealController::class, 'show']);
-
     });
 });
 

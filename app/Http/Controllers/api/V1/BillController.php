@@ -13,7 +13,11 @@ class BillController extends Controller
      */
     public function index()
     {
-        //
+        $data = Bill::with(['billable' => function ($query) {
+            $query->select('id', 'order_date', 'status');
+            $query->orderBy('order_date');
+        }])->where('billable_type', '=', "App\\Models\\Order")->first();
+        return $this->success($data);
     }
 
     /**
