@@ -26,7 +26,6 @@ class ReportFactory extends Factory
             'steps' => $this->faker->numberBetween(5000, 10000),
             'Number_of_exercises' => $this->faker->numberBetween(1, 5),
             'time' => gmdate("H:i:s", $this->faker->numberBetween(3600, 7200)),
-            'total_exercises' => $this->faker->numberBetween(100, 200),
             'total_calories' => $this->faker->numberBetween(2000, 3000),
             'total_time' => gmdate("H:i:s", $this->faker->numberBetween(3600, 7200)),
 
