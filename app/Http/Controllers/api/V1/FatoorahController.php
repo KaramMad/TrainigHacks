@@ -7,6 +7,7 @@ use App\Models\Bill;
 use App\Models\Order;
 use App\Models\Subscription;
 use App\Services\FatoorahServices;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Mgcodeur\CurrencyConverter\Facades\CurrencyConverter;
 
@@ -14,10 +15,12 @@ class FatoorahController extends Controller
 {
 
     private $fatoorahServices;
+    private $notificationService;
 
-    public function __construct(FatoorahServices $fatoorahServices)
+    public function __construct(FatoorahServices $fatoorahServices, NotificationService $notificationService)
     {
         $this->fatoorahServices = $fatoorahServices;
+        $this->notificationService = $notificationService;
     }
 
     public function payOrder(PaymentRequest $request)
@@ -111,10 +114,30 @@ class FatoorahController extends Controller
                     $yourOrder->billable->status = 'preparing';
                     $yourOrder->billable->order_date=now();
                     $yourOrder->billable->save();
+                    $this->sendNotification(
+                        $yourOrder->user->fcm_token,
+                        [
+                            'to' => $yourOrder->user->fcm_token,
+                            'notification' => [
+                                'title' => 'Order Status Updated',
+                                'body' => 'Your order is now in preparing status.',
+                            ],
+                        ]
+                    );
                     return redirect('https://tan-dionne-10.tiiny.site/');
                 } elseif ($yourOrder->billable_type === "App\Models\Subscription") {
                     $yourOrder->paid = true;
                     $yourOrder->save();
+                    $this->sendNotification(
+                        $yourOrder->user->fcm_token,
+                        [
+                            'to' => $yourOrder->user->fcm_token,
+                            'notification' => [
+                                'title' => 'Subscription Successful',
+                                'body' => 'Your subscription has been successfully activated.',
+                            ],
+                        ]
+                    );
                     $yourOrder->billable->status = true;
                     $yourOrder->billable->save();
                     return redirect('https://tan-dionne-10.tiiny.site/');
