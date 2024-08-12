@@ -87,9 +87,9 @@ class SubscriptionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Subscription $subscription)
+    public function showCoachSubscribers()
     {
-        //
+
     }
 
     /**

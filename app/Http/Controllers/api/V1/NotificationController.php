@@ -52,13 +52,13 @@ class NotificationController extends Controller
         $message->users()->attach($users, ['created_at' => now(), 'updated_at' => now()]);
     }
 
-    public function updateToken(NotificationRequest $request)
-    {
-        $data = $request->validated();
-        $user = Auth::user();
-        $user->update(['fcm_token' => $request->fcm_token]);
-        return response()->json(['message' => 'Updated Successfully.']);
-    }
+    // public function updateToken(NotificationRequest $request)
+    // {
+    //     $data = $request->validated();
+    //     $user = Auth::user();
+    //     $user->update(['fcm_token' => $request->fcm_token]);
+    //     return response()->json(['message' => 'Updated Successfully.']);
+    // }
 
     public function getAllNotifications()
     {
@@ -76,15 +76,15 @@ class NotificationController extends Controller
         ]);
 
     }
-    public function sendTrainingDay(NotificationRequest $request )
+    public function sendTrainingDay(NotificationRequest $request)
     {
         $data = $request->validated('fcm_token');
 
-        $this->service->sendTrainingNotification($data);
+        $this->service->sendTrainingNotification($data,"hamoda","souad");
         return response()->json([
             'message' => 'send notifiction seccessfuly'
         ]);
- 
+
 
 
     }

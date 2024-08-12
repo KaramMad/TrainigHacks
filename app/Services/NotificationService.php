@@ -43,14 +43,14 @@ class NotificationService
         //(newSendNotificationService)->sendByFcm($this->fcmToken, $this->message);
 
     }
-    public function SendTrainingNotification(string $fcm)
+    public function SendTrainingNotification(string $fcm,string $body,string $title)
     {
         $message = [
             "message" => [
                 "token" => $fcm,
                 "notification" => [
-                    "body" => "This is an SendTrainingNotification notification message!",
-                    "title" => "FCM Message1234"
+                    "body" => $body,
+                    "title" => $title,
                 ]
             ]
         ];

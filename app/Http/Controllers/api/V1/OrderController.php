@@ -111,16 +111,15 @@ class OrderController extends Controller
 
     public function sent(Order $order)
     {
+
         if ($order->status != 'preparing') {
             return AppSP::apiResponse('order is not pending', null, 'data', false, 403);
         }
         $order->status = 'sent';
         $order->order_date=now();
         $order->save();
-        $this->notificationService->SendTrainingNotification($order->user->fcm_token, [
-            "body" => "Your order #{$order->id} has been sent!",
-            "title" => "Order Update"
-        ]);
+        $this->notificationService->SendTrainingNotification($order->user->fcm_token,"Your order has been sent!","BodyFix");
+        return $this->success([]);
     }
 
 
@@ -135,11 +134,9 @@ class OrderController extends Controller
         foreach($order->products as $item){
             $item->increment('sales_count',$item->pivot->quantity);
         }
-        $this->notificationService->SendTrainingNotification($order->user->fcm_token, [
-            "body" => "Your order #{$order->id} has been received!",
-            "title" => "Order Update"
-        ]);
 
+        $this->notificationService->SendTrainingNotification($order->user->fcm_token,"Your order has been received!","BodyFix");
+        return $this->success([]);
     }
 
     /**

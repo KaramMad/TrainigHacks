@@ -25,7 +25,7 @@ class AuthController extends Controller
             'name' => 'required|max:55|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/',
-            'fcm_token' => 'required'
+            'fcm_token' => 'required|string'
         ]);
         $data = $request->all();
         if ($validateTrainer->fails()) {
