@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('plan_id')->references('id')->on('coach_plans')->onDelete('cascade');
             $table->enum('status', ['locked', 'unlocked'])->default('locked');
+            $table->string('day');
             $table->timestamps();
 
         });

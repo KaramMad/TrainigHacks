@@ -126,7 +126,7 @@ class AuthController extends Controller
             config(['auth.guards.user.provider' => 'auth.guards.user']);
             $user = User::query()->select('users.*')->find(auth()->guard('web')->user()['id']);
             $user->update(['fcm_token' => $request->fcm_token]);
-            return AppSP::apiResponse('Trainer Login Successfully', $user->createToken("HomeWorkout", ['user'])->accessToken, 'token',true,200,$user->id);
+            return AppSP::apiResponse('Trainer Login Successfully', $user->createToken("HomeWorkout", ['user'])->accessToken, 'token',true,200,$user);
         } else {
             return response()->json([
                 'status' => false,

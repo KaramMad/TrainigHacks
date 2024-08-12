@@ -30,7 +30,7 @@ class coachPlan extends Model
 
     public function scopeActive($query, $user, $request)
     {
-        return $query->where('target', $user->target)->where('level', $user->level)->where('choose', $request->choose);
+        return $query->where('target', $user->target)->where('level', $user->level)->where('choose', $request->choose)->where('coach_id',$request->coach_id);
     }
 
 }
