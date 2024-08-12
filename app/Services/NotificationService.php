@@ -13,7 +13,7 @@ class NotificationService
     {
         $apiUrl = 'https://fcm.googleapis.com/v1/projects/home-workout-24924/messages:send';
         $access_token = Cache::remember('access_token', now()->addHour(), function () use ($apiUrl) {
-            $credentialsFilePath = storage_path('app/google-services.json');
+            $credentialsFilePath = storage_path('app/fcm.json');
             $client = new \Google_Client();
             $client->setAuthConfig($credentialsFilePath);
             $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
@@ -24,7 +24,7 @@ class NotificationService
         });
 
     $response = Http::withHeader('Authorization', "Bearer $access_token")->post($apiUrl, $message);
-   // dd($response);
+
     }
     public function sendPreferdTimeNotification(string $fcm)
     {

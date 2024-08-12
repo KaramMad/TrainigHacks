@@ -24,6 +24,7 @@ class StoreSubscriptionRequest extends FormRequest
     {
         return [
             'coach_id'=>'required|exists:coaches,id',
+            'choose'=>'required|in:equipment,no_equipment',
         ];
     }
     protected function failedValidation(Validator $validator)
