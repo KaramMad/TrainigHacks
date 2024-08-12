@@ -101,7 +101,6 @@ class PostController extends Controller
         $post->load('images');
 
         $post->islike = $post->islike();
-
         return response()->json([
             'message' => 'Post added successfully',
             'post' => [
@@ -119,8 +118,8 @@ class PostController extends Controller
                 'islike' => $post->islike,
             ]
         ]);
+        }
     }
-}
 
 
 
@@ -147,6 +146,8 @@ class PostController extends Controller
                         'url' => url($image->path)
                     ];
                 }),
+                'user_name' => $post->user->name,
+                'user_avatar' => $post->user->image,
                 'comments' => $post->comments->map(function ($comment) {
                     return [
                         'id' => $comment->id,

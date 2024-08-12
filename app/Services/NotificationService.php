@@ -24,7 +24,7 @@ class NotificationService
         });
 
     $response = Http::withHeader('Authorization', "Bearer $access_token")->post($apiUrl, $message);
-    dd($response);
+   // dd($response);
     }
     public function sendPreferdTimeNotification(string $fcm)
     {

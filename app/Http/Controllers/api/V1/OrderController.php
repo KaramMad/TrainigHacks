@@ -7,6 +7,7 @@ use App\Models\Bill;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Services\NotificationService;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FatoorahServices;
@@ -19,10 +20,12 @@ class OrderController extends Controller
      * Display a listing of the resource.
      */
     private $fatoorahServices;
+    private $notificationService;
 
-    public function __construct(FatoorahServices $fatoorahServices)
+    public function __construct(FatoorahServices $fatoorahServices, NotificationService $notificationService)
     {
         $this->fatoorahServices = $fatoorahServices;
+        $this->notificationService = $notificationService;
     }
 
     public function index()
@@ -113,6 +116,10 @@ class OrderController extends Controller
         }
         $order->status = 'sent';
         $order->save();
+        $this->notificationService->SendTrainingNotification($order->user->fcm_token, [
+            "body" => "Your order #{$order->id} has been sent!",
+            "title" => "Order Update"
+        ]);
     }
 
 
@@ -126,6 +133,10 @@ class OrderController extends Controller
         foreach($order->products as $item){
             $item->increment('sales_count',$item->pivot->quantity);
         }
+        $this->notificationService->SendTrainingNotification($order->user->fcm_token, [
+            "body" => "Your order #{$order->id} has been received!",
+            "title" => "Order Update"
+        ]);
 
     }
 
