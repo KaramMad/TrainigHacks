@@ -33,7 +33,7 @@ class StoreProductRequest extends FormRequest
             'protein'=>'nullable|string',
             'creatine'=>'nullable|string',
             'expiration_date'=>'nullable',
-            'category_id'=>'required|min:1|max:3|exists:catproducts,id',
+            'category_id'=>'required|array',
             'color_id'=>'nullable|array',
             'color_id.*.id'=>'exists:color_products,id',
             'size_id'=>'nullable|array',

@@ -8,7 +8,7 @@ Trait ImageTrait {
     {
         $destpath = public_path("Uploads/$directory/");
         $extension = $file->getClientOriginalExtension();
-        $fileName = uniqid($directory . "_") . '.' . $extension;
+        $fileName = uniqid($directory . "/") . '.' . $extension;
         $file->move($destpath, $fileName);
         return $fileName;
     }

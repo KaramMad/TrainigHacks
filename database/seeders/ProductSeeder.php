@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Catproduct;
 use App\Models\ColorProduct;
 use App\Models\Product;
 use App\Models\ProductSize;
@@ -19,8 +20,10 @@ class ProductSeeder extends Seeder
         foreach(Product::all() as $product){
             $size=ProductSize::take(rand(1,4))->pluck('id');
             $color=ColorProduct::take(rand(1,8))->pluck('id');
+            $category=Catproduct::take(rand(1,8))->pluck('id');
             $product->sizes()->attach($size);
             $product->colors()->attach($color);
+            $product->category()->attach($category);
         }
     }
 }

@@ -30,7 +30,6 @@ class ProductFactory extends Factory
             'protein'=>$this->faker->randomElement(['null','19']),
             'creatine'=>$this->faker->randomElement(['null','50']),
             'expiration_date' => $this->faker->dateTimeBetween('now','+3 years'),
-            'category_id'=>rand(1,8),
             'sales_count'=>$this->faker->numberBetween(1,100),
             'view_count'=>$this->faker->numberBetween(1,100),
 
