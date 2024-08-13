@@ -151,6 +151,9 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);
 
     });
+    Route::group(['prefix'=>'report'],function(){
+        Route::get('/userCount',[AdminController::class,'allusers']);
+    });
 });
 
 //Trainer Auth & Routes

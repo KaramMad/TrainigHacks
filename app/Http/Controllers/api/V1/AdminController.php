@@ -5,6 +5,7 @@ use App\Models\Admin;
 use App\Models\Coach;
 use App\Http\Requests\AdminLoginRequest;
 use App\Http\Requests\AddNewCoachRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -66,5 +67,13 @@ class AdminController extends Controller
 
             ], 500);
         }
+    }
+    public function allUsers(){
+        $user =User::query()->count();
+        $coach=Coach::query()->count();
+        return response()->json([
+            'users'=>$user,
+            'coaches'=>$coach,
+        ],200);
     }
 }

@@ -20,8 +20,6 @@ class ProductController extends Controller
     public function index()
     {
         $data=Product::orderBy('id')->latest()->with('colors')->with('sizes')->get();
-        $user = User::find(Auth::id());
-        $user->favorite()->attach([$data->id=>['interactions'=>'like']]);
         $data=$data->map(function($product){
             $product['isfavorite']=$product->isfav();
             return $product;
