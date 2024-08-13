@@ -9,6 +9,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Services\NotificationService;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FatoorahServices;
 use App\Providers\AppServiceProvider as AppSP;
@@ -94,8 +95,10 @@ class OrderController extends Controller
         });
         $order->products()->attach($products);
         $total = 0;
+        $user = User::find(Auth::id());
         foreach ($order->products as $product) {
             $product->decrement('stock', $product->pivot->quantity);
+            $user->favorite()->syncWithoutDetaching([$product->id => ['interactions' => 'purchace']]);
             $total += $product->pivot->quantity * $product->price;
             $order['product_count'] = $order->products->count();
             $order['total'] = $total;
@@ -105,7 +108,6 @@ class OrderController extends Controller
         $bill['total'] = $total;
         $order->bill()->save($bill);
         return $this->success($order, 'order created successfully');
-
     }
 
 
@@ -116,9 +118,9 @@ class OrderController extends Controller
             return AppSP::apiResponse('order is not pending', null, 'data', false, 403);
         }
         $order->status = 'sent';
-        $order->order_date=now();
+        $order->order_date = now();
         $order->save();
-        $this->notificationService->SendTrainingNotification($order->user->fcm_token,"Your order has been sent!","BodyFix");
+        $this->notificationService->SendTrainingNotification($order->user->fcm_token, "Your order has been sent!", "BodyFix");
         return $this->success([]);
     }
 
@@ -129,13 +131,13 @@ class OrderController extends Controller
             return AppSP::apiResponse('order is not sent', null, 'data', false, 403);
         }
         $order->status = 'received';
-        $order->order_date=now();
+        $order->order_date = now();
         $order->save();
-        foreach($order->products as $item){
-            $item->increment('sales_count',$item->pivot->quantity);
+        foreach ($order->products as $item) {
+            $item->increment('sales_count', $item->pivot->quantity);
         }
 
-        $this->notificationService->SendTrainingNotification($order->user->fcm_token,"Your order has been received!","BodyFix");
+        $this->notificationService->SendTrainingNotification($order->user->fcm_token, "Your order has been received!", "BodyFix");
         return $this->success([]);
     }
 
@@ -161,7 +163,7 @@ class OrderController extends Controller
 
             $order->bill->total = $temp;
             $order->bill->save();
-            $amount=$total - $temp;
+            $amount = $total - $temp;
             $data = [
                 'Key' => $invoiceId,
                 'KeyType' => 'invoiceId',
@@ -192,7 +194,5 @@ class OrderController extends Controller
             $order->delete();
             return $this->success($order, 'order deleted successfully');
         }
-
-
     }
 }

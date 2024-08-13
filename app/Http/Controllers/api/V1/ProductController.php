@@ -6,6 +6,7 @@ use App\Http\Requests\SearchProductRequest;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\User;
 use App\Traits\ImageTrait;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,8 @@ class ProductController extends Controller
     public function index()
     {
         $data=Product::orderBy('id')->latest()->with('colors')->with('sizes')->get();
+        $user = User::find(Auth::id());
+        $user->favorite()->attach([$data->id=>['interactions'=>'like']]);
         $data=$data->map(function($product){
             $product['isfavorite']=$product->isfav();
             return $product;
@@ -40,13 +43,16 @@ class ProductController extends Controller
     }
     public function common(){
         $user=Auth::user();
-        $viewedProducts = $user->favorite()->wherePivot('interactions', 'view')->pluck('products.id');
-        $similarUsers = User::whereHas('favorite', function ($query) use ($viewedProducts) {
-            $query->whereIn('products.id', $viewedProducts);
+        $viewedProducts = $user->favorite()->where('interactions', 'like')->pluck('products.id');
+        $likedProducts = $user->favorite()->wherePivot('interactions', 'view')->pluck('products.id');
+        $similarUsers = User::whereHas('favorite', function ($query) use ($viewedProducts,$likedProducts) {
+            $query->whereIn('products.id', $viewedProducts)->orWhereIn('products.id',$likedProducts);
         })->pluck('users.id');
-        $data = Product::whereHas('users', function ($query) use ($similarUsers) {
+        $data = Product::whereHas('favoritedby', function ($query) use ($similarUsers) {
             $query->whereIn('users.id', $similarUsers);
-        })->whereNotIn('products.id', $viewedProducts)->get();
+        })
+        ->whereNotIn('products.id', $likedProducts)
+        ->get();
 //        $data=Product::with(['colors','sizes'])->orderBy('view_count','desc')->get();
 //        $data=$data->map(function($product){
 //            $product['isfavorite']=$product->isfav();

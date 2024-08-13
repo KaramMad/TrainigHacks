@@ -26,7 +26,7 @@ class FavoriteController extends Controller
     {
         try {
             $user = User::find(Auth::id());
-            $user->favorite()->syncWithoutDetaching([$product->id=>['interactions'=>'like']]);
+            $user->favorite()->attach([$product->id=>['interactions'=>'like']]);
         } catch (QueryException) {
             return $this->failed('There is no prou$product with this id');
         }
