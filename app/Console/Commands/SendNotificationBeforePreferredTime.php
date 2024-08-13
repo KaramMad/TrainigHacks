@@ -27,17 +27,18 @@ class SendNotificationBeforePreferredTime extends Command
             $currentTime = Carbon::now();
             if ($currentTime->greaterThanOrEqualTo($notificationTime) && $currentTime->lessThan($preferredTime)) {
                 // $user->notifications()->create([
-                //     'notification' => 'Your training time is 15 minutes later!',
+                //     'notification' => 'Your training time is 15 minutes Later!',
                 // ]);
-                $this->userService->sendPreferdTimeNotification(
-                    $user->fcm_token,
-                    // [
-                    //     'body' => 'Your preferred time is in 15 minutes!',
-                    //     'title' => 'Reminder'
-                    // ]
-                );
-                // (newSendNotificationService)->sendByFcm($this->fcmToken, $this->message);
-            }
+                    $this->userService->sendPreferdTimeNotification(
+                        $user->fcm_token,
+                    //     [
+                    //         'body' => 'Your preferred time is in 15 minutes!',
+                    //         'title' => 'Reminder'
+                    //     ]
+                    );
+                    // (newSendNotificationService)->sendByFcm($this->dcmToken, $this->message);
+
+                }
         }
         return 0;
     }

@@ -157,17 +157,13 @@ class ReportController extends Controller
     public function getWeeklyReport(Request $request)
     {
         $userId = $request->user()->id;
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
-
+        $endOfWeek = Carbon::now()->endOfDay();
+        $startOfWeek = Carbon::now()->subDays(6)->startOfDay();
         $reports = Report::where('user_id', $userId)
             ->whereBetween('report_date', [$startOfWeek, $endOfWeek])
             ->orderBy('report_date', 'asc')
-            ->get();
-
-        if ($reports->isEmpty()) {
-            return response()->json(['message' => 'No reports found for this week'], 404);
-        }
+            ->get()
+            ->keyBy('report_date');
 
         $user = $request->user();
         $height = $user->tall ? $user->tall / 100 : null;
@@ -183,36 +179,49 @@ class ReportController extends Controller
             'daily_reports' => [],
         ];
 
-        foreach ($reports as $report) {
-            $reportDate = Carbon::parse($report->report_date);
+        for ($i = 6; $i >= 0; $i--) {
+            $currentDate = Carbon::now()->subDays($i)->startOfDay()->toDateString();
+            $report = $reports->get($currentDate);
 
+            if ($report) {
+                $timeMinutes = intval($this->timeToSeconds($report->time) / 60);
+                $totalTimeMinutes = intval($this->timeToSeconds($report->total_time) / 60);
 
-            $timeMinutes = intval($this->timeToSeconds($report->time) / 60);
-            $totalTimeMinutes = intval($this->timeToSeconds($report->total_time) / 60);
+                $dailyData = [
+                    'date' => $currentDate,
+                    'calories' => $report->calories,
+                    'weight' => $currentWeight,
+                    'steps' => $report->steps,
+                    'exercise' => $report->Number_of_exercises,
+                    'total_calories' => $report->total_calories,
+                    'time' => $timeMinutes,
+                    'total_time' => $totalTimeMinutes,
+                ];
 
-            $dailyData = [
-                'date' => $reportDate->toDateString(),
-                'calories' => $report->calories,
-                'weight' => $currentWeight,
-                'steps' => $report->steps,
-                'exercise' => $report->Number_of_exercises,
-                'total_calories' => $report->total_calories,
-                'time' => $timeMinutes,
-                'total_time' => $totalTimeMinutes,
-            ];
+                $weeklyData['total_steps'] += $report->steps;
+                $weeklyData['calories'] += $report->calories;
+                $weeklyData['total_calories'] += $report->total_calories;
+                $weeklyData['exercises'] += $report->Number_of_exercises;
+                $weeklyData['time'] += $timeMinutes;
+                $weeklyData['total_time_seconds'] += $this->timeToSeconds($report->total_time);
+            } else {
 
-            $weeklyData['total_steps'] += $report->steps;
-            $weeklyData['calories'] += $report->calories;
-            $weeklyData['total_calories'] += $report->total_calories;
-            $weeklyData['exercises'] += $report->Number_of_exercises;
-            $weeklyData['time'] += $timeMinutes ;
-            $weeklyData['total_time_seconds'] += $this->timeToSeconds($report->total_time);
+                $dailyData = [
+                    'date' => $currentDate,
+                    'calories' => 0,
+                    'weight' => $currentWeight,
+                    'steps' => 0,
+                    'exercise' => 0,
+                    'total_calories' => 0,
+                    'time' => 0,
+                    'total_time' => 0,
+                ];
+            }
+
             $weeklyData['daily_reports'][] = $dailyData;
         }
 
-
         $newWeight = $this->calculateNewWeight($currentWeight, $weeklyData['total_calories']);
-
 
         $user->weight = $newWeight;
         $user->save();
@@ -221,9 +230,11 @@ class ReportController extends Controller
         $bmi = $height && $newWeight ? $this->calculateBMI($newWeight, $height) : null;
         $bmiCategory = $bmi !== null ? $this->getBMICategory($bmi) : 'Unknown';
 
+
         $totalMinutes = intval($weeklyData['total_time_seconds'] / 60);
 
         $weeklyData['total_time'] = $totalMinutes;
+
 
         $weeklyData['end_of_week'] = [
             'weight' => $newWeight,
