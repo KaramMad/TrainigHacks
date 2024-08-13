@@ -24,7 +24,7 @@ class MealRequest extends FormRequest
             'description' => 'required|string',
             'preparation_method' => 'required|string',
             'day_id' => 'required|exists:training_days,id',
-            'coach_id' => 'required|exists:coaches,id',
+            'coach_id' => 'nullable|exists:coaches,id',
         ];
     }
 }
