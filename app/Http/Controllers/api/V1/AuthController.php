@@ -25,7 +25,7 @@ class AuthController extends Controller
             'name' => 'required|max:55|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/',
-            'fcm_token' => 'required'
+            'fcm_token' => 'required|string'
         ]);
         $data = $request->all();
         if ($validateTrainer->fails()) {
@@ -125,8 +125,8 @@ class AuthController extends Controller
         if (auth()->guard('web')->attempt($request->only(['email', 'password']))) {
             config(['auth.guards.user.provider' => 'auth.guards.user']);
             $user = User::query()->select('users.*')->find(auth()->guard('web')->user()['id']);
-            $user->update(['fcm_token'=>$request->fcm_token]);
-            return AppSP::apiResponse('Trainer Login Successfully', $user->createToken("HomeWorkout", ['user'])->accessToken, 'token');
+            $user->update(['fcm_token' => $request->fcm_token]);
+            return AppSP::apiResponse('Trainer Login Successfully', $user->createToken("HomeWorkout", ['user'])->accessToken, 'token',true,200,$user);
         } else {
             return response()->json([
                 'status' => false,
@@ -194,7 +194,7 @@ class AuthController extends Controller
             return AppSP::apiResponse('validation Eror', $validateCode->errors(), 'errors', false, 422);
         }
         $data = $request->all();
-        //dd($data);
+
         $verification = VerfiyCode::firstWhere('code', $request->code);
         if ($verification) {
             $user = User::query()->firstWhere('email', '=', $data['email']);

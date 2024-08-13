@@ -6,8 +6,10 @@ use App\Http\Requests\SearchProductRequest;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\User;
 use App\Traits\ImageTrait;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -18,6 +20,8 @@ class ProductController extends Controller
     public function index()
     {
         $data=Product::orderBy('id')->latest()->with('colors')->with('sizes')->get();
+        $user = User::find(Auth::id());
+        $user->favorite()->attach([$data->id=>['interactions'=>'like']]);
         $data=$data->map(function($product){
             $product['isfavorite']=$product->isfav();
             return $product;
@@ -38,11 +42,22 @@ class ProductController extends Controller
         return $this->success($data);
     }
     public function common(){
-        $data=Product::with(['colors','sizes'])->orderBy('view_count','desc')->take(10)->get();
-        $data=$data->map(function($product){
-            $product['isfavorite']=$product->isfav();
-            return $product;
-        });
+        $user=Auth::user();
+        $viewedProducts = $user->favorite()->where('interactions', 'like')->pluck('products.id');
+        $likedProducts = $user->favorite()->wherePivot('interactions', 'view')->pluck('products.id');
+        $similarUsers = User::whereHas('favorite', function ($query) use ($viewedProducts,$likedProducts) {
+            $query->whereIn('products.id', $viewedProducts)->orWhereIn('products.id',$likedProducts);
+        })->pluck('users.id');
+        $data = Product::whereHas('favoritedby', function ($query) use ($similarUsers) {
+            $query->whereIn('users.id', $similarUsers);
+        })
+        ->whereNotIn('products.id', $likedProducts)
+        ->get();
+//        $data=Product::with(['colors','sizes'])->orderBy('view_count','desc')->get();
+//        $data=$data->map(function($product){
+//            $product['isfavorite']=$product->isfav();
+//            return $product;
+//        });
         return $this->success($data);
     }
 
@@ -87,6 +102,9 @@ class ProductController extends Controller
     {
         $product=$product->load(['colors','sizes']);
         $product['isfavorite']=$product->isfav();
+
+        $user=Auth::user();
+        $user->favorite()->syncWithoutDetaching([$product->id=>['interactions'=>'view']]);
         return $this->success($product);
     }
 

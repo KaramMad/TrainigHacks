@@ -113,6 +113,13 @@ class AdminMealController extends Controller
 
         return response()->json($latestMealsMap);
     }
+    public function getById($id){
+        $meal = Meal::query()->first()->where('id', '=', $id)->get();
+        if (!$meal) {
+            return AppSP::apiResponse("not found", null, 'data', false, 404);
+        }
+        return AppSP::apiResponse("Success", $meal, 'meal', true, 200);
+    }
     public function show(Request $request)
     {
         $meal = Meal::with('ingredients')->where('type', $request->type)->where('categoryName',$request->categoryName)

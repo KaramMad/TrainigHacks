@@ -114,30 +114,15 @@ class FatoorahController extends Controller
                     $yourOrder->billable->status = 'preparing';
                     $yourOrder->billable->order_date=now();
                     $yourOrder->billable->save();
-                    $this->sendNotification(
-                        $yourOrder->user->fcm_token,
-                        [
-                            'to' => $yourOrder->user->fcm_token,
-                            'notification' => [
-                                'title' => 'Order Status Updated',
-                                'body' => 'Your order is now in preparing status.',
-                            ],
-                        ]
-                    );
+
+                    $this->notificationService->SendTrainingNotification(
+                        $yourOrder->billable->user->fcm_token,"Paid Successfully","FixBody");
                     return redirect('https://tan-dionne-10.tiiny.site/');
                 } elseif ($yourOrder->billable_type === "App\Models\Subscription") {
                     $yourOrder->paid = true;
                     $yourOrder->save();
-                    $this->sendNotification(
-                        $yourOrder->user->fcm_token,
-                        [
-                            'to' => $yourOrder->user->fcm_token,
-                            'notification' => [
-                                'title' => 'Subscription Successful',
-                                'body' => 'Your subscription has been successfully activated.',
-                            ],
-                        ]
-                    );
+                    $this->notificationService->SendTrainingNotification(
+                        $yourOrder->billable->user->fcm_token,"Paid Successfully","FixBody");
                     $yourOrder->billable->status = true;
                     $yourOrder->billable->save();
                     return redirect('https://tan-dionne-10.tiiny.site/');

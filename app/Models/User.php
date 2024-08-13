@@ -78,7 +78,7 @@ class User extends Authenticatable
     }
     public function favorite(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'product_favorites');
+        return $this->belongsToMany(Product::class, 'product_favorites')->withPivot('interactions');
     }
     public function orders(): HasMany
     {
@@ -87,6 +87,10 @@ class User extends Authenticatable
     public function subscribedCoaches(): BelongsToMany
     {
         return $this->belongsToMany(Coach::class, 'subscriptions')->withPivot('status', 'start_date', 'end_date');
+    }
+    public function planProgress():BelongsToMany
+    {
+        return $this->belongsToMany(coachPlan::class,'user_plan_progress')->withPivot('status','date');
     }
     public function reports()
     {

@@ -22,7 +22,7 @@ class Product extends Model
 
     }
     public function favoritedby():BelongsToMany{
-        return $this->belongsToMany(User::class,'product_favorites');
+        return $this->belongsToMany(User::class,'product_favorites')->withPivot('interactions');
     }
     public function isfav(): bool
     {
