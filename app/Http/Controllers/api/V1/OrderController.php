@@ -177,6 +177,7 @@ class OrderController extends Controller
             if ($response['IsSuccess']) {
                 $RefundId = $response['Data']['RefundId'];
                 $order->bill->RefundId = $RefundId;
+                $order->bill->refunding = $amount;
                 $order->bill->save();
             }
             foreach ($order->products as $product) {

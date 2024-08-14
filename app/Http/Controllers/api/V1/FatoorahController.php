@@ -116,13 +116,13 @@ class FatoorahController extends Controller
                     $yourOrder->billable->save();
 
                     $this->notificationService->SendTrainingNotification(
-                        $yourOrder->billable->user->fcm_token,"Paid Successfully","FixBody");
+                        $yourOrder->billable->user->fcm_token,"Paid Successfully","BodyFix");
                     return redirect('https://tan-dionne-10.tiiny.site/');
                 } elseif ($yourOrder->billable_type === "App\Models\Subscription") {
                     $yourOrder->paid = true;
                     $yourOrder->save();
                     $this->notificationService->SendTrainingNotification(
-                        $yourOrder->billable->user->fcm_token,"Paid Successfully","FixBody");
+                        $yourOrder->billable->user->fcm_token,"Paid Successfully","BodyFix");
                     $yourOrder->billable->status = true;
                     $yourOrder->billable->save();
                     return redirect('https://tan-dionne-10.tiiny.site/');
