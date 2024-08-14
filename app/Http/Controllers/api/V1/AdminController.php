@@ -5,6 +5,7 @@ use App\Models\Admin;
 use App\Models\Coach;
 use App\Http\Requests\AdminLoginRequest;
 use App\Http\Requests\AddNewCoachRequest;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,9 +72,11 @@ class AdminController extends Controller
     public function allUsers(){
         $user =User::query()->count();
         $coach=Coach::query()->count();
+        $products=Product::query()->count();
         return response()->json([
             'users'=>$user,
             'coaches'=>$coach,
+            'products'=>$products,
         ],200);
     }
 }

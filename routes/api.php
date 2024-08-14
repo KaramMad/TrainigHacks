@@ -153,7 +153,8 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
     });
     Route::group(['prefix'=>'report'],function(){
         Route::get('/userCount',[AdminController::class,'allusers']);
-        Route::post('/salesByMonth',[ReportController::class,'allusers']);
+        Route::post('/salesByMonth',[ReportController::class,'salesbymonth']);
+        Route::get('/refund',[ReportController::class,'totalRefund']);
     });
 });
 

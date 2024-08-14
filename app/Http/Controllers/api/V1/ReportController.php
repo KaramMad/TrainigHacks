@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\api\V1;
-
+use App\Models\Bill;
 use App\Models\Order;
 use App\Providers\AppServiceProvider as AppSP;
 use Illuminate\Http\Request;
@@ -336,8 +336,8 @@ class ReportController extends Controller
             ->sortByDesc('total_sales')
             ->values()
             ->toArray());
-
-        $totalSalesAllProducts = $totalSales->sum('total_sales');
+        $totalRefundingvalue=Bill::where('billable_type',"App\Models\Order")->where('paid','=',1)->whereNot('refunding','=',0)->sum('total');
+        $totalSalesAllProducts = $totalSales->sum('total_sales')+$totalRefundingvalue;
         $totalQuantityAllProducts = $totalSales->sum('total_quantity');
         $finalData = [
             'total_sales' => $totalSalesAllProducts,
@@ -345,6 +345,10 @@ class ReportController extends Controller
             'products' => $totalSales,
         ];
         return AppSP::apiResponse('retrieved report', $finalData);
+    }
+    public function totalRefund()  {
+        $totalrefundedValue=Bill::where('billable_type',"App\Models\Order")->where('paid','=',1)->sum('refunding');
+        return $this->success($totalrefundedValue);
     }
 }
 
