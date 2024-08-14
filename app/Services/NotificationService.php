@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Google_Client;
@@ -23,8 +24,20 @@ class NotificationService
             return $token['access_token'];
         });
 
-    $response = Http::withHeader('Authorization', "Bearer $access_token")->post($apiUrl, $message);
+        $response = Http::withHeader('Authorization', "Bearer $access_token")->post($apiUrl, $message);
 
+        $notification = Notification::create([
+            'title' => $message['message']['notification']['title'],
+            'body' => $message['message']['notification']['body'],
+
+        ]);
+
+        $user = User::where('fcm_token', $fcm)->first();
+        if ($user) {
+            $user->notifications()->attach($notification->id);
+        }
+
+        return $response;  
     }
     public function sendPreferdTimeNotification(string $fcm)
     {

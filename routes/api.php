@@ -260,5 +260,5 @@ Route::post('category', [CategoryController::class, 'show']);
 Route::post('testPreferdTime', [NotificationController::class, 'sendPreferdTime']);
 Route::post('testTrainingDay', [NotificationController::class, 'sendTrainingDay']);
 
-//Route::put('token', [NotificationController::class, 'updateToken'])->middleware('auth:user');
+//Route::post('token', [NotificationController::class, 'sendPreferdTime'])->middleware('auth:user');
 //Route::get('notifications', [NotificationController::class, 'getAllNotifications'])->middleware('auth:user');
