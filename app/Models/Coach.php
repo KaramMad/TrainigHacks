@@ -21,9 +21,10 @@ class Coach extends Authenticatable
         return $this->morphMany(Post::class, 'postable');
     }
 
-    public function scopeActive($query,$user){
-       return $query->whereHas('plans',function($query)use($user){
-           $query->where('target',$user->target)->where('level',$user->level);
+    public function scopeActive($query, $user)
+    {
+        return $query->whereHas('plans', function ($query) use ($user) {
+            $query->where('target', $user->target)->where('level', $user->level);
         });
     }
     public function comments(): MorphMany
@@ -53,6 +54,6 @@ class Coach extends Authenticatable
 
     public function subscribers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class,'subscriptions')->withPivot('status');
+        return $this->belongsToMany(User::class, 'subscriptions')->withPivot('status');
     }
 }
