@@ -225,7 +225,7 @@ class ReportController extends Controller
 
             $weeklyData['daily_reports'][] = $dailyData;
         }
-        
+
         $caloriesFromSteps = $this->calculateCaloriesFromSteps($weeklyData['total_steps'], $currentWeight);
         $totalCaloriesBurned = $weeklyData['total_calories'] + $caloriesFromSteps;
         $newWeight = $this->calculateNewWeight($currentWeight, $totalCaloriesBurned);
@@ -298,6 +298,10 @@ class ReportController extends Controller
         $seconds = $seconds % 60;
 
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    }
+    private function calculateCaloriesFromSteps($steps, $weight)
+    {
+        return $steps * 0.05 * ($weight / 70);
     }
 
     public function salesByMonth()
