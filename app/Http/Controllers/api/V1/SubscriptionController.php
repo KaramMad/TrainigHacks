@@ -59,7 +59,7 @@ class SubscriptionController extends Controller
             $temp->delete();
         }
         $plan = coachPlan::where('coach_id', $data['coach_id'])->where('target', $user->target)->where('choose', $request->choose)->where('level', $user->level)->first();
-        if(!$plan){
+        if (!$plan) {
             return $this->failed('not available coach');
         }
         for ($i = 0; $i < 28; $i++) {
@@ -67,7 +67,7 @@ class SubscriptionController extends Controller
             $progress->plan_id = $plan->id;
             $progress->user_id = $user->id;
             $progress->status = $i === 0 ? 'unlocked' : 'locked';
-            $progress->day=$i+1;
+            $progress->day = $i + 1;
             $progress->created_at = Carbon::parse(now()->addDay($i))->format('d-m-Y');
             $progress->save();
         }
@@ -87,10 +87,7 @@ class SubscriptionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showCoachSubscribers()
-    {
-
-    }
+    public function showCoachSubscribers() {}
 
     /**
      * Show the form for editing the specified resource.
@@ -114,5 +111,11 @@ class SubscriptionController extends Controller
     public function destroy(Subscription $subscription)
     {
         //
+    }
+    public function getAllUserSubscriptionWithCoach()
+    {
+        $coachId = Auth::user();
+        $subscription = Subscription::where('status', '1')->with('user')->where('coach_id',$coachId->id)->get();
+        return $subscription;
     }
 }

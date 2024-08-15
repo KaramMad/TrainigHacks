@@ -79,6 +79,7 @@ Route::group([
     Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
+    Route::get('user/getAllUserSubscriptionWithCoach', [SubscriptionController::class, 'getAllUserSubscriptionWithCoach']);
 
 
     Route::group(['prefix' => 'plan'], function () {
@@ -149,7 +150,6 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::get('/order/status/sent/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'sent']);
         Route::get('/order/status/received/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'receive']);
         Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);
-
     });
 });
 
@@ -226,9 +226,6 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::get('/order/index', [\App\Http\Controllers\api\V1\OrderController::class, 'index']);
         Route::delete('/order/cancel/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'destroy']);
         Route::post('/order/pay', [FatoorahController::class, 'payOrder']);
-
-
-
     });
     // Premium-section
     Route::prefix('subscription')->group(function () {
@@ -259,6 +256,7 @@ Route::post('category', [CategoryController::class, 'show']);
 
 Route::post('testPreferdTime', [NotificationController::class, 'sendPreferdTime']);
 Route::post('testTrainingDay', [NotificationController::class, 'sendTrainingDay']);
+
 
 //Route::post('token', [NotificationController::class, 'sendPreferdTime'])->middleware('auth:user');
 //Route::get('notifications', [NotificationController::class, 'getAllNotifications'])->middleware('auth:user');
