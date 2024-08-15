@@ -20,8 +20,6 @@ class ProductController extends Controller
     public function index()
     {
         $data=Product::orderBy('id')->latest()->with('colors')->with('sizes')->get();
-        $user = User::find(Auth::id());
-        $user->favorite()->attach([$data->id=>['interactions'=>'like']]);
         $data=$data->map(function($product){
             $product['isfavorite']=$product->isfav();
             return $product;
@@ -50,9 +48,7 @@ class ProductController extends Controller
         })->pluck('users.id');
         $data = Product::whereHas('favoritedby', function ($query) use ($similarUsers) {
             $query->whereIn('users.id', $similarUsers);
-        })
-        ->whereNotIn('products.id', $likedProducts)
-        ->get();
+        })->get();
 //        $data=Product::with(['colors','sizes'])->orderBy('view_count','desc')->get();
 //        $data=$data->map(function($product){
 //            $product['isfavorite']=$product->isfav();
@@ -89,6 +85,7 @@ class ProductController extends Controller
 
         }
         $data=Product::create($data);
+        $data->category()->attach($request->category_id);
         $data->colors()->attach($request->color_id);
         $data->sizes()->attach($request->size_id);
         return $this->success($data,'Products added Succesfully');

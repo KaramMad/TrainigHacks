@@ -38,7 +38,7 @@ class FatoorahController extends Controller
                     'CustomerEmail' => $customer->email,
                     'InvoiceValue' => $totalInvoiceItem,//$order['total']
                     'CustomerReference' => $order->id,//$order_id
-                    'DisplayCurrencyIso' => 'KWD',//$order['currency'],
+                    'DisplayCurrencyIso' => 'USD',//$order['currency'],
                     'NotificationOption' => 'EML',
                     'CallBackUrl' => env('success_url'),
                     'ErrorUrl' => env('error_url'),
@@ -67,7 +67,7 @@ class FatoorahController extends Controller
                     'CustomerEmail' => $customer->email,
                     'InvoiceValue' => $totalInvoiceItem,
                     'CustomerReference' => $subscribe->id,
-                    'DisplayCurrencyIso' => 'KWD',
+                    'DisplayCurrencyIso' => 'USD',
                     'NotificationOption' => 'EML',
                     'CallBackUrl' => env('success_url'),
                     'ErrorUrl' => env('error_url'),
@@ -116,13 +116,13 @@ class FatoorahController extends Controller
                     $yourOrder->billable->save();
 
                     $this->notificationService->SendTrainingNotification(
-                        $yourOrder->billable->user->fcm_token,"Paid Successfully","FixBody");
+                        $yourOrder->billable->user->fcm_token,"Paid Successfully","BodyFix");
                     return redirect('https://tan-dionne-10.tiiny.site/');
                 } elseif ($yourOrder->billable_type === "App\Models\Subscription") {
                     $yourOrder->paid = true;
                     $yourOrder->save();
                     $this->notificationService->SendTrainingNotification(
-                        $yourOrder->billable->user->fcm_token,"Paid Successfully","FixBody");
+                        $yourOrder->billable->user->fcm_token,"Paid Successfully","BodyFix");
                     $yourOrder->billable->status = true;
                     $yourOrder->billable->save();
                     return redirect('https://tan-dionne-10.tiiny.site/');

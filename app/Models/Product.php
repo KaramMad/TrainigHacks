@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends Model
 {
     use HasFactory;
-    protected $guarded = [];
-    public function category():BelongsTo{
-        return $this->belongsTo(Catproduct::class);
+    protected $guarded = [''];
+    public function category():BelongsToMany{
+        return $this->belongsToMany(Catproduct::class,'category_product','product_id','category_id');
     }
     public function colors():BelongsToMany{
         return $this->belongsToMany(ColorProduct::class,'product_color','product_id','color_id');

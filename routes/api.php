@@ -151,6 +151,11 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);
 
     });
+    Route::group(['prefix'=>'report'],function(){
+        Route::get('/userCount',[AdminController::class,'allusers']);
+        Route::post('/salesByMonth',[ReportController::class,'salesbymonth']);
+        Route::get('/refund',[ReportController::class,'totalRefund']);
+    });
 });
 
 //Trainer Auth & Routes
@@ -238,12 +243,12 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::post('progress/updateDay', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'completeDay']);
         Route::post('progress/index', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'index']);
     });
+    Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
     Route::middleware(['subscription'])->group(function () {
 
         Route::prefix('rating')->group(function () {
             Route::post('/create/{coach_id}', [RatingController::class, 'store']);
         });
-        Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
         Route::post('exercise/exercisePlan/{coach_id}', [ExerciseController::class, 'showPlanExerciseByDay']);
         Route::post('coach/meal/show/{coach_id}', [MealController::class, 'show']);
     });

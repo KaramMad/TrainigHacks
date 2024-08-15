@@ -53,14 +53,19 @@ class SubscriptionController extends Controller
         if ($user->subscribedCoaches()->where('coach_id', $data['coach_id'])->where('status', true)->exists()) {
             return $this->failed('You are already subscribed to this coach.');
         }
+
+        $plan = coachPlan::where('coach_id', $data['coach_id'])->where('target', $user->target)->where('choose', $request->choose)->where('level', $user->level)->first();
+        if(!$plan){
+            return $this->failed('not available coach');
+        }
         if ($user->subscribedCoaches()->where('coach_id', $data['coach_id'])->where('status', false)->exists()) {
             $temp = Subscription::where('coach_id', $data['coach_id'])->where('status', false)->first();
             $temp->bill()->delete();
             $temp->delete();
-        }
-        $plan = coachPlan::where('coach_id', $data['coach_id'])->where('target', $user->target)->where('choose', $request->choose)->where('level', $user->level)->first();
-        if(!$plan){
-            return $this->failed('not available coach');
+            for($i=0;$i<28;$i++){
+                $progress=UserPlanProgress::where('user_id',$user->id)->where('plan_id',$plan->id);
+                $progress->delete();
+            }
         }
         for ($i = 0; $i < 28; $i++) {
             $progress = new UserPlanProgress();

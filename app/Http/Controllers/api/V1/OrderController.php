@@ -98,7 +98,7 @@ class OrderController extends Controller
         $user = User::find(Auth::id());
         foreach ($order->products as $product) {
             $product->decrement('stock', $product->pivot->quantity);
-            $user->favorite()->syncWithoutDetaching([$product->id => ['interactions' => 'purchace']]);
+            $user->favorite()->syncWithoutDetaching([$product->id => ['interactions' => 'purchase']]);
             $total += $product->pivot->quantity * $product->price;
             $order['product_count'] = $order->products->count();
             $order['total'] = $total;
@@ -177,6 +177,7 @@ class OrderController extends Controller
             if ($response['IsSuccess']) {
                 $RefundId = $response['Data']['RefundId'];
                 $order->bill->RefundId = $RefundId;
+                $order->bill->refunding = $amount;
                 $order->bill->save();
             }
             foreach ($order->products as $product) {
