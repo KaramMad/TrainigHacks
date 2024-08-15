@@ -21,7 +21,7 @@ class ProductFactory extends Factory
         return [
             'name'=>$this->faker->word(),
             'description'=>$this->faker->paragraph(),
-            'price'=>$this->faker->numberBetween(1,100),
+            'price'=>$this->faker->numberBetween(1,10),
             'stock'=>$this->faker->numberBetween(1,100),
             'brand'=>$this->faker->randomElement(['nike','adidas']),
             'image'=>'Products/Products.png',
@@ -30,7 +30,6 @@ class ProductFactory extends Factory
             'protein'=>$this->faker->randomElement(['null','19']),
             'creatine'=>$this->faker->randomElement(['null','50']),
             'expiration_date' => $this->faker->dateTimeBetween('now','+3 years'),
-            'category_id'=>rand(1,8),
             'sales_count'=>$this->faker->numberBetween(1,100),
             'view_count'=>$this->faker->numberBetween(1,100),
 
