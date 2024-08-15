@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Notification;
+
 use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Http;
@@ -38,7 +38,7 @@ class NotificationService
             $user->notifications()->attach($notification->id);
         }
 
-        return $response;  
+        return $response;
     }
     public function sendPreferdTimeNotification(string $fcm)
     {

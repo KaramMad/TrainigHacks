@@ -361,5 +361,10 @@ class ReportController extends Controller
         $totalrefundedValue=Bill::where('billable_type',"App\Models\Order")->where('paid','=',1)->sum('refunding');
         return $this->success($totalrefundedValue);
     }
+    public function totalSale(){
+        $totalrefundedValue=Bill::where('billable_type',"App\Models\Subscription")->where('paid','=',1)->sum('total');
+        return $this->success($totalrefundedValue);
+
+    }
 }
 

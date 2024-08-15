@@ -64,7 +64,6 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         return $user->load('notifications')->notifications;
-
     }
 
     public function sendPreferdTime(NotificationRequest $request )
