@@ -1,41 +1,97 @@
 <?php
 
 namespace App\Http\Controllers\api\V1;
-
-
 use Illuminate\Http\Request;
 use App\Models\Like;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 
 class likeController extends Controller
 {
+
+    //public function likePost($id)
+    //{
+        // $post = Post::findOrFail($id);
+
+        // $like = new Like();
+        // $like->user_id = Auth::id();
+        // $like->likeable_id = $post->id;
+        // $like->likeable_type = Post::class;
+
+        // $like->save();
+
+        // return response()->json($like, 201);
+    //}
     public function likePost($id)
     {
         $post = Post::findOrFail($id);
+        $userId = Auth::id();
 
-        $like = new Like();
-        $like->user_id = Auth::id();
-        $like->likeable_id = $post->id;
-        $like->likeable_type = Post::class;
+        $existingLike = Like::where('user_id', $userId)
+                            ->where('likeable_id', $post->id)
+                            ->where('likeable_type', Post::class)
+                            ->first();
 
-        $like->save();
+        if ($existingLike) {
+            return response()->json(['message' => 'Already liked'], 200);
+        }
+
+        $like = null;
+        DB::transaction(function () use ($userId, $post, &$like) {
+            $like = new Like();
+            $like->user_id = $userId;
+            $like->likeable_id = $post->id;
+            $like->likeable_type = Post::class;
+
+            $like->save();
+            Cache::increment("post_{$post->id}_likes_count");
+        });
 
         return response()->json($like, 201);
     }
 
+    // public function likeComment($id)
+    // {
+    //     $comment = Comment::findOrFail($id);
+
+    //     $like = new Like();
+    //     $like->user_id = Auth::id();
+    //     $like->likeable_id = $comment->id;
+    //     $like->likeable_type = Comment::class;
+
+    //     $like->save();
+
+    //     return response()->json($like, 201);
+    // }
     public function likeComment($id)
     {
         $comment = Comment::findOrFail($id);
+        $userId = Auth::id();
 
-        $like = new Like();
-        $like->user_id = Auth::id();
-        $like->likeable_id = $comment->id;
-        $like->likeable_type = Comment::class;
+        $existingLike = Like::where('user_id', $userId)
+                            ->where('likeable_id', $comment->id)
+                            ->where('likeable_type', Comment::class)
+                            ->first();
 
-        $like->save();
+        if ($existingLike) {
+            return response()->json(['message' => 'Already liked'], 200);
+        }
+
+        $like = null;
+        DB::transaction(function () use ($userId, $comment, &$like) {
+            $like = new Like();
+            $like->user_id = $userId;
+            $like->likeable_id = $comment->id;
+            $like->likeable_type = Comment::class;
+
+            $like->save();
+
+            Cache::increment("comment_{$comment->id}_likes_count");
+        });
 
         return response()->json($like, 201);
     }
@@ -45,6 +101,7 @@ class likeController extends Controller
         $post = Post::findOrFail($id);
         return response()->json(['likes_count' => $post->likesCount()], 200);
     }
+
 
     public function likesCommentCount($id)
     {

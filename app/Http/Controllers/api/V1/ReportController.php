@@ -120,17 +120,20 @@ class ReportController extends Controller
             return response()->json(['message' => 'No report found for today'], 404);
         }
 
-        $totalCaloriesBurned = 0;
         $user = $request->user();
         $height = $user->tall ? $user->tall / 100 : null;
-
         $weight = $user->weight;
-        $totalCaloriesBurned += $report->calories;
+
+        $totalCaloriesBurned = $report->calories;
+
+        $stepsCaloriesBurned = $this->calculateCaloriesFromSteps($report->steps, $weight);
+
+        $totalCaloriesBurned += $stepsCaloriesBurned;
+
 
         $newWeight = $this->calculateNewWeight($weight, $totalCaloriesBurned);
 
         $currentBMI = $height && $weight ? $this->calculateBMI($weight, $height) : null;
-
         $newBMI = $height && $newWeight ? $this->calculateBMI($newWeight, $height) : null;
 
         $bmiCategory = $this->getBMICategory($currentBMI);
@@ -222,8 +225,10 @@ class ReportController extends Controller
 
             $weeklyData['daily_reports'][] = $dailyData;
         }
-
-        $newWeight = $this->calculateNewWeight($currentWeight, $weeklyData['total_calories']);
+        
+        $caloriesFromSteps = $this->calculateCaloriesFromSteps($weeklyData['total_steps'], $currentWeight);
+        $totalCaloriesBurned = $weeklyData['total_calories'] + $caloriesFromSteps;
+        $newWeight = $this->calculateNewWeight($currentWeight, $totalCaloriesBurned);
 
         $user->weight = $newWeight;
         $user->save();
@@ -251,8 +256,10 @@ class ReportController extends Controller
 
     private function calculateNewWeight($currentWeight, $caloriesBurned)
     {
-        $weightLoss = $caloriesBurned / 7700;
-        return $currentWeight - $weightLoss;
+        $caloriesPerKg = 7700;
+        $weightLost = $caloriesBurned / $caloriesPerKg;
+
+        return $currentWeight - $weightLost;
     }
 
     private function calculateBMI($weight, $height)
