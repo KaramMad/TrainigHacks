@@ -23,7 +23,7 @@ class AdminMealRequest extends FormRequest
             'protein' => 'required|string',
             'sugar' => 'required|string',
             'salt' => 'required|string',
-            'image' => 'required|image|mimes:png,jpeg,webp|max:2048',
+            'image' => 'required|image|mimes:png,jpeg,webp|',
             'warning' => 'nullable|string',
             'description' => 'required|string',
             'preparation_method' => 'nullable|string',

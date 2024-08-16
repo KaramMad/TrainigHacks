@@ -21,19 +21,70 @@ use App\Traits\ImageTrait;
 class AdminMealController extends Controller
 {
     use ImageTrait;
+
     /* Display a listing of the resource.
      */
-    public function getAllmeal(){
+    public function getAllmeal()
+    {
         $data = Meal::with('ingredients')->latest()->whereNull('coach_id')->get();
+
+        $userDiseases = auth()->user()->diseases ?? [];
+        if (is_string($userDiseases)) {
+            $userDiseases = explode(',', $userDiseases);
+        }
+        if (!auth()->user()->is_admin) {
+            foreach ($data as $meal) {
+                $warnings = [];
+
+                if (in_array('heart', $userDiseases) && $meal->calories > 700) {
+                    $warnings[] = 'High in calories, not suitable for heart conditions';
+                }
+
+                if (in_array('diabetes', $userDiseases) && $meal->sugar > 20) {
+                    $warnings[] = 'High in sugar, not suitable for diabetes';
+                }
+
+                if (in_array('blood_pressure', $userDiseases) && $meal->salt > 4) {
+                    $warnings[] = 'High in salt, not suitable for high blood pressure';
+                }
+
+                $meal->warning = implode(' ', $warnings);
+            }
+        }
         return $this->success($data);
     }
+
     public function index()
     {
         $data = Meal::with('ingredients')->latest()->whereNull('coach_id')->get();
         $data = $data->map(function ($meal) {
-            $meal['isfavorite'] = $meal->isfav();
-            return $meal;
+        $meal['isfavorite'] = $meal->isfav();
+        return $meal;
         });
+
+        $userDiseases = auth()->user()->diseases ?? [];
+        if (is_string($userDiseases)) {
+            $userDiseases = explode(',', $userDiseases);
+        }
+        if (!auth()->user()->is_admin) {
+            foreach ($data as $meal) {
+                $warnings = [];
+
+                if (in_array('heart', $userDiseases) && $meal->calories > 700) {
+                    $warnings[] = 'High in calories, not suitable for heart conditions';
+                }
+
+                if (in_array('diabetes', $userDiseases) && $meal->sugar > 20) {
+                    $warnings[] = 'High in sugar, not suitable for diabetes';
+                }
+
+                if (in_array('blood_pressure', $userDiseases) && $meal->salt > 4) {
+                    $warnings[] = 'High in salt, not suitable for high blood pressure';
+                }
+
+                $meal->warning = implode(' ', $warnings);
+            }
+        }
         return $this->success($data);
     }
 
@@ -45,6 +96,28 @@ class AdminMealController extends Controller
             $meal['isfavorite'] = $meal->isfav();
             return $meal;
         });
+        $userDiseases = auth()->user()->diseases ?? [];
+        if (is_string($userDiseases)) {
+            $userDiseases = explode(',', $userDiseases);
+        }
+        if (!auth()->user()->is_admin) {
+            foreach ($data as $meal) {
+                $warnings = [];
+
+                if (in_array('heart', $userDiseases) && $meal->calories > 700) {
+                    $warnings[] = 'High in calories, not suitable for heart conditions';
+                }
+
+                if (in_array('diabetes', $userDiseases) && $meal->sugar > 20) {
+                    $warnings[] = 'High in sugar, not suitable for diabetes';
+                }
+
+                if (in_array('blood_pressure', $userDiseases) && $meal->salt > 4) {
+                    $warnings[] = 'High in salt, not suitable for high blood pressure';
+                }
+                $meal->warning = implode(' ', $warnings);
+            }
+        }
         return $this->success($data);
     }
 
@@ -68,7 +141,7 @@ class AdminMealController extends Controller
             $validatedData['image'] = ImageTrait::store($validatedData['image'], 'Meals');
         }
 
-        $diseases = ['heart', 'knee', 'breath', 'blood pressure', 'diabetes'];
+        $diseases = ['heart', 'knee', 'breath', 'blood_pressure', 'diabetes'];
         $userDiseases = auth()->user()->diseases ?? [];
         $warnings = [];
         foreach ($diseases as $disease) {
@@ -102,12 +175,36 @@ class AdminMealController extends Controller
 
     public function latestMeals()
     {
-        $latestMeals = Meal::with('ingredients')->orderBy('created_at', 'desc')->take(5)->whereNull('coach_id')->get();
-        $latestMeals = $latestMeals->map(function ($data) {
-            $data['isfavorite'] = $data->isfav();
-            return $data;
+        $data = Meal::with('ingredients')->orderBy('created_at', 'desc')->take(5)->whereNull('coach_id')->get();
+        $data = $data->map(function ($latestMeals) {
+            $latestMeals['isfavorite'] = $latestMeals->isfav();
+            return $latestMeals;
         });
-        $latestMealsMap = $latestMeals->mapWithKeys(function ($item) {
+        $userDiseases = auth()->user()->diseases ?? [];
+        if (is_string($userDiseases)) {
+            $userDiseases = explode(',', $userDiseases);
+        }
+        if (!auth()->user()->is_admin) {
+            foreach ($data as $meal) {
+                $warnings = [];
+
+                if (in_array('heart', $userDiseases) && $meal->calories > 700) {
+                    $warnings[] = 'High in calories, not suitable for heart conditions';
+                }
+
+                if (in_array('diabetes', $userDiseases) && $meal->sugar > 20) {
+                    $warnings[] = 'High in sugar, not suitable for diabetes';
+                }
+
+                if (in_array('blood_pressure', $userDiseases) && $meal->salt > 4) {
+                    $warnings[] = 'High in salt, not suitable for high blood pressure';
+                }
+                $meal->warning = implode(' ', $warnings);
+            }
+        }
+        //
+   // }
+        $latestMealsMap = $data->mapWithKeys(function ($item) {
             return [$item['id'] => $item];
         });
 
@@ -122,22 +219,67 @@ class AdminMealController extends Controller
     }
     public function show(Request $request)
     {
-        $meal = Meal::with('ingredients')->where('type', $request->type)->where('categoryName',$request->categoryName)
+        $data = Meal::with('ingredients')->where('type', $request->type)->where('categoryName',$request->categoryName)
             ->whereNull('coach_id')->get();
-            $meal = $meal->map(function ($data) {
-                $data['isfavorite'] = $data->isfav();
-                return $data;
+            $data = $data->map(function ($meal) {
+                $meal['isfavorite'] = $meal->isfav();
+                return $meal;
             });
-        return $this->success($meal);
+            $userDiseases = auth()->user()->diseases ?? [];
+            if (is_string($userDiseases)) {
+                $userDiseases = explode(',', $userDiseases);
+            }
+            if (!auth()->user()->is_admin) {
+                foreach ($data as $meal) {
+                    $warnings = [];
+
+                    if (in_array('heart', $userDiseases) && $meal->calories > 700) {
+                        $warnings[] = 'High in calories, not suitable for heart conditions';
+                    }
+
+                    if (in_array('diabetes', $userDiseases) && $meal->sugar > 20) {
+                        $warnings[] = 'High in sugar, not suitable for diabetes';
+                    }
+
+                    if (in_array('blood_pressure', $userDiseases) && $meal->salt > 4) {
+                        $warnings[] = 'High in salt, not suitable for high blood pressure';
+                    }
+                    $meal->warning = implode(' ', $warnings);
+                }
+            }
+            return $this->success($data);
     }
     public function showByCategory(Request $request)
     {
-        $meal = Meal::with('ingredients')->where('categoryName',$request->categoryName)->whereNull('coach_id')->get();
-        $meal = $meal->map(function ($data) {
-            $data['isfavorite'] = $data->isfav();
-            return $data;
-        });
-        return $this->success($meal);
+            $data = Meal::with('ingredients')->where('categoryName',$request->categoryName)->whereNull('coach_id')->get();
+            $data = $data->map(function ($meal) {
+                $meal['isfavorite'] = $meal->isfav();
+                return $meal;
+            });
+            $userDiseases = auth()->user()->diseases ?? [];
+            if (is_string($userDiseases)) {
+                $userDiseases = explode(',', $userDiseases);
+            }
+            if (!auth()->user()->is_admin) {
+                foreach ($data as $meal) {
+                    $warnings = [];
+
+                    if (in_array('heart', $userDiseases) && $meal->calories > 700) {
+                        $warnings[] = 'High in calories, not suitable for heart conditions';
+                    }
+
+                    if (in_array('diabetes', $userDiseases) && $meal->sugar > 20) {
+                        $warnings[] = 'High in sugar, not suitable for diabetes';
+                    }
+
+                    if (in_array('blood_pressure', $userDiseases) && $meal->salt > 4) {
+                        $warnings[] = 'High in salt, not suitable for high blood pressure';
+                    }
+
+                    $meal->warning = implode(' ', $warnings);
+                }
+            }
+            return $this->success($data);
     }
 
     public function getMealsWithNoneDiet()

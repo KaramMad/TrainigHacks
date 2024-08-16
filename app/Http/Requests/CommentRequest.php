@@ -23,7 +23,7 @@ class CommentRequest extends FormRequest
     {
         return [
             'body' => 'nullable',
-            'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
+            'image' => 'nullable|image|mimes:png,jpeg,webp|',
             'comment_id' => 'nullable|exists:comments,id',
             'post_id' => 'nullable|exists:posts,id',
 

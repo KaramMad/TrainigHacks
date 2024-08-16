@@ -23,7 +23,7 @@ class PosterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
+            'image' => 'nullable|image|mimes:png,jpeg,webp',
         ];
     }
     protected function failedValidation(Validator $validator)

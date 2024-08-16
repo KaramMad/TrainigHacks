@@ -23,7 +23,7 @@ class IngredientRequest extends FormRequest
     {
         return [
             'name'=>'required|string',
-            'image' => 'required|image|mimes:png,jpeg,webp|max:2048',
+            'image' => 'required|image|mimes:png,jpeg,webp|',
         ];
     }
 }

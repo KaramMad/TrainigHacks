@@ -13,9 +13,16 @@ use App\Models\UserPlanProgress;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\Cast\Object_;
+use App\Services\NotificationService;
 
 class SubscriptionController extends Controller
 {
+    private $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -55,15 +62,15 @@ class SubscriptionController extends Controller
         }
 
         $plan = coachPlan::where('coach_id', $data['coach_id'])->where('target', $user->target)->where('choose', $request->choose)->where('level', $user->level)->first();
-        if(!$plan){
+        if (!$plan) {
             return $this->failed('not available coach');
         }
         if ($user->subscribedCoaches()->where('coach_id', $data['coach_id'])->where('status', false)->exists()) {
             $temp = Subscription::where('coach_id', $data['coach_id'])->where('status', false)->first();
             $temp->bill()->delete();
             $temp->delete();
-            for($i=0;$i<28;$i++){
-                $progress=UserPlanProgress::where('user_id',$user->id)->where('plan_id',$plan->id);
+            for ($i = 0; $i < 28; $i++) {
+                $progress = UserPlanProgress::where('user_id', $user->id)->where('plan_id', $plan->id);
                 $progress->delete();
             }
         }
@@ -120,7 +127,31 @@ class SubscriptionController extends Controller
     public function getAllUserSubscriptionWithCoach()
     {
         $coachId = Auth::user();
-        $subscription = Subscription::where('status', '1')->with('user')->where('coach_id',$coachId->id)->get();
+        $subscription = Subscription::where('status', '1')->with('user')->where('coach_id', $coachId->id)->get();
         return $subscription;
+    }
+    public function subscriptionEnds($id)
+    {
+        $coachId = Auth::user()->id;
+        $userId = $id;
+        $user = User::find($userId);
+        $userEnd = Subscription::where('user_id', $userId)
+            ->where('coach_id', $coachId)
+            ->value('end_date');
+            if(!$userEnd){
+                return $this->failed('No subscription with this id');
+            }
+
+        if ($user && $userEnd) {
+            $this->notificationService->SendTrainingNotification(
+                $user->fcm_token,
+                "Your subscription will end after days!",
+                "BodyFix"
+            );
+            return $this->success([]);
+        }
+        if(!$user){
+            return $this->failed('not found');
+        }
     }
 }

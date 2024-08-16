@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         string $dataKey = 'data',
         bool $status = true,
         int $error = 200,
-        $user = null
+       mixed $user = null
     ): JsonResponse {
         return response()->json([
             'status' => $status,

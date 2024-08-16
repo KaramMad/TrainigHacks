@@ -50,6 +50,8 @@ class ReportController extends Controller
             $report->update([
                 'calories' => $report->calories + $request->calories,
                 'Number_of_exercises' => $report->Number_of_exercises + $request->Number_of_exercises,
+                'total_calories'=>$report->total_calories+$request->total_calories,
+                'total_time'=>$this->secondsToTime($existingTotalTimeSeconds+$newTotalTimeSeconds),
                 'time' => $this->secondsToTime($existingTotalTimeSeconds + $newTotalTimeSeconds),
                 'weight' => $newWeight,
                 'bmi' => $bmi,
@@ -154,6 +156,7 @@ class ReportController extends Controller
             'time' => $timeMinutes,
             'total_time' => $totalTimeMinutes,
             'steps' => $report->steps,
+            'level'=>$user->level,
         ];
 
         return response()->json($dailyData);

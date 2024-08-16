@@ -45,7 +45,7 @@ class CoachAuthController extends Controller
     public function adminIndex()
     {
 
-        $coach = Coach::query()->first()->get();
+        $coach = Coach::get();
         $coach = $coach->map(function ($rating) {
             $rating['rating'] = $rating->averageRating();
             return $rating;
@@ -119,7 +119,8 @@ class CoachAuthController extends Controller
         $verification = Coach::query()->firstWhere('phone_number', '=', $request->phone_number);
 
         if (Hash::check($data['password'], $verification['password'])) {
-            return AppSP::apiResponse('Coach Login Successfully', $verification->createToken("API TOKEN", ['coach'])->accessToken, 'token', true);
+            $user = Coach::find($verification['id']);
+            return AppSP::apiResponse('Coach Login Successfully', $verification->createToken("API TOKEN", ['coach'])->accessToken, 'token', true,200,$user);
         } else {
             return response()->json([
                 'status' => false,

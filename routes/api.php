@@ -60,12 +60,12 @@ Route::group([
     Route::post('updateCoachInfo', [CoachAuthController::class, 'update']);
     Route::post('store', [MealController::class, 'store']);
     Route::post('show', [MealController::class, 'show']);
-    Route::delete('destroy/{id}', [MealController::class, 'destroy']);
+    Route::delete('meal/destroy/{id}', [MealController::class, 'destroy']);
     Route::get('meal/index', [MealController::class, 'index']);
     Route::post('meal/store', [MealController::class, 'store']);
     Route::post('ingredient/store', [IngredientController::class, 'store']);
-    Route::delete('ingredient/destroy\{id}', [IngredientController::class, 'destroy']);
-    Route::post('ingredient/update\{id}', [IngredientController::class, 'update']);
+    Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
+    Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
     Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']); // *********************************
     Route::post('post/addpost', [PostController::class, 'store']);
     Route::get('post/showAllPost', [PostController::class, 'index']);
@@ -80,9 +80,10 @@ Route::group([
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
     Route::get('user/getAllUserSubscriptionWithCoach', [SubscriptionController::class, 'getAllUserSubscriptionWithCoach']);
-
+    Route::get('user/totalSale', [ReportController::class, 'totalSale']);
 
     Route::group(['prefix' => 'plan'], function () {
+        Route::get('subscriptionEnds/{id}', [SubscriptionController::class, 'subscriptionEnds']);
         Route::get('/getAllPlan', [CoachPlanController::class, 'index']);
         Route::get('/planWithExercises', [CoachPlanController::class, 'show']);
         Route::post('/create', [CoachPlanController::class, 'store']);

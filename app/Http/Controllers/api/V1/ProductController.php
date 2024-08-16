@@ -59,7 +59,7 @@ class ProductController extends Controller
 
     public function search(SearchProductRequest $request){
         $data=$request->validated();
-        $data=Product::latest()->filter(request(['search_text','category','home_Category']))->take(10)->get();
+        $data=Product::latest()->filter(request(['search_text','category','home_Category']))->get();
         $data=$data->map(function($product){
             $product['isfavorite']=$product->isfav();
             return $product;

@@ -16,15 +16,16 @@ class MealRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'required|string|max:16',
             'categoryName' => 'required|string|in:breakfast,lunch,dinner,snack',
             'target' => 'required|string|in:build muscle,lose weight',
             'calories' => 'required|numeric|max:1000',
             'protein' => 'required|numeric|max:50',
-            'image' => 'required|image|mimes:png,jpeg,webp|max:2048',
+            'image' => 'required|image|mimes:png,jpeg,webp|',
             'description' => 'required|string',
             'preparation_method' => 'required|string',
             'day_id' => 'required|exists:training_days,id',
-            'coach_id' => 'nullable|exists:coaches,id',
+            'ingredients' => 'required|sometimes|array',
         ];
     }
 }

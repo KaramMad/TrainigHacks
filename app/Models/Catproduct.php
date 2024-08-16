@@ -15,7 +15,7 @@ class Catproduct extends Model
      $guarded=[''];
 
     public function products():BelongsToMany{
-        return $this->belongsToMany(Product::class,'category_product','product_id','category_id');
+        return $this->belongsToMany(Product::class,'category_product','category_id','product_id');
     }
     public function subCategories():HasMany{
         return $this->hasMany(Catproduct::class,'parent_id');

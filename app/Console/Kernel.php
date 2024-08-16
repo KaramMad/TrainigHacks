@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('send:notification-before-preferred-time')->everyMinute();
         $schedule->command('send:training-reminder')->daily();
+        $schedule->command('orders:delete-old-pending')->hourly();
     }
 
 

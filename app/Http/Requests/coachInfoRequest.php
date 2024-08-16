@@ -27,7 +27,7 @@ class coachInfoRequest extends FormRequest
             'name' => 'nullable|string|max:20',
             'description' => 'required|string|max:230',
             'price' => 'required|integer|not_in:0',
-            'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
+            'image' => 'nullable|image|mimes:png,jpeg,webp|',
             'age' => 'integer|required',
             'bio' => 'required|string|max:100',
             'password' => 'required|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{6,}$/|confirmed',

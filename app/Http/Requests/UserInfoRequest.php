@@ -36,7 +36,7 @@ class UserInfoRequest extends FormRequest
             'training_days' => 'required|sometimes|array',
             'diseases' => 'required|sometimes|in:heart,none,knee,breath,diabetes,blood_pressure',
             'activity' => 'required|sometimes|in:Sedentary,none,Lightly_Active,Very_Active',
-            'image' => 'nullable|image|mimes:png,jpeg,webp|max:2048',
+            'image' => 'nullable|image|mimes:png,jpeg,webp|',
             'bio'=>'nullable|string|max:49',
         ];
     }

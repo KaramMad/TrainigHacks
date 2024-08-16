@@ -27,6 +27,7 @@ class StoreProductRequest extends FormRequest
             'description'=>'required|string',
             'brand'=>'required|string',
             'price'=>'required|string',
+            'stock'=>'required',
             'image'=>'required|image|mimes:png,jpg',
             'weight'=>'nullable|string',
             'measuring_unit'=>'nullable|string',

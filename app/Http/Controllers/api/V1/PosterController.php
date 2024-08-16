@@ -15,7 +15,7 @@ class PosterController extends Controller
      */
     public function index()
     {
-        $data=Poster::inRandomOrder()->take(3)->get();
+        $data=Poster::inRandomOrder()->get();
         return $this->success($data);
     }
 
@@ -36,6 +36,7 @@ class PosterController extends Controller
         if($request->hasFile('image')){
             $data['image']=ImageTrait::store($data['image'],'ProductPosters');
         }
+        $data=Poster::create($data);
         return $this->success($data);
 
     }
