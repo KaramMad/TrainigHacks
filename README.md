@@ -13,7 +13,7 @@ Track your progress, set goals, and stay motivated from the comfort of your home
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
+- [License](##license)
 - [Contact](#contact)
 
 
