@@ -7,8 +7,8 @@ Track your progress, set goals, and stay motivated from the comfort of your home
 
 ![Laravel](https://img.shields.io/badge/Laravel-10-orange)
 ![PHP](https://img.shields.io/badge/PHP-%5E8.2-blue)
-![License](https://img.shields.io/github/license/[KaramMad/TrainingHacks](https://github.com/KaramMad/TrainigHacks))
-![Stars](https://img.shields.io/github/stars/[KaramMad/TrainingHacks](https://github.com/KaramMad/TrainigHacks))
+![License](https://img.shields.io/github/license/https://github.com/KaramMad/TrainigHacks)
+![Stars](https://img.shields.io/github/stars/https://github.com/KaramMad/TrainigHacks)
 ![Forks](https://img.shields.io/github/forks/KaramMad/TrainingHacks)
 ![Issues](https://img.shields.io/github/issues/KaramMad/TrainingHacks)
 
