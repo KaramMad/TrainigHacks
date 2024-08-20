@@ -8,10 +8,10 @@ Track your progress, set goals, and stay motivated from the comfort of your home
 ![Laravel](https://img.shields.io/badge/Laravel-10-orange)
 ![PHP](https://img.shields.io/badge/PHP-%5E8.2-blue)
 
-## 📋 Table of Contents
-- [Features](#features)
+## 📋 Table-of-Contents
+- [Features](#Features-in-Depth)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Usage](#Usage)
 - [Contributing](#contributing)
 - [License](##license)
 - [Contact](#contact)
