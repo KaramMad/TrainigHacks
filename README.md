@@ -13,11 +13,10 @@ Track your progress, set goals, and stay motivated from the comfort of your home
 - [Installation](#installation)
 - [Usage](#Usage)
 - [Contributing](#contributing)
-- [License](##license)
-- [Contact](#contact)
+- [License](#license)
 
 
-## 🌟 Features in Depth
+## 🌟Features in Depth
 
    - Seamless Payments with MyFatoorah: Integrated MyFatoorah API to handle secure and reliable payments for subscriptions, products, and services within the platform.
 
@@ -37,7 +36,7 @@ Track your progress, set goals, and stay motivated from the comfort of your home
 
    - Integrated Sports Shop: Browse and shop for sports gear and fitness equipment within the platform. Features include advanced product filtering, easy order placement, order         tracking, and the ability to cancel orders. Stay informed with real-time updates on order status and delivery.
 
-## 🎯 Usage
+## 🎯Usage
 1. Authenticating with Google Accounts
 
     Easily sign up or log in using your Google account, thanks to seamless OAuth2 integration with Laravel Passport. Enjoy secure and quick access to the platform without needing to create a separate account.
@@ -80,16 +79,13 @@ Track your progress, set goals, and stay motivated from the comfort of your home
     Browse the integrated sports shop to find the right gear for your workouts.
     Filter products by categories, brands, or price ranges, place orders easily, and track your order status in real-time.
     Cancel orders if needed and receive updates on delivery and order fulfillment.
-## 🤝 Contributing
-
-Contributions are welcome! Please fork this repository, make your changes, and submit a pull request. Ensure your code follows the project’s coding guidelines.
-
-## 📜 License
-
--This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-to startup (windows):
-
+## 🚀Installation
+1.Clone the repository:
+```bash
+ git clone https://github.com/KaramMad/TrainigHacks.git
+```
+2.Setup Windows
+```bash
 composer install
 
 cp .env.example .env
@@ -97,4 +93,16 @@ cp .env.example .env
 php artisan key:generate
 
 setup database name in .env file and xampp then run: php artisan migrate
+```
+## 🤝Contributing
+
+Contributions are welcome! Please fork this repository, make your changes, and submit a pull request. Ensure your code follows the project’s coding guidelines.
+
+## 📜License
+
+-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+ 
+
+
 
