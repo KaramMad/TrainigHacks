@@ -5,9 +5,12 @@ _made with_ ⬇ <br/>  [<img src="https://laravel.com/img/logomark.min.svg" alt=
 ✨A BackEnd Laravel-based application that helps you stay fit with personalized home workouts. 
 Track your progress, set goals, and stay motivated from the comfort of your home!✨
 
-![Laravel](https://img.shields.io/badge/Laravel-8.x-orange)
-![PHP](https://img.shields.io/badge/PHP-%5E7.3-blue)
-
+![Laravel](https://img.shields.io/badge/Laravel-10-orange)
+![PHP](https://img.shields.io/badge/PHP-%5E8.2-blue)
+![License](https://img.shields.io/github/license/KaramMad/TrainingHacks)
+![Stars](https://img.shields.io/github/stars/KaramMad/TrainingHacks)
+![Forks](https://img.shields.io/github/forks/KaramMad/TrainingHacks)
+![Issues](https://img.shields.io/github/issues/KaramMad/TrainingHacks)
 
 ## 📋 Table of Contents
 - [Features](#features)
