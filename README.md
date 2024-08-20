@@ -1,5 +1,5 @@
 # 🏋️‍♂️ TrainigHacks
-_made with_ ⬇ <br/>  [<img src="https://laravel.com/img/logomark.min.svg" alt="Laravel" width="75">]
+_made with_ ⬇ <br/>  [<img src="https://laravel.com/img/logomark.min.svg" alt="Laravel" width="75">](https://laravel.com/) 
 <br/>
 <br/>
 
