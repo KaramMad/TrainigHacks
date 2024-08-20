@@ -81,6 +81,7 @@ class ArticleController extends Controller
         $articl = Articl::find($id);
 
         if ($articl) {
+        ImageTrait::destroy($articl->image);
             $articl->delete();
             return response()->json(['message' => 'success'], 200);
         }

@@ -297,11 +297,13 @@ class AdminMealController extends Controller
      */
     public function destroy($mealId)
     {
-        $IsMeal = Meal::Where('id', $mealId);
+        $IsMeal = Meal::findOrFail($mealId);
         if (!$IsMeal) {
             return response()->json(['Error' => 'The Meal Is Not In exist'], 404);
         }
+        $image_path=$IsMeal->image;
 
+        ImageTrait::destroy($image_path);
         $IsDeleted = Meal::Where('id', $mealId)->delete();
         return response()->json(['Message' => 'Deleted Successfully'], 200);
     }

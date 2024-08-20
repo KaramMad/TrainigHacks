@@ -185,6 +185,7 @@ class PostController extends Controller
         }
         $user = auth()->user();
         if ($post->postable_type === get_class($user) && $post->postable_id == $user->id) {
+            ImageTrait::destroy($post->image);
             $post->delete();
             return response()->json(['message' => 'Post deleted successfully']);
         } else {

@@ -159,6 +159,7 @@ class ExerciseController extends Controller
         $des = Exercise::find($id);
 
         if ($des) {
+            ImageTrait::destroy($des->gif);
             Exercise::where('id', '=', $id)->delete();
             return response()->json('success');
         }

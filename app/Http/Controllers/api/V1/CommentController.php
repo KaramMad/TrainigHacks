@@ -117,7 +117,6 @@ class CommentController extends Controller
         ]);
     }
 
-    //جربيه يا لنوشة على شانك هلا نعستي
     public function getRepliesByComment($commentId)
     {
         $comment = Comment::find($commentId);
@@ -146,6 +145,7 @@ class CommentController extends Controller
         if (Auth::id() !== $comment->user_id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
+        ImageTrait::destroy($comment->image);
         $comment->delete();
 
         return response()->json(['message' => 'Comment deleted successfully'], 200);

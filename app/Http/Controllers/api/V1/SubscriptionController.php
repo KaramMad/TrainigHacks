@@ -146,7 +146,7 @@ class SubscriptionController extends Controller
             $this->notificationService->SendTrainingNotification(
                 $user->fcm_token,
                 "Your subscription will end after days!",
-                "BodyFix"
+                "TrainingHacks"
             );
             return $this->success([]);
         }

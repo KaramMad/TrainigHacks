@@ -90,6 +90,7 @@ class ExerciseTypeController extends Controller
             $exercises = Exercise::where('exercise_type_id', request('id'))->get();
             foreach ($exercises as $exercise) {
                 if ($exercise->private) {
+                    ImageTrait::destroy($exercise->gif);
                     $exercise->delete();
                 }
             }

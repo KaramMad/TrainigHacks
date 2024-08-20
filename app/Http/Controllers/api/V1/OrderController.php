@@ -120,7 +120,7 @@ class OrderController extends Controller
         $order->status = 'sent';
         $order->order_date = now();
         $order->save();
-        $this->notificationService->SendTrainingNotification($order->user->fcm_token, "Your order has been sent!", "BodyFix");
+        $this->notificationService->SendTrainingNotification($order->user->fcm_token, "Your order has been sent!", "TrainingHacks");
         return $this->success([]);
     }
 
@@ -137,7 +137,7 @@ class OrderController extends Controller
             $item->increment('sales_count', $item->pivot->quantity);
         }
 
-        $this->notificationService->SendTrainingNotification($order->user->fcm_token, "Your order has been received!", "BodyFix");
+        $this->notificationService->SendTrainingNotification($order->user->fcm_token, "Your order has been received!", "TrainingHacks");
         return $this->success([]);
     }
 

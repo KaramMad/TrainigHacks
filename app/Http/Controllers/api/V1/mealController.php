@@ -95,7 +95,7 @@ class MealController extends Controller // for coach
         if ($meal->coach_id != $coachId) {
             return response()->json(['Error' => 'You do not have permission to delete this meal'], 403);
         }
-
+        ImageTrait::destroy($meal->image);
         $meal->delete();
 
         return response()->json(['Message' => 'Deleted Successfully'], 200);

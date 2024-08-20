@@ -6,6 +6,7 @@ use App\Http\Requests\SearchProductRequest;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Image;
 use App\Models\User;
 use App\Traits\ImageTrait;
 use GuzzleHttp\Psr7\Request;
@@ -49,6 +50,11 @@ class ProductController extends Controller
         $data = Product::whereHas('favoritedby', function ($query) use ($similarUsers) {
             $query->whereIn('users.id', $similarUsers);
         })->get();
+               $data=$data->map(function($product){
+                $product['isfavorite']=$product->isfav();
+                return $product;
+               });
+
 //        $data=Product::with(['colors','sizes'])->orderBy('view_count','desc')->get();
 //        $data=$data->map(function($product){
 //            $product['isfavorite']=$product->isfav();
@@ -129,6 +135,8 @@ class ProductController extends Controller
         $des = Product::find($id);
 
         if ($des) {
+            dd($des->image);
+            Image::destroy($des->image);
             Product::where('id', '=', $id)->delete();
 
             return response()->json(['message' => 'Product deleted successfully'], 200);

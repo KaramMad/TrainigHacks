@@ -27,7 +27,7 @@ class StorecoachPlanRequest extends FormRequest
             'plan_name'=>'required|string|max:50',
             'description'=>'required|string|max:500',
             'target'=>'required|string|in:lose_weight,build_muscle,keep_fit',
-            'level'=>'required|string|in:beginner, intermediate, advanced',
+            'level'=>'required|string|in:beginner,intermediate,advanced',
             'choose'=>'required|string|in:equipment,no_equipment',
         ];
     }

@@ -98,6 +98,7 @@ class CatproductController extends Controller
      */
     public function destroy(Catproduct $catproduct)
     {
+        ImageTrait::destroy($catproduct->image);
         $status = $catproduct->delete();
         return $this->success($status, 'deleted successfully');
     }

@@ -102,6 +102,7 @@ class CategoryController extends Controller
         $des = Category::find($id);
 
         if ($des) {
+            ImageTrait::destroy($des->image);
             Category::where('id', '=', $id)->delete();
 
             return response()->json(['message' => 'Category deleted successfully'], 200);
