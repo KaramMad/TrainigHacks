@@ -43,6 +43,9 @@ use \App\Http\Controllers\api\V1\FatoorahController;
 */
 
 //Coach Auth & Routes
+Route::middleware(['AcceptJsonResponseMidlleware'])->group(function () {
+
+});
 Route::post('coach/login', [CoachAuthController::class, 'coachLogin']);
 Route::get('/callback', [FatoorahController::class, 'callBack']);
 Route::get('/error', function () {
@@ -152,10 +155,10 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::get('/order/status/received/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'receive']);
         Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);
     });
-    Route::group(['prefix'=>'report'],function(){
-        Route::get('/userCount',[AdminController::class,'allusers']);
-        Route::post('/salesByMonth',[ReportController::class,'salesbymonth']);
-        Route::get('/refund',[ReportController::class,'totalRefund']);
+    Route::group(['prefix' => 'report'], function () {
+        Route::get('/userCount', [AdminController::class, 'allusers']);
+        Route::post('/salesByMonth', [ReportController::class, 'salesbymonth']);
+        Route::get('/refund', [ReportController::class, 'totalRefund']);
     });
 });
 
