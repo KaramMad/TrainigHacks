@@ -1,4 +1,5 @@
-# 🏋️‍♂️ TrainigHacks
+# 🏋️‍♂️ TrainingHacks
+
 _made with_ ⬇ <br/>  [<img src="https://laravel.com/img/logomark.min.svg" alt="Laravel" width="75">](https://laravel.com/) 
 <br/>
 <br/>
@@ -9,6 +10,7 @@ Track your progress, set goals, and stay motivated from the comfort of your home
 ![PHP](https://img.shields.io/badge/PHP-%5E8.2-blue)
 
 ## 📋 Table-of-Contents
+
 - [Features](#Features-in-Depth)
 - [Installation](#installation)
 - [Usage](#Usage)
@@ -37,6 +39,7 @@ Track your progress, set goals, and stay motivated from the comfort of your home
    - Integrated Sports Shop: Browse and shop for sports gear and fitness equipment within the platform. Features include advanced product filtering, easy order placement, order         tracking, and the ability to cancel orders. Stay informed with real-time updates on order status and delivery.
 
 ## 🎯Usage
+
 1. Authenticating with Google Accounts
 
     Easily sign up or log in using your Google account, thanks to seamless OAuth2 integration with Laravel Passport. Enjoy secure and quick access to the platform without needing to create a separate account.
@@ -80,6 +83,7 @@ Track your progress, set goals, and stay motivated from the comfort of your home
     Filter products by categories, brands, or price ranges, place orders easily, and track your order status in real-time.
     Cancel orders if needed and receive updates on delivery and order fulfillment.
 ## 🚀Installation
+
 1.Clone the repository:
 ```bash
  git clone https://github.com/KaramMad/TrainigHacks.git
