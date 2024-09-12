@@ -6,11 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
+use Laravel\Scout\Searchable;
 class Meal extends Model
 {
-    use HasFactory;
+    use HasFactory,Searchable;
     protected $guarded = ['id'];
+    // public function toSearchableArray()
+    // {
+    //     return [
+    //         'name'=>$this->name,
+    //     ];
+    // }
     public function day():BelongsTo
     {
         return $this->belongsTo(TrainingDay::class);
@@ -45,5 +51,5 @@ class Meal extends Model
     {
         return $this->belongsToMany(Ingredient::class, 'meal_ingredient');
     }
-    
+
 }

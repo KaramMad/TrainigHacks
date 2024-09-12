@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\api\V1;
-use Illuminate\Http\Request;
 use App\Models\Like;
 use App\Models\Comment;
 use App\Models\Post;

@@ -4,15 +4,11 @@ namespace App\Http\Controllers\api\V1;
 
 use App\Http\Requests\changePasswordRequest;
 use App\Models\User;
-use App\Models\TrainingDay;
 use App\Http\Requests\UserInfoRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use App\Providers\AppServiceProvider as AppSP;
 use App\Traits\ImageTrait;
-use GuzzleHttp\Psr7\Request;
+
 
 class UserController extends Controller
 {

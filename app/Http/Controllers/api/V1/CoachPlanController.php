@@ -4,10 +4,8 @@
 namespace App\Http\Controllers\api\V1;
 
 use App\Models\Exercise;
-use Illuminate\Http\Request;
 use App\Models\coachPlan;
 use App\Http\Requests\StorecoachPlanRequest;
-use App\Http\Requests\UpdatecoachPlanRequest;
 use Illuminate\Support\Facades\Auth;
 
 class CoachPlanController extends Controller

@@ -4,10 +4,7 @@ namespace App\Http\Controllers\api\V1;
 
 use App\Providers\AppServiceProvider as AppSP;
 use App\Http\Requests\AddMuscleRequest;
-use App\Models\Category;
-use App\Models\Exercise;
 use App\Models\Muscle;
-use App\Models\Muscle_Level;
 use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 

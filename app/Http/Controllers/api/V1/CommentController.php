@@ -7,7 +7,6 @@ use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Helper\OffensiveWordChecker;
 use App\Traits\ImageTrait;
 

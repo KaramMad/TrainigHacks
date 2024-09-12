@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\AppServiceProvider as AppSP;
 use App\Traits\ImageTrait;
-use Illuminate\Support\Facades\App;
 
 class CoachAuthController extends Controller
 {

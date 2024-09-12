@@ -2,19 +2,10 @@
 
 namespace App\Http\Controllers\api\V1;
 
-use App\Models\User;
-use App\Models\Coach;
 use App\Models\Meal;
-use App\Models\MealType;
-use App\Models\Ingredient;
-use App\Models\TrainingDay;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Requests\AdminMealRequest;
 use App\Http\Requests\SearchRequest;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use App\Providers\AppServiceProvider as AppSP;
 use App\Traits\ImageTrait;
 

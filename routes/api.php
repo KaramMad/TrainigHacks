@@ -14,7 +14,6 @@ use App\Http\Controllers\api\V1\MuscleController;
 use App\Http\Controllers\api\V1\IngredientController;
 use App\Http\Controllers\api\V1\NotificationController;
 use App\Http\Controllers\api\V1\ReportController;
-use App\Http\Controllers\api\V1\CoachController;
 use App\Http\Controllers\api\V1\MealController;
 use App\Http\Controllers\api\V1\AdminMealController;
 use App\Http\Controllers\api\V1\CatproductController;
@@ -23,13 +22,11 @@ use App\Http\Controllers\api\V1\likeController;
 use App\Http\Controllers\api\V1\PostController;
 use App\Http\Controllers\api\V1\ExerciseTypeController;
 use App\Http\Controllers\api\V1\FavoriteController;
-use App\Http\Controllers\api\V1\ChatController;
 use App\Http\Controllers\api\V1\CoachPlanController;
 use App\Http\Controllers\api\V1\PosterController;
 use App\Http\Controllers\api\V1\ProductController;
 use App\Http\Controllers\api\V1\RatingController;
-use App\Models\Favorite;
-use \App\Http\Controllers\api\V1\FatoorahController;
+use App\Http\Controllers\api\V1\FatoorahController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,17 +39,11 @@ use \App\Http\Controllers\api\V1\FatoorahController;
 |
 */
 
+// Route::middleware(['AcceptJsonResponseMidlleware'])->group(function () {
+
+// });
 //Coach Auth & Routes
-Route::middleware(['AcceptJsonResponseMidlleware'])->group(function () {
-
-});
 Route::post('coach/login', [CoachAuthController::class, 'coachLogin']);
-Route::get('/callback', [FatoorahController::class, 'callBack']);
-Route::get('/error', function () {
-    return response()->json(['message' => 'something went wrong,try again later'], 422);
-});
-Route::post('/makeRefund', [FatoorahController::class, 'makePaymentRefunded']);
-
 Route::group([
     'prefix' => 'coach',
     "middleware" => ["auth:coach", 'scope:coach']
@@ -61,6 +52,7 @@ Route::group([
     Route::get('/{id}', [CoachAuthController::class, 'show']);
     Route::post('createInfo', [CoachAuthController::class, 'store']);
     Route::post('updateCoachInfo', [CoachAuthController::class, 'update']);
+    //1-Meal Section
     Route::post('store', [MealController::class, 'store']);
     Route::post('show', [MealController::class, 'show']);
     Route::delete('meal/destroy/{id}', [MealController::class, 'destroy']);
@@ -69,7 +61,9 @@ Route::group([
     Route::post('ingredient/store', [IngredientController::class, 'store']);
     Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
     Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
-    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']); // *********************************
+    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
+
+    //2-Media Section
     Route::post('post/addpost', [PostController::class, 'store']);
     Route::get('post/showAllPost', [PostController::class, 'index']);
     Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
@@ -82,9 +76,12 @@ Route::group([
     Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
+    //3-Dashboard Section
     Route::get('user/getAllUserSubscriptionWithCoach', [SubscriptionController::class, 'getAllUserSubscriptionWithCoach']);
     Route::get('user/totalSale', [ReportController::class, 'totalSale']);
 
+
+    //Coach Plans Details
     Route::group(['prefix' => 'plan'], function () {
         Route::get('subscriptionEnds/{id}', [SubscriptionController::class, 'subscriptionEnds']);
         Route::get('/getAllPlan', [CoachPlanController::class, 'index']);
@@ -93,7 +90,7 @@ Route::group([
         Route::delete('/deletePlan/{id}', [CoachPlanController::class, 'destroy']);
     });
 
-
+    //Coach Plan Exercise
     Route::group(['prefix' => 'exercise'], function () {
         Route::post('/create', [ExerciseController::class, 'createExercisePlan']);
         Route::delete('deletePlanExercise/{id}', [ExerciseController::class, 'destroy']);
@@ -103,47 +100,77 @@ Route::group([
 //Admin Auth & Routes
 Route::post('admin/login', [AdminController::class, 'login']);
 Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']], function () {
-    Route::get('articl/allArticls', [ArticleController::class, 'getAll']);
+
+    //1-Articls Section
+    Route::group(['prefix'=>'articl'],function(){
+
+        Route::get('/allArticls', [ArticleController::class, 'getAll']);
+        Route::post('/addNewArticls', [ArticleController::class, 'store']);
+        Route::delete('deleteArticl/{id}', [ArticleController::class, 'destroy']);
+    });
+    //2-Coach Section
+
     Route::get('coach/allCoach', [CoachAuthController::class, 'adminIndex']);
     Route::post('coach/addNewCoach', [AdminController::class, 'createCoaches']);
-    Route::post('articl/addNewArticls', [ArticleController::class, 'store']);
-    Route::delete('articl/deleteArticl/{id}', [ArticleController::class, 'destroy']);
-    Route::post('muscle/addNewMuscle', [MuscleController::class, 'store']);
-    Route::delete('muscle/deleteMuscle/{id}', [MuscleController::class, 'destroy']);
-    Route::post('category/addNewCategory', [CategoryController::class, 'store']);
-    Route::delete('category/deleteCategory/{id}', [CategoryController::class, 'destroy']);
-    Route::post('exercise/addNewExercises', [ExerciseController::class, 'store']);
-    Route::post('exercise/addNewExercisesType', [ExerciseController::class, 'createExerciseType']);
-    Route::delete('exercise/deleteExercise/{id}', [ExerciseController::class, 'destroy']);
-    Route::get('exercise/getall', [ExerciseController::class, 'index']);
-    Route::post('exerciseType/addExerciseType', [ExerciseTypeController::class, 'store']);
-    Route::get('exerciseType/getAll', [ExerciseTypeController::class, 'index']);
-    Route::delete('exerciseType/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
-    Route::post('challenge/addNewChallenge', [ChallengeController::class, 'store']);
-    Route::delete('challenge/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
-    Route::get('challenge/getAll', [ChallengeController::class, 'adminIndex']);
-    Route::post('meal/store', [AdminMealController::class, 'store']);
-    Route::get('meal/getAll', [AdminMealController::class, 'getAllMeal']);
-    Route::delete('meal/destroy/{id}', [AdminMealController::class, 'destroy']);
-    Route::post('ingredient/store', [IngredientController::class, 'store']);
-    Route::get('ingredient/getAll', [IngredientController::class, 'getAllIngredients']);
-    Route::delete('ingredient/destroy/{id}', [IngredientController::class, 'destroy']);
-    Route::post('ingredient/update/{id}', [IngredientController::class, 'update']);
-    Route::get('ingredient/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
-    Route::delete('meal/destroy\{id}', [AdminMealController::class, 'destroy']);
-    Route::post('post/addpost', [PostController::class, 'store']);
-    Route::get('post/showAllPost', [PostController::class, 'index']);
-    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
-    Route::post('comment/addcomment', [CommentController::class, 'store']);
-    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']);
-    Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']);
-    Route::get('likePost/{id}', [likeController::class, 'likePost']);
-    Route::get('likeComment/{id}', [likeController::class, 'likeComment']);
-    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']);
-    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
-    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
-    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
+    //3-Muscle Section
+    Route::group(['prefix'=>'muscle'],function(){
 
+        Route::post('addNewMuscle', [MuscleController::class, 'store']);
+        Route::delete('deleteMuscle/{id}', [MuscleController::class, 'destroy']);
+    });
+
+    //4-ExerciseCategory Section
+    Route::group(['prefix'=>'category'],function(){
+
+        Route::post('/addNewCategory', [CategoryController::class, 'store']);
+        Route::delete('/deleteCategory/{id}', [CategoryController::class, 'destroy']);
+    });
+
+    //5-Exercise Section
+    Route::group(['prefix'=>'exercise'],function(){
+
+        Route::post('/addNewExercises', [ExerciseController::class, 'store']);
+        Route::post('/addNewExercisesType', [ExerciseController::class, 'createExerciseType']);
+        Route::delete('/deleteExercise/{id}', [ExerciseController::class, 'destroy']);
+        Route::get('/getall', [ExerciseController::class, 'index']);
+    });
+
+    //6-ExerciseType Section
+    Route::group(['prefix'=>'exerciseType'],function(){
+
+        Route::post('/addExerciseType', [ExerciseTypeController::class, 'store']);
+        Route::get('/getAll', [ExerciseTypeController::class, 'index']);
+        Route::delete('/delExerciseType/{id}', [ExerciseTypeController::class, 'destroy']);
+    });
+
+    //7-Challenge Section
+    Route::prefix('challenge')->group(function () {
+
+        Route::post('/addNewChallenge', [ChallengeController::class, 'store']);
+        Route::delete('/deleteChallenge/{challenge}', [ChallengeController::class, 'destroy']);
+        Route::get('/getAll', [ChallengeController::class, 'adminIndex']);
+    });
+
+    //8-Meal Section
+    Route::prefix('meal')->group(function () {
+
+        Route::post('/store', [AdminMealController::class, 'store']);
+        Route::get('/getAll', [AdminMealController::class, 'getAllMeal']);
+        Route::delete('/destroy/{id}', [AdminMealController::class, 'destroy']);
+        Route::delete('/destroy\{id}', [AdminMealController::class, 'destroy']);
+    });
+
+    //9-Ingrediant Section
+    Route::prefix('ingredient')->group(function () {
+
+        Route::post('/store', [IngredientController::class, 'store']);
+        Route::get('/getAll', [IngredientController::class, 'getAllIngredients']);
+        Route::delete('/destroy/{id}', [IngredientController::class, 'destroy']);
+        Route::post('/update/{id}', [IngredientController::class, 'update']);
+        Route::get('/getAllIngredients', [IngredientController::class, 'getAllIngredients']);
+    });
+
+    //10-Store Section
     Route::group(['prefix' => 'products'], function () {
         Route::post('/create', [ProductController::class, 'store']);
         Route::get('/allProducts', [ProductController::class, 'adminIndex']);
@@ -155,40 +182,71 @@ Route::group(['prefix' => 'admin', "middleware" => ["auth:admin", 'scope:admin']
         Route::get('/order/status/received/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'receive']);
         Route::post('/order/filterByStatus', [\App\Http\Controllers\api\V1\OrderController::class, 'filterByStatus']);
     });
+
+    //11-Reports
     Route::group(['prefix' => 'report'], function () {
         Route::get('/userCount', [AdminController::class, 'allusers']);
         Route::post('/salesByMonth', [ReportController::class, 'salesbymonth']);
         Route::get('/refund', [ReportController::class, 'totalRefund']);
     });
+    Route::post('post/addpost', [PostController::class, 'store']);
+    Route::get('post/showAllPost', [PostController::class, 'index']);
+    Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
+    Route::post('comment/addcomment', [CommentController::class, 'store']);
+    Route::get('comment/deletecomment/{id}', [CommentController::class, 'destroy']);
+    Route::get('comment/showComments/{id}', [CommentController::class, 'showComments']);
+    Route::get('likePost/{id}', [likeController::class, 'likePost']);
+    Route::get('likeComment/{id}', [likeController::class, 'likeComment']);
+    Route::get('likePostsCount/{id}', [likeController::class, 'likePostsCount']);
+    Route::get('likesCommentCount/{id}', [likeController::class, 'likesCommentCount']);
+    Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
+    Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
 });
 
 //Trainer Auth & Routes
-Route::post('trainer/register', [AuthController::class, 'trainerRegister']);
-Route::post('/verfiy', [AuthController::class, 'verficationRegister']);
-Route::post('trainer/login', [AuthController::class, 'trainerLogin']);
-Route::post('trainer/forgotPasswor', [AuthController::class, 'forgotPassword']);
-Route::post('trainer/forgotPassword/verfiy', [AuthController::class, 'verfiyForgotPassword']);
-Route::post('trainer/password/reset', [AuthController::class, 'passwordReset']);
-Route::post('trainer/password/resend', [AuthController::class, 'resendCode']);
-
+Route::prefix('trainer')->group(function () {
+    Route::post('/register', [AuthController::class, 'trainerRegister']);
+    Route::post('/verfiy', [AuthController::class, 'verficationRegister']);
+    Route::post('/login', [AuthController::class, 'trainerLogin']);
+    Route::post('/forgotPasswor', [AuthController::class, 'forgotPassword']);
+    Route::post('/forgotPassword/verfiy', [AuthController::class, 'verfiyForgotPassword']);
+    Route::post('/password/reset', [AuthController::class, 'passwordReset']);
+    Route::post('/password/resend', [AuthController::class, 'resendCode']);
+});
 
 Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']], function () {
     Route::get('/logout', [AuthController::class, 'trainerLogout']);
     Route::post('/info', [UserController::class, 'trainerInfo']);
     Route::post('/password', [UserController::class, 'changePassword']);
-    Route::post('challenge/updateChallenge/{challenge}', [ChallengeController::class, 'update']);
-    Route::get('challenge/getAll', [ChallengeController::class, 'index']);
-    Route::post('exercise/gender', [ExerciseController::class, 'filtering']);
-    Route::get('exercise/getall', [ExerciseController::class, 'index']);
-    Route::get('exercise/getall/{id}', [ExerciseController::class, 'show']);
+
+    //1-Challenge Section
+    Route::prefix('challenge')->group(function () {
+
+        Route::post('/updateChallenge/{challenge}', [ChallengeController::class, 'update']);
+        Route::get('/getAll', [ChallengeController::class, 'index']);
+    });
+
+    //2-Exercise Section
+    Route::prefix('exercise')->group(function () {
+        Route::post('/gender', [ExerciseController::class, 'filtering']);
+        Route::get('/getall', [ExerciseController::class, 'index']);
+        Route::get('/getall/{id}', [ExerciseController::class, 'show']);
+    });
+
+    //3-ExerciseType
+    Route::prefix('exerciseType')->group(function () {
+
+        Route::get('/getType', [ExerciseTypeController::class, 'index']);
+        Route::get('/getType/{id}', [ExerciseTypeController::class, 'show']);
+    });
+
+    //4-Meal Section
     Route::get('meal/GetFavoritesList', [FavoriteController::class, 'GetFavoritesList']);
     Route::get('meal/AddMealToFavoritesList/{meal}', [FavoriteController::class, 'AddMealToFavoritesList']);
     Route::delete('meal/deleteFromFavorite/{meal}', [FavoriteController::class, 'deleteFromFavorite']);
     Route::get('meal/{meal}/isfav', [FavoriteController::class, 'isFavorite']);
     Route::get('meal/getAll', [AdminMealController::class, 'index']);
     Route::get('meal/byId/{id}', [AdminMealController::class, 'getById']);
-    Route::get('exerciseType/getType', [ExerciseTypeController::class, 'index']);
-    Route::get('exerciseType/getType/{id}', [ExerciseTypeController::class, 'show']);
     Route::get('admin/meal/latestMeals', [AdminMealController::class, 'latestMeals']);
     Route::post('admin/meal/show', [AdminMealController::class, 'show']);
     Route::get('admin/meal/popular', [AdminMealController::class, 'popularMeal']);
@@ -196,7 +254,8 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('admin/meal/getMealsWithNoneDiet', [AdminMealController::class, 'getMealsWithNoneDiet']);
     Route::post('admin/meal/showByCategory', [AdminMealController::class, 'showByCategory']);
     Route::get('ingredient/index/{id}', [IngredientController::class, 'index']);
-    Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
+
+    //5-Media Section
     Route::post('post/addpost', [PostController::class, 'store']);
     Route::get('post/showAllPost', [PostController::class, 'index']);
     Route::get('post/deletePost/{id}', [PostController::class, 'destroy']);
@@ -210,13 +269,14 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
     Route::get('unlikePost/{id}', [likeController::class, 'unlikePost']);
     Route::get('unlikeComment/{id}', [likeController::class, 'unlikeComment']);
     Route::get('post/getUserPostsAndBio/{id}', [postController::class, 'getUserPostsAndBio']);
-    Route::post('token', [NotificationController::class, 'updateToken']);
     Route::get('notifications', [NotificationController::class, 'getAllNotifications']);
+
     // Reports
     Route::post('report/creatReport', [ReportController::class, 'createOrUpdateReport']);
     Route::post('report/creatReportSteps', [ReportController::class, 'createOrUpdateStepsReport']);
     Route::get('report/getDailyReport', [ReportController::class, 'getDailyReport']);
     Route::get('report/getWeeklyReport', [ReportController::class, 'getWeeklyReport']);
+
     // Store-Section
     Route::group(['prefix' => 'products'], function () {
         Route::get('/allProducts', [ProductController::class, 'index']);
@@ -236,7 +296,8 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::delete('/order/cancel/{order}', [\App\Http\Controllers\api\V1\OrderController::class, 'destroy']);
         Route::post('/order/pay', [FatoorahController::class, 'payOrder']);
     });
-    // Premium-section
+    //Premium-section
+    Route::get('coach/allCoach', [CoachAuthController::class, 'index']);
     Route::prefix('subscription')->group(function () {
         Route::post('/create', [SubscriptionController::class, 'store']);
         Route::get('/index', [SubscriptionController::class, 'index']);
@@ -244,9 +305,7 @@ Route::group(['prefix' => 'trainer', "middleware" => ["auth:user", 'scope:user']
         Route::post('progress/updateDay', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'completeDay']);
         Route::post('progress/index', [\App\Http\Controllers\api\V1\UserPlanProgressController::class, 'index']);
     });
-    Route::get('exercise/pickforYou', [ExerciseController::class, 'picksForYou']);
     Route::middleware(['subscription'])->group(function () {
-
         Route::prefix('rating')->group(function () {
             Route::post('/create/{coach_id}', [RatingController::class, 'store']);
         });

@@ -6,7 +6,6 @@ use App\Http\Requests\AddChallengeRequest;
 use App\Http\Requests\UpdateChallengeRequest;
 use App\Models\Challenge;
 use App\Traits\ImageTrait;
-use Illuminate\Http\Request;
 
 class ChallengeController extends Controller
 {

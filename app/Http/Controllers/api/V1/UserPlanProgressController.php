@@ -6,10 +6,8 @@ use App\Http\Requests\storePlanProgressRequest;
 use App\Models\coachPlan;
 use App\Models\Subscription;
 use App\Models\UserPlanProgress;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class UserPlanProgressController extends Controller
 {

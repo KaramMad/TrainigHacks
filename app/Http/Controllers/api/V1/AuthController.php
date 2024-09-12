@@ -13,7 +13,7 @@ use App\Models\User;
 use App\Mail\SendCode;
 use App\Models\TempUser;
 use App\Models\VerfiyCode;
-use Dflydev\DotAccessData\Data;
+
 
 class AuthController extends Controller
 {

@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers\api\V1;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\CommentRequest;
-use App\Models\Comment;
+
 use App\Models\Notification;
-use App\Models\Post;
 use App\Models\User;
 use App\Services\NotificationService;
 use App\Http\Requests\NotificationRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Traits\ImageTrait;
-use Carbon\Carbon;
 
 class NotificationController extends Controller
 {

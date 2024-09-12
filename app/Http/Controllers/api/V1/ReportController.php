@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Models\Report;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {

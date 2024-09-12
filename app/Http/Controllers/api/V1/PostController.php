@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\api\V1;
 
 use App\Models\Post;
-use App\Models\Meal;
 use App\Models\User;
 use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\Auth;

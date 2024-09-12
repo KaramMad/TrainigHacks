@@ -9,7 +9,6 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Image;
 use App\Models\User;
 use App\Traits\ImageTrait;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
